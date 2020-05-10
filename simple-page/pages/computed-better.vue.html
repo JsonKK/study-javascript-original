@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>计算属性的缓存机制</title>
+  <script src="../utils/vue-2.6.0.js"></script>
+</head>
+<body>
+  <div id="app">
+    <div class="content">
+      <!-- 插值表达式可以直接调用方法 -->
+      <h1>{{mFullName()}} {{age}}</h1>
+      <h1>{{fullName}} {{age}}</h1>
+    </div>
+    <div class="row">
+      <button type="button" @click="addAge">加一</button>
+    </div>
+  </div>
+  <script>
+    const vm = new Vue({
+      el : '#app',
+      data:{
+        firstName : 'Lai',
+        lastName : 'XiaoKe',
+        age : 30
+      },
+      methods:{
+        addAge(){
+          // 例子证明每次调用age的值改变，mFullName就会被重新执行一次
+          //而computed有缓存机制所以是没有被重新执行
+          this.age++;
+        },
+        mFullName(){
+          console.log('调用了一次mFullName');
+          return  this.lastName + ' ' + this.firstName;
+        }
+      },
+      computed:{
+        fullName(){
+          console.log('调用了一次fullName');
+          return  this.lastName + ' ' + this.firstName;
+        }
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>key值的使用</title>
+  <script src="../utils/vue-2.6.0.js"></script>
+</head>
+<body>
+  <!-- vue为了保证性能，会尽可能地去复用dom元素 -->
+  <!-- key相当标识了该dom，的唯一性，如果key不重复，则表明在判断渲染的时候会重新渲染；
+  如果不定义Key,或者key相同则不重复渲染 -->
+  <!-- 为了性能的提升尽量不要使用Index作为列表的key；
+  例如：列表有两项，往第二项加入一个值，那么第二、第三项都会被重新渲染
+        假如使用id作为key，虚拟dom发现第一项和第三项没有变化，只是加入第二项，所以就只重新渲染了第二项 -->
+  <div id="app">
+    <div class="row">
+      <template v-if="show">
+        用户名(没有key):<input />
+      </template>
+      <template v-else>
+        邮箱名(没有key):<input />
+      </template>
+    </div>
+    <div class="row">
+      <template v-if="show">
+        用户名(相同key):<input key="equal" />
+      </template>
+      <template v-else>
+        邮箱名(相同key):<input key="equal" />
+      </template>
+    </div>
+    <div class="row">
+      <template v-if="show">
+        用户名(有key):<input key="user"/>
+      </template>
+      <template v-else>
+        邮箱名(有key):<input key="email"/>
+      </template>
+    </div>
+    <div class="row">
+      <button type="button" @click="show = !show">切换邮箱用户</button>
+    </div>
+    <ul>
+      <li v-for="(item,index) in list" :key="index">{{item}}</li>
+    </ul>
+    <div class="row">
+      <button type="button" @click="changeList">换数组位置</button>
+    </div>
+  </div>
+  <script>
+    const vm = new Vue({
+      el : '#app',
+      data : {
+        show : true,
+        list : ['a','b']
+      },
+      methods:{
+        changeList(){
+          let list = [this.list[1],this.list[0]];
+          this.list = list;
+        }
+      }
+    });
+  </script>
+</body>
+</html>

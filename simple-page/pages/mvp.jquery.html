@@ -4,10 +4,55 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>利用jquery解析mvp原理</title>
+  <!-- <script src="../utils/babel-6.26.0.min.js"></script> -->
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+  <!-- <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script> -->
   <script src="../utils/jquery-1.11.0.js"></script>
 </head>
 <body>
+  <div class="content">
+    <div class="form">
+      <div class="row">
+        <input type="text" id="input" />
+        <button type="button" id="submit-btn">提交</button>
+      </div>
+      <ul id="list"></ul>
+    </div>
+  </div>
   <script>
+    // M (Model\视图模型) ：请求回来的数据
+    // V (view\视图) ：html代码，负责展示的
+    // P (presenter\控制器) ：处理回来的数据，和html操作交互
+    function Page(){}
+    // 向Page实例合并对象方法
+    $.extend(Page.prototype , {
+      init(){
+        this.bindEvents();
+      },
+      bindEvents(){
+        let $btn = $('#submit-btn');
+        //改变点击时候触发handleBtnClick事件，并把方法this指向page;
+        //与this.handleBtnClick.call(this)作用类似
+        $btn.on('click',$.proxy(this.handleBtnClick,this))
+        //不改变作用域,this指向的是$btn;
+        // $btn.on('click',this.handleBtnClick)
+      },
+      handleBtnClick(){
+        let $input = $('#input');
+        let value = $input.val();
+        if(!value){
+          alert('请输入需要增加的内容');
+        }
+        else{
+          let $list = $('#list');
+          let liStr = `<li>${value}</li>`;
+          $list.append(liStr);
+          $input.val('');
+        }
+      }
+    });
+    const page = new Page();
+    page.init();
   </script>
 </body>
 </html>

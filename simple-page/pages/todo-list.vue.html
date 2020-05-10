@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>实现todo list</title>
+  <script src="../utils/vue-2.6.0.js"></script>
+  <style>
+    body{
+      margin: 0;
+      padding: 0;
+    }
+    .content{
+      margin: 300px auto;
+      max-width: 500px;
+    }
+    .list-item{
+      font-size: 28px;
+      width: 300px;
+      background-color: #f5f5f5;
+      line-height: 40px;
+      height: 40px;
+      padding-left: .5em;
+      position: relative;
+      box-sizing: border-box;
+      margin-top: 18px;
+    }
+    .list-item:first-child{
+      margin-top: 0;
+    }
+    .list-item:hover{
+      background-color: #d4d3d3;
+    }
+    .del-item{
+      width: 26px;
+      height: 26px;
+      background-color: red;
+      color: #fff;
+      display: inline-block;
+      border-radius: 100%;
+      text-align: center;
+      line-height: 19px;
+      font-size: 26px;
+      position: absolute;
+      right: -40px;
+      top: 50%;
+      margin-top: -13px;
+      
+    }
+    .del-item:hover{
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="content" id="app">
+    <div class="form">
+      <div class="row">
+        <input type="text" v-model="inputValue" />
+        <button type="button" @click="add">提交</button>
+      </div>
+      <todo-item :list="list" @del-item="delItem"></todo-item>
+    </div>
+  </div>
+  <script>
+    //定义全局组件
+    //定义组件一定要在实例化Vue之前，不然会找不到该组件
+    Vue.component('todoItem',{
+      props:{
+        list : {
+          type:Array,
+          default(){
+            return [];
+          }
+        }
+      },
+      template:`<ul>
+                  <li v-for="(item,index) in list">{{item}}</li>
+                </ul>`
+    });
+
+    //定义局部组件
+    const todoItem = {
+      props:{
+        list : {
+          type:Array,
+          default(){
+            return [];
+          }
+        }
+      },
+      methods:{
+        delItem(index){
+          //事件名称与标签引用的名称一致，不存在驼峰转aa-bb的情况
+          this.$emit('del-item',index);
+        }
+      },
+      template:`<ul>
+                  <li class="list-item" v-for="(item,index) in list">
+                    {{item}}<span class="del-item" @click="delItem(index)">×</span>
+                  </li>
+                </ul>`
+    }
+
+    var app = new Vue({
+      el : '#app',
+      //使用局部组件
+      components:{
+        todoItem
+      },
+      data : {
+        inputValue : '',
+        list : []
+      },
+      methods:{
+        //增加列表
+        add(){
+          let {inputValue} = this;
+          if(!inputValue){
+            alert('请输入需要增加的内容');
+          }
+          else{
+            this.list.push(inputValue);
+            //对input的值清空
+            //第一个值是想要处理的对象或者数据
+            //第二个值是需要处理的value的key,或者数组索引下标
+            //第三个值是需要赋予的新值
+            this.$set(this,'inputValue','');
+          }
+        },
+        // 删除列表
+        delItem(index){
+          this.list.splice(index,1);
+        }
+      }
+    })
+  </script>
+</body>
+</html>
