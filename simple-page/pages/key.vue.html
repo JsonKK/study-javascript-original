@@ -42,10 +42,21 @@
       <button type="button" @click="show = !show">切换邮箱用户</button>
     </div>
     <ul>
+      <!-- 在vue中支持的改变数组变异方法
+      pop ：往前加一项
+      push ：往后加一项
+      shift ： 删除首项
+      unshift ： 删除末尾
+      splice ： 删除、截取
+      sort ： 排序
+      reverse : 取反 -->
       <li v-for="(item,index) in list" :key="index">{{item}}</li>
     </ul>
     <div class="row">
       <button type="button" @click="changeList">换数组位置</button>
+    </div>
+    <div class="row">
+      <h5 @click.right="tap">click right</h5>
     </div>
   </div>
   <script>
@@ -59,6 +70,10 @@
         changeList(){
           let list = [this.list[1],this.list[0]];
           this.list = list;
+        },
+        tap(e){
+          e.preventDefault();
+          console.log(1)
         }
       }
     });
