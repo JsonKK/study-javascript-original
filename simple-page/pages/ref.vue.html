@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ref在组件中的使用</title>
+  <script src="../utils/vue-2.6.0.js"></script>
+</head>
+<body>
+  <div id="root">
+    <!-- 当 v-for 用于元素或组件的时候，引用信息将是包含 DOM 节点或组件实例的数组。 -->
+    <!-- <li ref="li" v-for="index in 9">{{index}}</li> -->
+    <!-- 这样重复使用，只会获取到最后一个ref -->
+    <!-- <li ref="li-simple">1</li>
+    <li ref="li-simple">2</li>
+    <li ref="li-simple">3</li> -->
+
+    <counter ref="count" @change="handlerChange" v-for="index in 9" :key="'count'+index"></counter>
+    <h5>{{total}}</h5>
+  </div>
+  <script>
+    Vue.component('counter',{
+      template : '<h4 @click="add">{{number}}</h4>',
+      data(){
+        return {
+          number : 0
+        }
+      },
+      methods:{
+        add(){
+          this.number++;
+          this.$emit('change');
+        }
+      }
+    })
+    var vm = new Vue({
+      el : '#root',
+      data : {
+        total : 0
+      },
+      methods:{
+        handlerChange(){
+          this.total = this.$refs.count.reduce((total,item)=>{
+            if(typeof total == 'object'){
+              total = total.number;
+            }
+            return total + item.number;
+          });
+          console.log(this.$refs.count)
+        }
+      },
+      mounted(){
+        console.log(this.$refs.li)
+        console.log(this.$refs['li-simple'])
+      }
+    })
+  </script>
+</body>
+</html>

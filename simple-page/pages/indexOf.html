@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>匹配段落中所有的某个字符</title>
+</head>
+<body>
+  <script>
+    let str = 'Lorem ipsum dolor sit amet,consectetur adipisicing elit';
+    //查询关键字的所有下标
+    function keywordIndexs(key,str){
+      const arr = [];
+      if(!key || !str || typeof key != 'string' || typeof str != 'string'){
+        return arr;
+      }
+      let num = str.indexOf(key);
+      while(num > -1){
+        arr.push(num);
+        num = str.indexOf(key,num+1);
+      }
+      return arr;
+    }
+    console.log(keywordIndexs('e',str));
+  </script>
+</body>
+</html>

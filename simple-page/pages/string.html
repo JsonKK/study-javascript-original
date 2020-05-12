@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>String对象知识点</title>
+</head>
+<body>
+  <script>
+    var stringValue = 'hello world';
+    //截取下标3（包括3）到7（不包括7）的字符串
+    console.log(stringValue.slice(3,7));
+    //截取下标3（包括3）到7（不包括7）的字符串
+    console.log(stringValue.substring(3,7));
+    // 截取下标3（包括3）开始的7个字符
+    console.log(stringValue.substr(3,7));
+
+    //只传递一个负数时候存在差异
+    //slice方法会将传入的负值与字符串的长度相加，即以下等式是成立的
+    // stringValue.slice(stringValue.length-3) == stringValue.slice(-3)
+    console.log(stringValue.slice(-3))
+    //substr会把负的第一个参数与字符串长度相加，将负的第二个参数转为0
+    console.log(stringValue.substr(-3))
+    //substring会把所有的负数都转换为0
+    console.log(stringValue.substring(-3))
+
+    //截取3到负1
+    console.log(stringValue.slice(3,-1));
+    // 第二个参数为负数则转换为0，所以截取第四位到0位的值
+    console.log(stringValue.substring(4,-1));
+    //第二个参数会被转换为0
+    console.log(stringValue.substr(3,-4))
+  </script>
+</body>
+</html>
