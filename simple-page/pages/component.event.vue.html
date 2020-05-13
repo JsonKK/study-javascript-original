@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>组件原生事件</title>
+  <script src="../utils/vue-2.6.0.js"></script>
+</head>
+<body>
+  <div id="root">
+    <!-- 点击子组件的任意地方触发当前组件时间 -->
+    <child @click.native="handlerClick"></child>
+  </div>
+  <script>
+    Vue.component('child',{
+      template : '<div>我是子组件</div>'
+    })
+    const vm = new Vue({
+      el : '#root',
+      data:{},
+      methods:{
+        handlerClick(){
+          alert('进来了');
+        }
+      }
+    })
+  </script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>作用域插槽</title>
+  <script src="../utils/vue-2.6.0.js"></script>
+</head>
+<body>
+  <div id="root">
+    <child>
+      <!-- 如果多个地方需要使用到，就不能使用简写 -->
+      <!-- <template v-slot="porps">
+        <p>{{porps.item}}--hh</p>
+      </template> -->
+      <!-- 没有名字的插槽 -->
+      <template v-slot:default="porps2">
+        <p>{{porps2.item}}--ll</p>
+      </template>
+      <!-- 有名字的插槽 -->
+      <template v-slot:other="porps">
+        <p>{{porps.item}}--other</p>
+      </template>
+      
+    </child>
+  </div>
+  <script>
+    // 实现思路
+    
+    Vue.component('child',{
+      data(){
+        return {
+          list : [1,2,3,4]
+        }
+      },
+      // ：item为释放出去的变量key
+      // "item"为释放出去的value
+      template : `<div>
+        <slot v-for="item in list" :item="item"></slot>
+        <slot v-for="item in list" :item="item" name="other"></slot>
+      </div>`
+    });
+
+    const vm = new Vue({
+      el : '#root',
+
+    })
+  </script>
+</body>
+</html>

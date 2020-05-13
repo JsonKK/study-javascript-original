@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>具名插槽和插槽默认值</title>
+  <script src="../utils/vue-2.6.0.js"></script>
+</head>
+<body>
+  <div id="root">
+    <m-content>
+      <h2 slot="footer">footer</h2>
+    </m-content>
+  </div>
+  <script>
+    Vue.component('m-content',{
+      template : `
+        <div>
+          <slot name="header"><h1>default header</h1></slot>
+          <div class="content">content</div>
+          <slot name="footer"></slot>
+        </div>
+        `
+    })
+    const vm = new Vue({
+      el : '#root'
+    })
+  </script>
+</body>
+</html>

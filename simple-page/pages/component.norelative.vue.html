@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>非父子组件传参</title>
+  <script src="../utils/vue-2.6.0.js"></script>
+</head>
+<body>
+  <div id="root">
+    <child content="Dell" code="id1"></child>
+    <child content="Lenove" code="id2"></child>
+  </div>
+  <script>
+    // bus总线思路解析
+    // 在vue的原型上把bus指向vue实例
+    // 组件内通过this.bus.$emit把事件触发给this.bus
+    // 在初始化组件时候，使用this.bus.$on接收事件
+
+    Vue.prototype.bus = new Vue();
+
+    Vue.component('child',{
+      props : {
+        content : {
+          type : String
+        },
+        code:{
+          type : String
+        }
+      },
+      data(){
+        return {
+          selfContent : this.content
+        }
+      },
+      template : '<div @click="hanlderClick">{{selfContent}}</div>',
+      methods : {
+        hanlderClick(){
+          let {code,selfContent} = this;
+          this.bus.$emit('change',{con:selfContent,code});
+        },
+        renderContent({con}){
+          this.selfContent = con;
+        }
+      },
+      mounted(){
+        this.bus.$on('change',({con,code})=>{
+          if(code != this.code){
+            this.bus.$emit('backChange',{con:this.selfContent,code:this.code});
+            this.renderContent({con});
+          }
+        })
+        this.bus.$on('backChange',({con,code})=>{
+          if(code != this.code){
+            this.renderContent({con});
+          }
+        })
+      }
+    });
+
+    var vm = new Vue({
+      el : '#root',
+      data : {
+        content : ''
+      }
+    })
+  </script>
+</body>
+</html>
