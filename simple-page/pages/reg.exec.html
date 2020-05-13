@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>字符串exec方法</title>
+</head>
+<body>
+  <script>
+    const text = 'cat,bat,sat,fat';
+    //‘.’号代表匹配任意一个字符 + sa,两个 ‘.’号就代表匹配任意两个字符
+    const pattern = /..sa/;
+    var matches = pattern.exec(text);
+    //返回数组
+    // [0: "t,sa"
+    // groups: undefined
+    // index: 6
+    // input: "cat,bat,sat,fat"
+    // length: 1
+    // __proto__: Array(0)]
+    console.log(matches);
+    //如果有g返回匹配到的元素数组
+    const pattern2 = /at/g;
+    console.log(pattern2.exec(text));
+  </script>
+</body>
+</html>

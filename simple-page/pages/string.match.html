@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>字符串match方法</title>
+</head>
+<body>
+  <script>
+    const text = 'cat,bat,sat,fat';
+    //‘.’号代表匹配任意一个字符 + sa,两个 ‘.’号就代表匹配任意两个字符
+    const pattern = /..sa/;
+    var matches = text.match(pattern);
+    //返回数组
+    // [0: "t,sa"
+    // groups: undefined
+    // index: 6
+    // input: "cat,bat,sat,fat"
+    // length: 1
+    // __proto__: Array(0)]
+    console.log(matches);
+    //如果有g返回匹配到的元素数组
+    const pattern2 = /at/g;
+    console.log(text.match(pattern2));
+    //如果是字符串，则把匹配到的字符串输出，没有匹配到则返回null
+    console.log(text.match('cat'));
+  </script>
+</body>
+</html>
