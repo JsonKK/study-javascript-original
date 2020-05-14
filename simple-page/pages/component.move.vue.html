@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>动态组件使用</title>
+  <script src="../utils/vue-2.6.0.js"></script>
+</head>
+<body>
+  <div id="root">
+    <!-- <child-one></child-one>
+    <child-two></child-two> -->
+    <component :is="componentList[checked]" :checked="checked" @get-name="getName"></component>
+    <button @click="changeComponent">切换模板</button>
+    <h4>{{text}}</h4>
+  </div>
+  <script>
+    Vue.component('child-one',{
+      template:'<div @click="putName">{{name}}{{checked+1}}</div>',
+      props:{
+        checked : Number
+      },
+      data(){
+        return{
+          name : 'child-one'
+        }
+      },
+      methods:{
+        putName(){
+          this.$emit('get-name',this.name);
+        }
+      }
+    })
+    Vue.component('child-two',{
+      template:'<div @click="putName">{{name}}{{checked+1}}</div>',
+      props:{
+        checked : Number
+      },
+      data(){
+        return{
+          name : 'child-two'
+        }
+      },
+      methods:{
+        putName(){
+          this.$emit('get-name',this.name);
+        }
+      }
+    })
+    Vue.component('child-three',{
+      template:'<div @click="putName">{{name}}{{checked+1}}</div>',
+      props:{
+        checked : Number
+      },
+      data(){
+        return{
+          name : 'child-three'
+        }
+      },
+      methods:{
+        putName(){
+          this.$emit('get-name',this.name);
+        }
+      }
+    })
+    const vm = new Vue({
+      el : '#root',
+      data(){
+        return {
+          componentList : ['child-one','child-two','child-three'],
+          checked : 0,
+          text : ''
+        }
+      },
+      methods : {
+        changeComponent(){
+          let {componentList,checked} = this;
+          let lang = componentList.length;
+          let num = checked;
+          while(num == checked){
+            num = parseInt(Math.random() * 3);
+          }
+          this.checked = num;
+        },
+        getName(value){
+          this.text = value;
+        }
+      }
+    })
+  </script>
+</body>
+</html>

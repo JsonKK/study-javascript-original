@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>v-once的使用</title>
+  <script src="../utils/vue-2.6.0.js"></script>
+</head>
+<body>
+  <div id="root">
+    <!-- 优化性能，value的值改变不会影响组件的值改变，因为组件只被渲染了一次 -->
+    <child :value="value" v-once></child>
+    <child :value="value" ></child>
+  </div>
+  <script>
+    Vue.component('child',{
+      template : '<div>child{{value}}</div>',
+      props:{
+        value : String
+      }
+    })
+    const vm = new Vue({
+      el : '#root',
+      data(){
+        return {
+          value : 'xixi'
+        }
+      },
+      mounted(){
+        this.value = 'haha';
+      }
+    });
+  </script>
+</body>
+</html>
