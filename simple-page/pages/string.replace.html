@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>js原生replace方法</title>
+</head>
+<body>
+  <script>
+    var text = 'bat,cat,dat,tat';
+    //如果第一个参数是字符串，那么只会匹配一次
+    //输出bone,cat,dat,tat
+    console.log(text.replace('at','one'))
+    //第一个参数是正则，就可以替换所有匹配到的字符串
+    //输出bone,cone,done,tone
+    console.log(text.replace(/at/g,'one'));
+    //目前还不懂$符号的具体用法
+    console.log(text.replace(/(.at)|(,a)/g,'word($1$2)'));
+  </script>
+</body>
+</html>

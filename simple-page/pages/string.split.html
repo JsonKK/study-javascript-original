@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>原生js的split方法</title>
+</head>
+<body>
+  <script>
+    const colorText = 'red,bule,green,yellow';
+    var text = 'bat,cat,dat,tat';
+    // 把字符串通过标识转换为数组
+    // ["red", "bule", "green", "yellow"]
+    console.log(colorText.split(','))
+    // ["b", ",c", ",d", ",t", ""]
+    console.log(text.split('at'));
+    //定义数组的长度
+    //["red", "bule"]
+    console.log(colorText.split(',',2))
+    //切割出匹配的字符串数组
+    //没太明白
+    //["", ",", ",", ",", ""]
+    console.log(colorText.split(/[^\,]+/));
+  </script>
+</body>
+</html>
