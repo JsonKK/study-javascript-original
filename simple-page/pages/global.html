@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>global全局对象</title>
+</head>
+<body>
+  <p>第三版废弃了escape()和unescape()方法</p>
+  <p>URI能够编码所有unicode字符，而原来的方法只能正确的编码ASCII字符</p>
+  <script>
+    {
+      //encodeURI 和 encodeURIComponent方法
+      const uri = 'http://www.abc.taqu.cn:8081/#/index?active id=9';
+      //只转编译了空格，其他都没动
+      //http://www.abc.taqu.cn:8081/#/index?active%20id=9
+      console.log(encodeURI(uri));
+      //与其相对应的有decodeURI方法
+      console.log(decodeURI(encodeURI(uri)));
+      //转译所有非字母或者数字的字符
+      //http%3A%2F%2Fwww.abc.taqu.cn%3A8081%2F%23%2Findex%3Factive_id%3D9
+      console.log(encodeURIComponent(uri));
+      //与其相对应的是decodeURIComponent
+      console.log(decodeURIComponent(encodeURIComponent(uri)));  
+    }
+
+    {
+      //eval方法
+      console.log(eval(alert('hide')))
+    }
+  </script>
+</body>
+</html>
