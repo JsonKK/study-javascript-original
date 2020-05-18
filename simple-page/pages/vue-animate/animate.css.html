@@ -6,8 +6,69 @@
   <title>使用animate.css实现</title>
   <script src="../../utils/vue-2.6.0.js"></script>
   <link rel="stylesheet" href="../../utils/animate.min.css">
+  <style>
+    .name-box{
+      position: relative;
+      width: 100%;
+      height: 100px;
+    }
+    .name-box h5{
+      position: absolute;
+      left: 0;
+      top: 0;
+      font-size: 30px;
+    }
+  </style>
 </head>
 <body>
-  
+  <div id="root">
+    <!-- 使用动画标签包裹来创建动画 -->
+    <div class="name-box">
+      <!-- 如果不写前缀，则vue默认的前缀是v -->
+      <transition name="move" 
+                  enter-active-class="animated bounce" 
+                  leave-active-class="animated pulse">
+        <h5 v-if="show" >hello world</h5>
+        
+      </transition>
+      <transition name="move"
+                  enter-active-class="animated bounce" 
+                  leave-active-class="animated pulse">
+          <h5 v-if="showOther">goodbye world</h5>
+      </transition>
+    </div>
+    <button @click="handlerChange">切换</button>
+  </div>
+  <script>
+    const vm = new Vue({
+      el : '#root',
+      data(){
+        return{
+          show : true,
+          showOther : false
+        }
+      },
+      methods:{
+        handlerChange(){
+          let {show} = this;
+          let time = 1000;
+          if(show){
+            this.show = false;
+            setTimeout(()=>{
+              this.showOther = true;
+            },time)
+          }
+          else{
+            this.showOther = false;
+            setTimeout(()=>{
+              this.show = true;
+            },time)
+          }
+        }
+      },
+      watch : {
+      }
+    })
+  </script>
 </body>
 </html>
