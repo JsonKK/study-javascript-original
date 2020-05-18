@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>定义多个属性</title>
+</head>
+<body>
+  <p>使用defineProperties方法定义对象属性时，对象的数据属性writable(是否能被写入)、configurable(是否能被delete删除)、enumerable(可以被枚举的)都为false;value为undefined</p>
+  <script>
+    var book = {};
+    Object.defineProperties(book,{
+      // 定义属性
+      _year : {
+        value : 2004,
+        //如果没有定义该属性，无法读写
+        writable : true
+      },
+      edition : {
+        value : 1,
+        writable : true
+      },
+      year : {
+        set(newValue){
+          let baseYear = 2004;
+          if(newValue > baseYear){
+            this._year = newValue;
+            this.edition = newValue - baseYear + 1;
+          }
+          else{
+            this._year = baseYear;
+            this.edition = 1;
+          }
+        },
+        get(){
+          return this._year;
+        }
+      }
+    });
+
+    book.year = 2006;
+    console.log(book._year);
+    console.log(book.edition);
+    console.log(Object.keys(book));
+    delete book._year;
+    console.log(book);
+
+
+    //读取属性的特性
+    //Object.getOwnPropertyDescriptor()
+    var descriptor = Object.getOwnPropertyDescriptor(book,'_year');
+    console.log(descriptor);
+    //返回数据属性
+    // configurable: false
+    // enumerable: false
+    // value: 2006
+    // writable: true
+    //没有定义get方法所以返回undefined
+    console.log(typeof descriptor.get);
+
+    var descriptor2 = Object.getOwnPropertyDescriptor(book,'year');
+    console.log(descriptor2);
+    // configurable: false
+    // enumerable: false
+    // get: ƒ get()
+    // set: ƒ set(newValue)
+    //定义了get方法，返回function
+    console.log(typeof descriptor2.get == 'function') //true;
+  </script>
+</body>
+</html>

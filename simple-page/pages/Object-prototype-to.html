@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>寄生构造</title>
+</head>
+<body>
+  <p>基于某个对象实例扩展</p>
+  <script>
+    //基于数组对象扩展方法
+    function SpecialArr(){
+      const arr = new Array();
+      //初始化数组时，为数组传参
+      //如果没有这句话，往实例方法传参，只能通过25行的实例push方法；
+      arr.push.apply(arr,arguments);
+      // 增加方法
+      arr.toPipedString = function(){
+        return this.join('|');
+      }
+      return arr;
+    }
+
+    let arr = new SpecialArr('fd','fwe','werer');
+    // arr.push('fd','fwe','werer');
+    console.log(arr.toPipedString());
+  </script>
+</body>
+</html>

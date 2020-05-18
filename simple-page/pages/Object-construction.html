@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>构造函数模式</title>
+</head>
+<body>
+  <p>构造函数和别的函数的唯一区别，就是在于调用他们的方式不同。不过，构造函数毕竟也是函数，不存在定义构造函数的特殊语法。任何函数，只要通过new 操作符来调用，那他就可以作为构造函数；而任何函数，不通过new操作符来调用，那它跟普通的函数不会有什么两样。</p>
+  <h5 id="content-text"></h5>
+  
+  <button id="change-btn">查看信息</button>
+  <script>
+    //获取随机数
+    function getRandom(lang=3,notNum){
+      let num = parseInt(Math.random() * lang);
+      if(notNum>=0 && notNum<lang){
+        while(num == notNum){
+          num = parseInt(Math.random() * lang);
+        }
+      }
+      return num;
+    }
+    //定义构造函数
+    //构造函数和工厂模式的不同
+    //1.没有显式的创建对象
+    // 2.直接将属性和方法赋值给this
+    // 3.没有return语句
+    function Person({name,age,job}={}){
+      this.name = name;
+      this.age = age;
+      this.job = job;
+      this.sayContent = function(){
+        let str = `my name is ${this.name},I am ${this.age},my job is ${this.job}`;
+        document.getElementById('content-text').innerText = str;
+      }
+    }
+
+    //实例化构造函数
+    var person1 = new Person({
+      name : 'xixi',
+      age : 22,
+      job : 'coder'
+    });
+
+    var person2 = new Person({
+      name : 'haha',
+      age : 23,
+      job : 'doctor'
+    });
+
+    var person3 = new Person({
+      name : 'pink pig',
+      age : 27,
+      job : 'teacher'
+    });
+
+    //对象person1的构造函数属性指向Person
+    console.log('对象person1的构造函数属性指向Person',person1.constructor == Person);
+    //检测对象是否为对象
+    console.log('检测对象是否为对象',person1 instanceof Object);
+    //检测对象是否为Person的实例
+    console.log('检测对象是否为Person的实例',person1 instanceof Person)
+
+    const arr = [person1,person2,person3];
+    var checkedNum = getRandom();
+    arr[checkedNum].sayContent();
+    const changeBtn = document.getElementById('change-btn');
+    changeBtn.onclick = function(){
+      checkedNum = getRandom(arr.length,checkedNum);
+      console.log(checkedNum);
+      arr[checkedNum].sayContent();
+    }
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>以工厂模式创建对象</title>
+</head>
+<body>
+  <h5 id="content-text"></h5>
+  
+  <button id="change-btn">查看信息</button>
+  <script>
+    //获取随机数
+    function getRandom(lang=3,notNum){
+      let num = parseInt(Math.random() * lang);
+      if(notNum>=0 && notNum<lang){
+        while(num == notNum){
+          num = parseInt(Math.random() * lang);
+        }
+      }
+      return num;
+    }
+    function createPerson({name,age,job}={}){
+      var o = new Object();
+      o.name = name;
+      o.age = age;
+      o.job = job;
+      o.sayContent = function(){
+        let str = `my name is ${this.name},I am ${this.age},my job is ${this.job}`;
+        document.getElementById('content-text').innerText = str;
+      }
+      return o;
+    }
+
+    var person1 = createPerson({
+      name : 'xixi',
+      age : 22,
+      job : 'coder'
+    });
+
+    var person2 = createPerson({
+      name : 'haha',
+      age : 23,
+      job : 'doctor'
+    });
+
+    var person3 = createPerson({
+      name : 'pink pig',
+      age : 27,
+      job : 'teacher'
+    });
+
+    const arr = [person1,person2,person3];
+    var checkedNum = getRandom();
+    arr[checkedNum].sayContent();
+    const changeBtn = document.getElementById('change-btn');
+    changeBtn.onclick = function(){
+      checkedNum = getRandom(arr.length,checkedNum);
+      console.log(checkedNum);
+      arr[checkedNum].sayContent();
+    }
+  </script>
+</body>
+</html>

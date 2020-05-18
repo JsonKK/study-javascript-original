@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>原型模式和构造模函数式相结合</title>
+</head>
+<body>
+  <h5 id="content-text"></h5>
+  <script>
+    function Person({age,name,job}={}){
+      this.age = age;
+      this.name = name;
+      this.job = job;
+      this.friends = ['hanxue','limei'];
+    }
+    Object.assign(Person.prototype,{
+      sayContent(){
+        let str = `my name is ${this.name},I am ${this.age},my job is ${this.job}。`;
+        str += `my friends is ${this.friends.join()}`;
+        document.getElementById('content-text').innerHTML += str + '<br/>';
+      }
+    });
+
+    //实例化构造函数
+    var person1 = new Person({
+      name : 'xixi',
+      age : 22,
+      job : 'coder'
+    });
+
+    var person2 = new Person({
+      name : 'haha',
+      age : 23,
+      job : 'doctor'
+    });
+
+    var person3 = new Person({
+      name : 'pink pig',
+      age : 27,
+      job : 'teacher'
+    });
+
+    person1.friends.push('hanxue');
+    person2.friends.push('lili');
+    person1.sayContent();
+    person2.sayContent();
+    person3.sayContent();
+    console.log(person1 instanceof Person);
+    console.log(person2);
+  </script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Math对象的</title>
+</head>
+<body>
+  <script>
+    {
+      const nums = [23,434,23,11];
+      //接收多个数值，以逗号隔开
+      //max
+      var max = Math.max(...nums);
+      console.log(max);
+      //min
+      var min = Math.min(...nums);
+      console.log(min);
+
+      const values = [1,2,3,4,5,6,7,8];
+      console.log(Math.max.apply(Math,values));
+    }
+
+    {
+      //舍入方法
+      const num = 1.56;
+      //向上舍入
+      console.log('ceil',Math.ceil(num));
+      //向下舍入
+      console.log('floor',Math.floor(num));
+      //四舍五入
+      console.log('round',Math.round(num));
+    }
+
+    {
+      //计算生成0~99的随机数，并统计每次生成随机数数组，遍历的次数
+      //根据遍历的次数输出遍历次数的最大值和最小值
+      function addRandomNum(){
+        //生成随机数
+        var nums = [];
+        var count = 0;
+        while(nums.length < 99){
+          count++;
+          var num = parseInt(Math.random() * 100);
+          if(nums.indexOf(num) == -1){
+            nums.push(num);
+          }
+        }
+        // console.log(nums);
+        // console.log('count',count);
+        return {nums,count}
+      }
+      var arr = [];
+      for(let i = 0;i<100;i++){
+        let {count} = addRandomNum();
+        arr.push(count);
+      }
+      console.log('maxNum',Math.max(...arr));
+      console.log('minNum',Math.min(...arr));
+    }
+
+    //其他Math方法
+    {
+      //绝对值
+      //Math.abs(num)
+
+      //x反正弦
+      //Math.asin(x)
+
+      //返回e的num次幂
+      // Math.exp(num)
+
+      // 返回
+      
+    }
+  </script>
+</body>
+</html>

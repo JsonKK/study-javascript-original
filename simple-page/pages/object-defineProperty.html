@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>面相对象</title>
+  <div>
+    <h2>对象有四个数据属性</h2>
+    <p>configurable : 表示能否通过delete删除属性，从而重新定义属性，能否修改属性的特性，能否把属性修改为访问属性。这个属性默认值是true</p>
+    <p>enumerable : 表示能否通过 for-in 循环返回属性。这个特性默认值是true</p>
+    <p>writable : 能否修改属性的值。这个特性默认值是true</p>
+    <p>value : 包含这个属性的数据值。读取属性的时候从这个位置读；写入属性的时候，把新值保存在这个位置。这个值默认是undefind</p>
+  </div>
+  
+</head>
+<body>
+  <script>
+    {
+      //通过defineProperty对对象属性控制
+      var person = {}
+      Object.defineProperty(person,'name',{
+        value : 'xixi',
+        enumerable : false
+      });
+
+      console.log(person);
+      console.log(Object.keys(person));
+      console.log(JSON.stringify(person));
+      console.log(Object.getOwnPropertyNames(person));
+    }
+  </script>
+</body>
+</html>
