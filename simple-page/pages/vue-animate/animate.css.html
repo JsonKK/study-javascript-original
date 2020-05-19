@@ -18,6 +18,14 @@
       top: 0;
       font-size: 30px;
     }
+    .move-enter,
+    .move-leave-to{
+      opacity: 0;
+    }
+    .move-enter-active,
+    .move-leave-active{
+      transition: 2s;
+    }
   </style>
 </head>
 <body>
@@ -25,15 +33,22 @@
     <!-- 使用动画标签包裹来创建动画 -->
     <div class="name-box">
       <!-- 如果不写前缀，则vue默认的前缀是v -->
-      <transition name="move" 
-                  enter-active-class="animated bounce" 
-                  leave-active-class="animated pulse">
+      <!-- 使用appear属性设置初始化动画效果 -->
+      <!-- 可以增加move-leave-active、move-enter-active，搭配keyform动画实现过度动画 -->
+      <!-- 可以增加duration设置动画固定时间 -->
+      <transition name="move"
+                  :duration="time" 
+                  enter-active-class="animated bounce move-enter-active" 
+                  leave-active-class="animated pulse move-leave-active"
+                  appear
+                  appear-active-class="animated bounce">
         <h5 v-if="show" >hello world</h5>
         
       </transition>
       <transition name="move"
-                  enter-active-class="animated bounce" 
-                  leave-active-class="animated pulse">
+                  :duration="time"
+                  enter-active-class="animated bounce move-enter-active" 
+                  leave-active-class="animated pulse move-leave-active">
           <h5 v-if="showOther">goodbye world</h5>
       </transition>
     </div>
@@ -45,13 +60,14 @@
       data(){
         return{
           show : true,
-          showOther : false
+          showOther : false,
+          time : 2000
         }
       },
       methods:{
         handlerChange(){
-          let {show} = this;
-          let time = 1000;
+          let {show,time} = this;
+          time -= 200;
           if(show){
             this.show = false;
             setTimeout(()=>{
