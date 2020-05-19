@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>函数的声明</title>
+  <script src="../utils/babel-6.26.0.min.js"></script>
+</head>
+<body>
+  <!-- 需要增加type,才能够进行编码 -->
+  <script type="text/babel">
+    //如果把重复的函数定义放在全局执行,不会报错
+    // var isFuction = 1;
+    // function isFuction(){
+    //   return 'abc';
+    // }
+    // //输出1,函数生命的变量提升并不会覆盖变量声明.
+    // console.log(isFuction);
+
+
+    {
+      // 代码块内同时定义isFuction报错
+      var isFuction = 1;
+      // function isFuction(){
+      //   return 'abc';
+      // }
+      // console.log(isFuction);
+    }
+    
+    {
+      // 在判断中定义函数
+      const condition = false;
+      if(condition){
+        function sayHi(){
+          console.log('hello world');
+        }
+      }
+      else{
+        function sayHi(){
+          console.log('say bye bye');
+        }
+      }
+
+      //在ie10及以下会出现sayHi()未定义的错误
+      try {
+        sayHi();
+      } catch (error) {
+        console.log(error.message);
+      }
+      
+    }
+
+    {
+      // 如果用函数表达式就没有问题
+      const condition = false;
+      var sayHi;
+      if(condition){
+        sayHi = function(){
+          console.log('hello world');
+        }
+      }
+      else{
+        sayHi = function(){
+          console.log('say bye bye');
+        }
+      }
+
+      sayHi();
+    }
+
+
+    // 块级作用域暂时性死区
+    var name = 'lili'
+    {
+      //输出undefind
+      console.log(name);
+      // 输出xixi
+      let name = 'xixi';
+      console.log(name);
+    }
+  </script>
+</body>
+</html>
