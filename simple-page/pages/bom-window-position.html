@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>窗口位置</title>
+</head>
+<body>
+  <script>
+    console.log('窗口相对于屏幕左边距离',window.screenLeft);
+    console.log('窗口相对于屏幕上边距离',window.screenTop);
+
+    console.log('窗口距离屏幕左边距离',window.screenX);
+    console.log('窗口距离屏幕上边距离',window.screenY);
+
+    // 兼容性写法
+    var leftPos = (typeof window.screenLeft == 'number') ? window.screenLeft : window.screenX;
+    var topPos = (typeof window.screenTop == 'number') ? window.screenTop : window.screenY;
+  </script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>闭包环境下的this</title>
+</head>
+<body>
+  <script>
+    var name = 'the window';
+    {
+      //块级作用域的name会覆盖window的name
+      // var name = 'the block';
+      var age = 28;
+      var object = {
+        name : 'my object',
+        getNameFunc(){
+          return function(){
+            // 当前this指向的是window
+            return this.name;
+          }
+        }
+      }
+      console.log('在闭包方法内返回this.name',object.getNameFunc()());
+    }
+  </script>
+</body>
+</html>

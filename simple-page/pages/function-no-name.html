@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>匿名函数的使用场景</title>
+</head>
+<body>
+  <script>
+    function createComparisonFunction(propertyName){
+      //第一个参数是后一项，第二个参数前一项
+      return function(Object2,Object1){
+        const values1 = Object1[propertyName];
+        const values2 = Object2[propertyName];
+        if(values1 < values2){
+          return -1;
+        }
+        else if(values1 == values2){
+          return 0;
+        }
+        else{
+          return 1;
+        }
+      }
+    }
+    var data = [
+      {name : 'zhangsan' , age : 28},
+      {name : 'lisi' , age : 29},
+      {name : 'limei' , age: 30}
+    ];
+    //对data进行根据年龄从大到小排序
+    data.sort(createComparisonFunction('age'));
+    console.info(data);
+  </script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>函数的递归</title>
+</head>
+<body>
+  <h5>
+    通过arguments.callee代替函数名的方式，可以确保无论怎么样函数都不会有问题。因此，在编写递归函数的时候，arguments.callee比函数名更加保险
+  </h5>
+  <script>
+    {
+      //求阶乘
+      function numFactorial(num){
+        if(num <= 1){
+          return num;
+        }
+        else{
+          return num * numFactorial(num-1);
+        }
+      }
+      // 正常执行和输出
+      console.log('求阶乘函数1',numFactorial(10));
+
+      //以下情况会有问题
+      var anotherFactorial = numFactorial;
+      numFactorial = null;
+      //报错
+      //numFactorial is not a function
+      try {
+        console.log(anotherFactorial(10));
+      } catch (error) {
+        console.log(error.message);
+      }
+      
+    }
+
+    {
+      //改写求阶乘求阶乘
+      function numFactorial(num){
+        if(num <= 1){
+          return num;
+        }
+        else{
+          //callee 是 arguments 对象的一个属性。它可以用于引用该函数的函数体内当前正在执行的函数。这在函数的名称是未知时很有用，例如在没有名称的函数表达式 (也称为“匿名函数”)内。
+          return num * arguments.callee(num-1);
+        }
+      }
+
+      //以下情况会有问题
+      var anotherFactorial = numFactorial;
+      numFactorial = null;
+      //被正常执行和输出
+      console.log('求阶乘函数2',anotherFactorial(10));
+    }
+
+    {
+      //为了避免在严格模式下arguments.callee报错的问题
+      //改写求阶乘函数
+      var numFactorial = (function f(num){
+        if(num <= 1){
+          return 1;
+        }
+        else{
+          return num * f(num -1);
+        }
+      });
+      var anotherFactorial = numFactorial;
+      numFactorial = null;
+      console.log('求阶乘函数3',anotherFactorial(10));
+    }
+  </script>
+</body>
+</html>

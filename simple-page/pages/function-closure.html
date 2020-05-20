@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>函数的闭包</title>
+</head>
+<body>
+  <h5>作用域的概念：当某个函数被第一次调用的时候，会创建一个执行环境（execution context）及相应的作用域链，并把作用域链赋值给一个特殊的内部属性[即scope],然后使用this,arguments等其命名参数的值来初始化函数的活动对象。但在作用域链中，外部函数的活动对象始终处于第二位，外部函数的外部函数的活动对象处于第三位，以此类推</h5>
+  <h5>由于闭包会携带包含他的函数作用域，因此会比其他函数占用更多的内存。过度使用闭包可能会导致内存使用过多。</h5>
+  <script>
+    {
+      //返回数组
+      function creatFunctions(){
+        var result = new Array();
+        for(var i = 0;i<10;i++){
+          result[i] = function(){
+            return i;
+          }
+        }
+        return result;
+      }
+      let arr = creatFunctions();
+      let str = '';
+      arr.forEach((item)=>{
+        str += item() + ',';
+      })
+      console.log('返回数组函数1',str);
+    }
+
+    {
+      //使用自执行函数闭包返回数组函数
+      //返回数组
+      function creatFunctions(){
+        var result = new Array();
+        for(var i = 0;i<10;i++){
+          result[i] = (function(num){
+            return function(){
+              return num;
+            };
+          })(i)
+        }
+        return result;
+      }
+      let arr = creatFunctions();
+      let str = '';
+      arr.forEach((item)=>{
+        str += item() + ',';
+      })
+      console.log('返回数组函数2',str);
+    }
+
+    {
+      //使用函数嵌套闭包返回数组函数
+      //返回数组
+      function creatFunctions(){
+        var result = new Array();
+        for(var i = 0;i<10;i++){
+          result[i] = function(num){
+            return function(){
+              return num;
+            };
+          }(i)
+        }
+        return result;
+      }
+      let arr = creatFunctions();
+      let str = '';
+      arr.forEach((item)=>{
+        str += item() + ',';
+      })
+      console.log('返回数组函数3',str);
+    }
+
+    {
+      //使用let定义局部变量，避免污染
+      //返回数组
+      function creatFunctions(){
+        var result = new Array();
+        for(let i = 0;i<10;i++){
+          result[i] = function(){
+            return i;
+          }
+        }
+        return result;
+      }
+      let arr = creatFunctions();
+      let str = '';
+      arr.forEach((item)=>{
+        str += item() + ',';
+      })
+      console.log('返回数组函数4',str);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>window对象</title>
+</head>
+<body>
+  <script>
+    var age = 29;
+    window.color = 'red';
+    //删除age失败，而删除color成功
+    delete window.age;
+    delete window.color;
+    console.log(window);
+
+    console.log(top)
+    console.log(parent)
+    console.log(self)
+  </script>
+</body>
+</html>
