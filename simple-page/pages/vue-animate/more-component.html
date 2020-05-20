@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>多组件动画效果实现</title>
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <script src="../../utils/vue-2.6.0.js"></script>
+  <style>
+    .v-enter,.v-leave-to{
+      opacity: 0;
+      transform: translateX(30px);
+    }
+    .v-enter-active,.v-leave-avtive{
+      transition: all 1s;
+    }
+    /* 遗留问题，只是实现了进场动画，出场动画还有问题 */
+    /* .v-leave-to{
+      transform: translateY(-200px);
+    }
+    .v-leave{
+      opacity: .5;
+      transform: translateY(30px);
+    } */
+  </style>
+</head>
+<body>
+  <div id="root">
+    <div class="animate-name-box">
+      <transition mode="out-in"> 
+        <component :is="type"></component>
+      </transition>
+    </div>
+    <button @click="handlerChange">切换</button>
+  </div>
+  <script>
+    Vue.component('in',{
+      template : '<h5>Hello World</h5>'
+    });
+    Vue.component('out',{
+      template : '<h5>bye bye world</h5>'
+    });
+    const vm = new Vue({
+      el : '#root',
+      data(){
+        return {
+          type : 'in'
+        }
+      },
+      methods:{
+        handlerChange(){
+          let {type} = this;
+          this.type = type === 'in' ? 'out' : 'in';
+        }
+      }
+    })
+  </script>
+</body>
+</html>

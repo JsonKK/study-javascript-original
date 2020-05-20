@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>动态列表动画</title>
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <script src="../../utils/vue-2.6.0.js"></script>
+  <style>
+    li{
+      line-height: 40px;
+      font-size: 24px;
+    }
+    .v-enter,.v-leave-to{
+      opacity: 0;
+      transform: translateX(30px);
+    }
+    .v-enter-active,.v-leave-avtive{
+      transition: all 1s;
+    }
+  </style>
+</head>
+<body>
+  <div id="root">
+    <button @click="add">增加一条</button>
+    <ul class="list">
+      <transition-group>
+        <li v-for="(item,index) in list" :key="item.id">{{item.id}}{{item.title}}</li>
+      </transition-group>
+    </ul>
+    
+  </div>
+  <script>
+    const vm = new Vue({
+      el : '#root',
+      data(){
+        return{
+          list : [],
+          count : 0
+        }
+      },
+      methods : {
+        add(){
+          this.list.push({
+            id : this.list.length+1,
+            title : 'hello world'
+          })
+        }
+      }
+    })
+  </script>
+</body>
+</html>

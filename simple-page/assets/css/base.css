@@ -1,0 +1,21 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+#root{
+  padding: 40px;
+}
+.animate-name-box{
+  position: relative;
+  width: 100%;
+  height: 100px;
+}
+.animate-name-box h5{
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 30px;
+  line-height: 100px;
+  overflow: hidden;
+  white-space: nowrap;
+}

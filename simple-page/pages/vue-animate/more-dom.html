@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>vue中多组件动画实现</title>
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <script src="../../utils/vue-2.6.0.js"></script>
+  <style>
+    .v-enter,.v-leave-to{
+      opacity: 0;
+      transform: translateX(300px);
+    }
+    .v-enter-active,.v-leave-active{
+      transition: all 1s;
+    }
+  </style>
+</head>
+<body>
+  <div id="root">
+    <div class="animate-name-box">
+      <!-- 利用模式可以保证动画在过渡的时候，先后秩序问题 -->
+      <transition mode="out-in">
+        <!-- 因为vue会尽可能的复用dom，所以使用不同的key值保证了渲染新dom，使得动画正常执行 -->
+        <h5 v-if="show" key="hello">hello world</h5>
+        <h5 v-else key="bye">say bye bye</h5>
+      </transition>
+    </div>
+    <button @click="show = !show">切换</button>
+  </div>
+  <script>
+    const vm = new Vue({
+      el : '#root',
+      data(){
+        return{
+          show : true
+        }
+      }
+    })
+  </script>
+</body>
+</html>
