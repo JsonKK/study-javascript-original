@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>获取可视窗口的宽高</title>
+</head>
+<body>
+  <script>
+    var pageWidth = window.innerWidth,
+        pageHeight = window.innerHeight;
+    console.log()
+    if(typeof pageWidth != 'number'){
+      // "BackCompat"：文档为怪异模式。
+      // "CSS1Compat"：文档不是怪异模式，意味着文档处于标准模式或者准标准模式。
+      if(document.compatMode == 'CSS1Compat'){
+        // document.documentElement
+        // documentElement 属性以一个元素对象返回一个文档的文档元素。
+        // HTML 文档返回对象为HTML元素。
+        // 注意： 如果 HTML 元素缺失，返回值为 null。
+        pageWidth = document.documentElement.clientWidth;
+        pageHeight = document.documentElement.clientHeight;
+      }
+      else{
+        pageWidth = document.body.clientWidth;
+        pageHeight = document.body.clientHeight;
+      }
+    }
+    console.info('视口的宽度是:',pageWidth);
+    console.info('视口的高度是:',pageHeight);
+  </script>
+</body>
+</html>
