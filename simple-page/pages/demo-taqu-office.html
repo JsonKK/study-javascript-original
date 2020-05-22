@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>真人社交css固定动画-echarts动态效果-利用swiper实现目录效果</title>
+  <script src="https://cdn.bootcdn.net/ajax/libs/echarts/4.7.0/echarts.min.js"></script>
+  <style>
+    .pie .echarts {
+      width: 100%;
+      height: 100%;
+    }
+    .pie{
+      width: 600px;
+      height: 600px;
+      overflow: hidden;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      justify-content: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+    }
+    .pie-box{
+      margin: 100px auto;
+      width: 639px;
+      height: 639px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: url(../assets/img/taqu-pc-office/609_circle_blue.png) no-repeat;
+      position: relative;
+    }
+    .pie-circle{
+      width: 639px;
+      height: 639px;
+      position: absolute;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      background: url(../assets/img/taqu-pc-office/609_circle_blue_circle.png) no-repeat;
+      /* 第一个参数：需要绑定keyframes的名字
+      第二个参数：执行动画所需要的时间
+      第三个参数：动画的速度曲线 */
+      /* 第四个参数是延时时间
+      第五个参数：播放的次数
+      第六个参数：是否反向播放 */
+      /* 0s一定要写s,不能只写0 */
+      animation: rocation 10s linear 0s infinite;
+    }
+    @keyframes rocation{
+      from{
+        transform: rotate(0);
+      }
+      to{
+        transform: rotate(-360deg);
+      }
+    }
+    .pie-centre{
+      width: 280px;
+      height: 280px;
+      background-color: #fff;
+      /* 第三个参数是模糊度
+      第四个参数是模糊的距离 */
+      box-shadow: 0 0 30px 8px rgba(38,50,235,0.26);
+      border-radius: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: absolute;
+      top: 180px;
+      left: 180px;
+      z-index: 2;
+    }
+    .pie-touch{
+      width: 131px;
+      height: 41px;
+      background: url(../assets/img/taqu-pc-office/41_touch.png) no-repeat;
+      position: relative;
+      z-index: 2;
+    }
+    .pie-core{
+      width: 260px;
+      height: 260px;
+      position: absolute;
+      left: 10px;
+      top: 10px;
+      background: url(../assets/img/taqu-pc-office/279_circle_red.png) no-repeat;
+      animation: reverseRocation 5s linear 0s infinite;
+    }
+    @keyframes reverseRocation{
+      0%{
+        transform: rotate(0);
+      }
+      100%{
+        transform: rotate(360deg);
+      }
+    }
+    #echarts-box{
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="pie-box">
+    <div class="pie-circle"></div>
+    <div class="pie">
+      <div class="pie-centre">
+        <div class="pie-core"></div>
+        <div class="pie-touch"></div>
+      </div>
+      <div id="echarts-box"></div>
+    </div>
+  </div>
+  <script type="text/javascript">
+      // 基于准备好的dom，初始化echarts实例
+      var myChart = echarts.init(document.getElementById('echarts-box'));
+
+      // 指定图表的配置项和数据
+      var option = {
+        color: ['#FF5F6E ','#4386D6 ','#35DBC1', '#F9C909'],
+        series: [
+          {
+            labelLine: {
+              normal: {
+                show: false
+              }
+            },
+            // coordinateSystem: 'polar',
+            name: 'pie',
+            type: 'pie',
+            startAngle: '90',
+            radius: [100, 286],
+            selectedMode: 'single',
+            hoverAnimation: false,
+            showSymbol: false,
+            label: {
+              position: 'inside',
+              fontSize: '19',
+              align: 'center',
+              lineHeight: 26,
+              formatter: '{b}',
+            },
+            data: [
+              { 'name': '互动直播', 'value': 100, },
+              { 'name': '兴趣广场', 'value': 100 },
+              { 'name': '两性健康\n     产业联盟', 'value': 100 },
+              { 'name': '真人社交', 'value': 100,selected:true },
+            ],
+            itemStyle: {
+              borderWidth: 3,
+              borderColor: '#fff',
+              borderType: 'solid',
+            }
+          }
+        ],
+        animationDuration: 1800,
+      };
+
+      // 使用刚指定的配置项和数据显示图表。
+      myChart.setOption(option);
+  </script>
+</body>
+</html>

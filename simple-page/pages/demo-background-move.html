@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>会滚动的背景图</title>
+  <style>
+    .section-2 {
+        height: 114px;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-flow: column;
+        flex-flow: column;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+    }
+    .section-3{
+      background: url(http://10.10.80.203:8082/assets/img/765_1@2x.cb26c766.jpg) no-repeat;
+      background-size: cover;
+      height: 596px;
+      position: relative;
+      background-attachment: fixed;
+      background-position: center top;
+    }
+    .section-4 {
+      background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255,255,255,0.00)), color-stop(38%, rgba(255,255,255,0.00)), color-stop(38%, #FFFFFF), to(#FFFFFF));
+      background-image: -o-linear-gradient(top, rgba(255,255,255,0.00) 0%, rgba(255,255,255,0.00) 38%, #FFFFFF 38%, #FFFFFF 100%);
+      background-image: linear-gradient(180deg, rgba(255,255,255,0.00) 0%, rgba(255,255,255,0.00) 38%, #FFFFFF 38%, #FFFFFF 100%);
+      background: #fff;
+      position: relative;
+      height: 582px;
+    }
+  </style>
+</head>
+<body>
+  <div class="home">
+    <div class="section-2">
+      <router-link to="/about" class="section-more arrow-more">了解更多</router-link>
+    </div>
+    <div class="section-3" id="section-3"></div>
+    <div class="section-4">
+      <div class="s4-container container-width">
+        过度
+      </div>
+    </div>
+  </div>
+</body>
+</html>
