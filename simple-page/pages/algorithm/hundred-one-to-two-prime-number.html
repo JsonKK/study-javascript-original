@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>求100~200间的素数</title>
+  <style>
+    body{
+      margin: 0;
+    }
+    #content{
+      margin: 100px auto;
+      max-width: 1080px;
+    }
+    .item-info{
+      width: 100%;
+      white-space: pre-wrap;
+      background-color: #f5f5f5;
+      padding: 20px;
+      margin-top: 20px;
+      line-height: 30px;
+    }
+  </style>
+</head>
+<body>
+  <div id="content"></div>
+  <script type="module">
+    import utils from '../../utils/utils.js';
+    const min = 10000;
+    const max = 20000;
+    console.log(utils)
+
+    window.onload = function(){
+
+      {
+        let arr = [];
+        let count = 0;
+        // 方法一
+        for(let i = min; i <= max; i++){
+          for(let j = 2; j < i; j++){
+            count++;
+            // 如果i对j可以整除，说明不是质数，继续下个数字
+            if(i%j == 0){
+              break;
+            }
+            if(j == i-1){
+              arr.push(i);
+            }
+          }
+        }
+        utils.addInfo({arr,count,title:'方法一'});
+      }
+      let totallarr = []
+      {
+        let arr = [];
+        let count = 0;
+        // 方法二
+        for(let i = min; i <= max; i++){
+          for(let j = 2; j < i/2; j++){
+            count++;
+            // 如果i对j可以整除，说明不是质数，继续下个数字
+            if(i%j == 0){
+              break;
+            }
+            if(j == parseInt(i/2)-1){
+              arr.push(i);
+            }
+          }
+        }
+        totallarr[0] = arr
+        utils.addInfo({arr,count,title:'方法二'});
+      }
+
+      {
+        let arr = [];
+        let count = 0;
+        // 方法三
+        for(let i = min; i <= max; i++){
+          for(let j = 2; j <= 50; j++){
+            count++;
+            // 如果i对j可以整除，说明不是质数，继续下个数字
+            if(i%j == 0){
+              break;
+            }
+            if(j == 50){
+              arr.push(i);
+            }
+          }
+        }
+        totallarr[1] = arr
+        utils.addInfo({arr,count,title:'方法三'});
+      }
+
+      {
+        let str = '';
+        // 输出差异
+        for(let i = 0; i<totallarr[1].length;i++){
+          if(totallarr[0].indexOf(totallarr[1][i]) == -1){
+            str += totallarr[1][i] + ',';
+          }
+        }
+        console.log(str);
+      }
+    }
+  </script>
+</body>
+</html>

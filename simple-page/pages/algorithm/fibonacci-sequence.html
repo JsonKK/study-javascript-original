@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>求费式数列</title>
+  <style>
+    body{
+      margin: 0;
+    }
+    #content{
+      margin: 100px auto;
+      max-width: 1080px;
+    }
+    .item-info{
+      width: 100%;
+      white-space: pre-wrap;
+      background-color: #f5f5f5;
+      padding: 20px;
+      margin-top: 20px;
+      line-height: 30px;
+    }
+  </style>
+</head>
+<body>
+  <div id="content"></div>
+  <script type="module">
+    import utils from '../../utils/utils.js';
+    window.onload = function(){
+      // 求第几个数
+      let pieces = 38;
+
+      {
+        let count = 0;
+        let arr = [];
+        // 方法一
+        function sum(n){
+          count++;
+          if(n>2){
+            return sum(n-1) + sum(n-2);
+          }
+          else{
+            return 1
+          }
+        }
+
+        for(let i=1;i<=pieces;i++){
+          arr.push(sum(i));
+        }
+        utils.addInfo({arr,count,title:'使用遍历加递归'});
+      }
+
+      {
+        let count = 0;
+        let arr = [];
+        //方法2
+        for(let i=1;i<=pieces;i++){
+          count++;
+          if(i<=2){
+            arr.push(1);
+          }
+          else{
+            arr.push(arr[arr.length-1]+arr[arr.length-2]);
+          }
+        }
+        utils.addInfo({arr,count,title:'使用遍历加递推实现'});
+      }
+    }
+  </script>
+</body>
+</html>
