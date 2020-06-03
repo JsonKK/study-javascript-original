@@ -10,42 +10,57 @@
   <div id="content"></div>
   <script type="module">
     import utils from '../../utils/utils.js';
-    const s1 = 'asdafghjka';
+    const s1 = 'asfdsfassawtedafghjkafsdfewrrwrewrewr';
     // const s2 = 'asdafghjka';
-    const s2 = 'aaasdfg';
+    const s2 = 'fdsaferrewrarewgfassgfdgfdg';
     //最大子串为 asd
     {
       let str = s1.length > s2.length ? s2 : s1;
       let maxStr = s1.length < s2.length ? s2 : s1;
       let hitStr = '';
+      let arr = [];
       let count = 1;
       for(let i = str.length;i>0;i--){
-        console.log(i)
         let isPass = false;
+        let whileHasHit = false;
         //初始检索索引
         let beginNum = 0;
         if(i == str.length){
           hitStr = str;
-          isPass = true;
+          if(maxStr.indexOf(hitStr)>-1){
+            arr.push(hitStr);
+            isPass = true;
+          }
         }
         while(!isPass){
           count++;
           let endNum = beginNum + i + 1;
           hitStr = str.slice(beginNum,endNum);
           beginNum++;
-          if(endNum+1>str.length || maxStr.indexOf(hitStr) > -1){
+          if(maxStr.indexOf(hitStr) > -1){
+            console.log(hitStr)
+            arr.push(hitStr);
+            whileHasHit = true;
+          }
+          if(endNum+1>str.length){
             isPass = true;
           }
         }
         //命中字符串校验
-        if(hitStr && maxStr.indexOf(hitStr) > -1){
+        // if(hitStr && maxStr.indexOf(hitStr) > -1){
+        if(arr.length>0){
           break;
         }
         else{
           hitStr = '';
         }
       }
-      console.log(hitStr)
+      utils.addInfo({
+        title : `求${s1}和${s2}最大的子串`,
+        count,
+        arr
+      })
+      
       console.log(count)
     }
   </script>
