@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>查询两个字符串的最大子串</title>
+  <link rel="stylesheet" href="../../assets/css/base.css">
+</head>
+<body>
+  <div id="content"></div>
+  <script type="module">
+    import utils from '../../utils/utils.js';
+    const s1 = 'asdafghjka';
+    // const s2 = 'asdafghjka';
+    const s2 = 'aaasdfg';
+    //最大子串为 asd
+    {
+      let str = s1.length > s2.length ? s2 : s1;
+      let maxStr = s1.length < s2.length ? s2 : s1;
+      let hitStr = '';
+      let count = 1;
+      for(let i = str.length;i>0;i--){
+        console.log(i)
+        let isPass = false;
+        //初始检索索引
+        let beginNum = 0;
+        if(i == str.length){
+          hitStr = str;
+          isPass = true;
+        }
+        while(!isPass){
+          count++;
+          let endNum = beginNum + i + 1;
+          hitStr = str.slice(beginNum,endNum);
+          beginNum++;
+          if(endNum+1>str.length || maxStr.indexOf(hitStr) > -1){
+            isPass = true;
+          }
+        }
+        //命中字符串校验
+        if(hitStr && maxStr.indexOf(hitStr) > -1){
+          break;
+        }
+        else{
+          hitStr = '';
+        }
+      }
+      console.log(hitStr)
+      console.log(count)
+    }
+  </script>
+</body>
+</html>
