@@ -14,6 +14,25 @@ const utils = {
     p.classList += 'item-info';
     p.innerHTML = `${title}:<br/>运行了${count}次<br/>得到结果${arr.length}个<br/>得到的结果是${arr.join(' ')}`;
     content.appendChild(p);
+  },
+  /**
+  * 生成随机数数组
+  * @param name   定义
+  */
+  addRandomNum(lang=99){
+    //生成随机数
+    var nums = [];
+    var count = 0;
+    while(nums.length < lang){
+      count++;
+      var num = parseInt(Math.random() * lang+1);
+      if(nums.indexOf(num) == -1){
+        nums.push(num);
+      }
+    }
+    // console.log(nums);
+    // console.log('count',count);
+    return {nums,count}
   }
 }
 

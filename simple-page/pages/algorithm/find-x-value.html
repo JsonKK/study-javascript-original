@@ -10,11 +10,26 @@
   <div id="content"></div>
   <script type="module">
     import utils from '../../utils/utils.js';
-    let arr = [8,5,30,13,25,20,10];
+    let {nums:arr} = utils.addRandomNum(5000);
     // 需要查找第几大
     let location = 3;
     {
+      let count = 1;
       // 方法一
+      let newArr = arr.sort((x,y)=>{
+        count++;
+        if(x<y){
+          return -1;
+        }
+        else if(x>y){
+          return 1;
+        }
+        else{
+          return 0;
+        }
+      });
+      console.log(newArr);
+      console.log(count);
 
     }
 
@@ -25,14 +40,6 @@
         cacheArr[arr[i]] = 1;
       }
 
-    }
-
-    {
-      let cacheArr = []
-      cacheArr[10000] = 1;
-      for(let i = 0;i<cacheArr.length;i++){
-        console.log(i);
-      }
     }
   </script>
 </body>
