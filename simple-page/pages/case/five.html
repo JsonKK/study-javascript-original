@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>五子棋</title>
+  <style type="text/css">
+    canvas {
+      display: block;
+      margin: 100px auto;
+      box-shadow: -2px -2px 2px #F3F2F2, 
+                  5px 5px 5px #6F6767;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="mycanvas"></canvas>
+  <script type="module">
+    import Five from './five.js';
+    window.onload = function(){
+      const five = new Five({id:'mycanvas',lineNumber:20,chessWidth:30});
+    }
+  </script>
+</body>
+
+</html>

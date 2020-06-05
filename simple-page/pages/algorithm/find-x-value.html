@@ -10,13 +10,16 @@
   <div id="content"></div>
   <script type="module">
     import utils from '../../utils/utils.js';
-    let {nums:arr} = utils.addRandomNum(5000);
+    let {nums:arr} = utils.addRandomNum(50000,true);
     // 需要查找第几大
     let location = 3;
     {
       let count = 1;
+      // 把数组缓存至本地
+      let cache = [...arr];
       // 方法一
-      let newArr = arr.sort((x,y)=>{
+      //sort方法会改变原数组
+      let newArr = cache.sort((x,y)=>{
         count++;
         if(x<y){
           return -1;
@@ -27,6 +30,11 @@
         else{
           return 0;
         }
+      });
+      utils.addInfo({
+        title:`方法一利用排序得到,第${location}大的数是`,
+        count,arr,
+        resultStr : newArr[location]
       });
       console.log(newArr);
       console.log(count);
