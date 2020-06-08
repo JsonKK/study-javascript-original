@@ -4,6 +4,12 @@
 <head>
   <meta charset="UTF-8">
   <title>五子棋</title>
+  <meta content="yes" name="apple-mobile-web-app-capable">
+  <meta content="yes" name="apple-touch-fullscreen">
+  <meta content="telephone=no" name="format-detection">
+  <meta name="viewport" content="width=750">
+  <link rel="shortcut icon" href="favicon.ico">
+  <script src="https://market-h5.taqu.cn/public/js/HBUtils.js"></script>
   <style type="text/css">
     canvas {
       display: block;
@@ -16,10 +22,10 @@
 
 <body>
   <canvas id="mycanvas"></canvas>
-  <script type="module">
+  <script  type="module">
     import Five from './five.js';
     window.onload = function(){
-      const five = new Five({id:'mycanvas',lineNumber:20,chessWidth:30});
+      const five = new Five({id:'mycanvas',lineNumber:15,chessWidth:40});
     }
   </script>
 </body>

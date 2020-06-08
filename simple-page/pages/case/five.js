@@ -15,12 +15,6 @@ const Five = function({id,lineNumber=15,chessWidth=30}={}){
   //画布对象内容
   this.context = this.elem.getContext('2d');
 
-  //初始化走黑棋
-  this.isBlack = true;
-
-  //用于存放棋盘中落子的情况
-  this.chessBox = [];
-
   //每行棋子个数
   this.lineNumber = lineNumber;
 
@@ -36,6 +30,10 @@ Five.prototype = {
   constructor : Five,
   //初始化
   init(){
+    //初始化走黑棋
+    this.isBlack = true;
+    //用于存放棋盘中落子的情况
+    this.chessBox = [];
     //初始化棋盘大小
     this.initBoard();
     // 初始化落子情况
@@ -59,9 +57,9 @@ Five.prototype = {
         } else {
           chessBox[i][j] = 2;
         }
-        that.mathResult(i, j);
         //下一步白棋
         that.isBlack = !isBlack;
+        that.mathResult(i, j);
       }
     }
   },
@@ -138,6 +136,7 @@ Five.prototype = {
     context.fill();
     context.closePath();
   },
+  //计算结果
   mathResult(x,y){
     let {chessBox} = this;
     let lang = chessBox.length;
@@ -148,12 +147,75 @@ Five.prototype = {
     let {beginX,endX,beginY,endY} = that.catchIndex(chessBox,x,y);
     // Y轴数组
     let arrY = [];
-    for(let i = beginX;i<endX;i++){
+    for(let i = beginX,x=0;i<=endX;i++,x++){
       arrY.push(chessBox[i][y]);
     }
+    if(this.judgeWin(arrY,color)){
+      return;
+    }
     // x轴数组
-    let arrX = []
-    // 斜轴数组
+    let arrX = [];
+    for(let i = beginY;i<=endY;i++){
+      arrX.push(chessBox[x][i]);
+    }
+    if(this.judgeWin(arrX,color)){
+      return;
+    }
+    // 斜轴数组(斜轴有两条需要考虑)
+    let arrXY = [chessBox[x][y]];
+    let arrXYInverse = [chessBox[x][y]];
+    let xyCount = 1;
+    while(xyCount < 5){
+      if(chessBox[x+xyCount] && chessBox[x+xyCount][y+xyCount] >= 0){
+        arrXY.push(chessBox[x+xyCount][y+xyCount]);
+      }
+      if(chessBox[x-xyCount] && chessBox[x-xyCount][y-xyCount] >= 0){
+        arrXY.unshift(chessBox[x-xyCount][y-xyCount]);
+      }
+      if(chessBox[x+xyCount] && chessBox[x+xyCount][y-xyCount] >= 0){
+        arrXYInverse.push(chessBox[x+xyCount][y-xyCount]);
+      }
+      if(chessBox[x-xyCount] && chessBox[x-xyCount][y+xyCount] >= 0){
+        arrXYInverse.unshift(chessBox[x-xyCount][y+xyCount]);
+      }
+      xyCount++;
+    }
+    if(this.judgeWin(arrXY,color) || this.judgeWin(arrXYInverse,color)){
+      return;
+    }
+    console.log(arrXY);
+  },
+  /**
+  * 校验输赢
+  * @param arr   校验的数组
+  * @param colorNum   棋子的值
+  */
+  judgeWin(arr,colorNum){
+    let judgeArr = [];
+    for(let i = 0;i<arr.length;i++){
+      if(arr[i] == colorNum){
+        judgeArr.push(arr[i])
+      }
+      else{
+        if(judgeArr.length < 5){
+          judgeArr = [];
+        }
+        if(arr.length - i + 1 < 5){
+          break;
+        }
+      }
+    }
+    let color = (colorNum == 1) ? '黑' : '白';
+    if(judgeArr.length >= 5){
+      setTimeout(()=>{
+        alert(`${color}棋获胜`);
+        this.init();
+      },100);
+      return true;
+    }
+    else{
+      return false;
+    }
   },
   // 查询需要匹配的数组索引
   catchIndex(chessBox,x,y){
@@ -179,7 +241,7 @@ Five.prototype = {
       }
     }
     while(beginY === -1){
-      if(typeof chessBox[beginNumY] != 'undefined'){
+      if(typeof chessBox[x][beginNumY] != 'undefined'){
         beginY = beginNumY;
       }
       else{
@@ -187,7 +249,7 @@ Five.prototype = {
       }
     }
     while(endY === -1){
-      if(typeof chessBox[endNumY] != 'undefined'){
+      if(typeof chessBox[x][endNumY] != 'undefined'){
         endY = endNumY;
       }
       else{

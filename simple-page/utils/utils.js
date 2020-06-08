@@ -38,6 +38,13 @@ const utils = {
       
     }
     return {nums,count}
+  },
+  /**
+  * 判断是否移动端
+  * @param name   定义
+  */
+  isMobile(){
+    return Boolean(navigator.userAgent.match(/(phone|pad|pod|iphone|ipod|ios|ipad|android|adr|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i))
   }
 }
 
