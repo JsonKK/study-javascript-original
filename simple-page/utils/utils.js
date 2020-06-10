@@ -45,6 +45,24 @@ const utils = {
   */
   isMobile(){
     return Boolean(navigator.userAgent.match(/(phone|pad|pod|iphone|ipod|ios|ipad|android|adr|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i))
+  },
+  // 获取url参数对象
+  getUrlParms(key){
+    let qs = ((location.search.length > 0) ? location.search.substring(1) : ''),
+    // 保存的数据对象
+        args = {},
+    // 取得每一项
+        items = (qs.length ? qs.split('&') : []),
+        item,name,value,len = items.length;
+    for(let i = 0; i < len; i++){
+      item = items[i].split('=');
+      name = decodeURIComponent(item[0]);
+      value = decodeURIComponent(item[1]);
+      if(name.length){
+        args[name] = value
+      }
+    }
+    return (key ? args[key] : args);
   }
 }
 
