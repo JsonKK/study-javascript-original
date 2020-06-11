@@ -9,7 +9,10 @@
   <script type="module">
     import utils from '../../utils/utils.js';
     {
-      console.log(utils.getUrlParms('for'))
+      let test = utils.getUrlParms('test');
+      if(test == 1){
+        location.hash = "#/test";
+      }
     }
   </script>
 </body>
