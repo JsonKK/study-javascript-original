@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>navigator对象</title>
+  <link rel="stylesheet" href="../../assets/css/base.css">
+</head>
+<body>
+  <div id="content"></div>
+  <script type="module">
+    import utils from '../../utils/utils.js';
+    {
+      //浏览器名称
+      //通常都是mozilla,即使在非mozilla浏览器内也是如此
+      utils.log('appCodeName',navigator.appCodeName,'--浏览器名称');
+    }
+
+    {
+      //完整的浏览器名
+      utils.log('appName',navigator.appName,'--完整的浏览器名');
+    }
+
+    {
+      //判断cookie是否被启用
+      utils.log('cookieEnable',navigator.cookieEnabled,'--判断cookie是否被启用');
+    }
+
+    {
+      //客户端计算机使用的cpu类型
+      utils.log('cpuClass',navigator.cpuClass,'--客户端计算机使用的cpu类型(没有浏览器支持这个属性)')
+    }
+
+    {
+      //浏览器中是否启用了java
+      utils.log('javaEnabled',navigator.javaEnabled(),'--浏览器中是否启用了java')
+    }
+
+    {
+      //浏览器的主语言
+      utils.log('language',navigator.language,'--浏览器中使用语言')
+    }
+
+    {
+      //浏览器中注册的mimeTypes
+      //每个MimeType对象有4个属性
+      //包含MIME类型描述的description
+      //回指插件对象的enabledPlugin
+      //表示与MIME类型对应的文件扩展名的字符串suffixes（以逗号分隔）
+      //和表示完整MIME类型字符串的type
+      utils.log('mimeTypes',navigator.mimeTypes,'--浏览器中注册的mimeTypes')
+    }
+
+    {
+      //判断是否链接互联网
+      utils.log('onLine',navigator.onLine,'--判断是否连接互联网')
+    }
+
+    {
+      //浏览器所在的系统平台
+      utils.log('platform',navigator.platform,'--浏览器所在的系统平台')
+    }
+
+    {
+      //浏览器中安装的插件数组
+      utils.log('plugins',navigator.plugins,'--浏览器中安装的插件数组(判断name: "Shockwave Flash"可以知道是否允许flash)')
+    }
+
+    {
+      //用户代理字符串
+      //https://www.cnblogs.com/mhtss/p/9522567.html
+      utils.log('userAgent',navigator.userAgent,'--用户代理字符串(1.识别内核 2.识别操作系统 3.识别移动端)')
+    }
+
+    {
+      //操作系统的默认语言
+      utils.log('userLanguage',navigator.userLanguage,'--操作系统的默认语言')
+    }
+
+    {
+      //浏览器品牌
+      utils.log('vendor',navigator.vendor,'--浏览器品牌')
+    }
+
+    {
+      //测试检测能力
+      let xhr;
+      if(window.ActiveXObject){
+        xhr = new ActiveXObject('Microsoft.XMLHttp');
+      }
+      else if(window.XMLHttpRequest){
+        xhr = new XMLHttpRequest();
+      }
+      console.log(utils.isHostMethod(xhr,'open'));
+    }
+  </script>
+</body>
+</html>

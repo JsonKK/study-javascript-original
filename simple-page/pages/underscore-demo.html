@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>underscore demo</title>
+</head>
+<body>
+  <script type="module">
+    import '../utils/underscore.js';
+    {
+      //测试extend方法
+      try{
+        console.log(_.extend('',{a:1},{b:2},{a:3}))
+      }
+      catch(err){
+        //TypeError: Cannot create property 'a' on string ''
+        // 参数为字符串报错
+        console.log(err)
+      }
+      
+    }
+
+    {
+      //数组是否为对象
+      //true 属于对象
+      console.log('_.isObject([])',_.isObject([]))
+    }
+    
+  </script>
+</body>
+</html>

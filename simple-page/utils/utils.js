@@ -1,4 +1,58 @@
+import './underscore.js';
+
 const utils = {
+  /**
+  * 方法检测
+  * @param name   定义
+  */
+  isHostMethod(object,property){
+    const t = typeof object[property];
+    return t == 'function' || (!!(t == 'object' && object[property])) || t == 'unknown';
+  },
+  /**
+  * 增加单行文本信息
+  * @param text   显示内容
+  */
+  log(text){
+    let txt = text.toString();
+    if(arguments.length > 1){
+      txt += '：';
+      for(let i = 1;i<arguments.length;i++){
+        if(_.isArray(arguments[i])){
+          txt += '[' + arguments[i].join() + ']';
+        }
+        else if(_.isObject(arguments[i])){
+          let key;
+          txt += '{';
+          //如果是MimeTypeArray对象特殊处理
+          if(arguments[i] instanceof MimeTypeArray){
+            key = 'type';
+          }
+          //如果是PluginArray对象特殊处理
+          if(arguments[i] instanceof PluginArray){
+            key = 'name';
+          }
+          for(let item of arguments[i]){
+            txt += `${key}：${item[key]}，`
+          }
+          txt += '}';
+        }
+        else{
+          txt += arguments[i];
+        }
+        
+      }
+    }
+    if(!txt){
+      return;
+    }
+    let p = document.createElement('p');
+    let content = document.getElementById('content');
+    p.classList += 'item-info';
+    p.innerText = txt;
+    if(content) content.appendChild(p);
+    
+  },
   /**
   * 增加内容展示
   * @param arr   需要展示的数组内容
