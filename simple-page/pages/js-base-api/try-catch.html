@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>try-catch调用顺序测试</title>
+  <link rel="stylesheet" href="../../assets/css/base.css">
+</head>
+<body>
+  <div id="content"></div>
+  <script type="module">
+    import utils from '../../utils/utils.js';
+    
+    {
+      try { 
+        throw 'test1'
+      } 
+      catch (error) {
+        utils.log('error' + error)
+      }
+      finally{
+        utils.log('finally1')
+      }
+    }
+
+    {
+      try{
+        try{
+          throw 'test2 min'
+        }
+        catch(err){
+          utils.log('err '+err)
+        }
+      }
+      catch(error){
+        utils.log('error ' + error);
+      }
+      finally{
+        utils.log('finnally2');
+      }
+    }
+
+    {
+      try{
+        try{
+          throw 'test3 min'
+        }
+        finally{
+          utils.log('finnally min3');
+        }
+      }
+      catch(error){
+        utils.log('error ' + error);
+      }
+      finally{
+        utils.log('finnally3');
+      }
+    }
+
+    {
+      try{
+        try{
+          throw 'test4 min'
+        }
+        catch(err){
+          utils.log('err '+err)
+        }
+        finally{
+          utils.log('finnally min4');
+        }
+      }
+      catch(error){
+        utils.log('error ' + error);
+      }
+      finally{
+        utils.log('finnally4');
+      }
+    }
+
+  </script>
+</body>
+</html>
