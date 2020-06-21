@@ -2,6 +2,26 @@ import './underscore.js';
 
 const utils = {
   /**
+  * 判断是否是text标签
+  * @param name   定义
+  */
+  isTextDom(ele){
+    if(this.isDom(ele)){
+      // if(!(child[i].nodeType == '3' && child[i].nodeName == '#text' && !/\S/.test(child[i].nodeValue))){ 
+      //判断不是text文本节点的条件
+      if(!(ele.nodeType == 3 && ele.nodeName == '#text' && !/\S/.test(ele.nodeValue))){
+        console.log(ele+'123')
+        return false;
+      }
+      else{
+        return true;
+      }
+    }
+    else{
+      return false;
+    }
+  },
+  /**
   * 是否是字符串
   * @param name   定义
   */

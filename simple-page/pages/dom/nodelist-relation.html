@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>节点关系</title>
+  <link rel="stylesheet" href="../../assets/css/base.css">
+</head>
+<body>
+  <div id="content"></div>
+  <div id="box1"></div>
+  <div id="box2"></div>
+  <div id="box3"></div>
+  <div id="box4"></div>
+  <div id="box5"></div>
+  <div id="box6"></div>
+  <div id="box7"></div>
+  <div id="box8"></div>
+  <div id="box9"></div>
+  <div id="box10"></div>
+  <ul id="ul">
+    <li class="item">1haha</li>
+    <li class="item">2haha</li>
+    <li class="item">3haha</li>
+    <li class="item">4haha</li>
+    <li class="item">5haha</li>
+    <li class="item">6haha</li>
+    <li class="item">7haha</li>
+    <li class="item">8haha</li>
+    <li class="item">9haha</li>
+    <li class="item">10haha</li>
+  </ul>
+  <script type="module">
+    import utils from '../../utils/utils.js';
+    {
+      //获取body元素
+      //获取body的所有子集
+      // body的所有子元素都转为数组
+      let body = document.body;
+      let firstChild = body.childNodes[0];
+      console.log('firstChild:',firstChild);
+      let secondChild = body.childNodes.item(1);
+      console.log('secondChild:',secondChild);
+      let count = body.childNodes.length;
+      console.log('count',count);
+      //把数组实例的this对象变为body.childNodes
+      //使用slice方法截取字符串，从0（第一项）项开始，到数组末尾
+      let nodes = converToArray(body.childNodes,0);
+      console.log(nodes);
+
+      //nextSibling属性和previousSibling属性
+      //使用previousSibling属性判断节点是否为第一个节点
+      let ul = document.getElementById('ul');
+      let ulChildNodes = converToArray(ul.childNodes);
+      console.log(ulChildNodes)
+      for(let i = 0;i<ulChildNodes.length;i++){
+        //previousSibling用于判断前一项是否有节点，会包括#text文本节点
+        //用于判断前一项是否有dom节点
+        if(!ulChildNodes[i].previousElementSibling){
+          utils.log('第一项的内容是：',ulChildNodes[i].innerText);
+        }
+        //判断是否为最后一个节点
+        if(!ulChildNodes[i].nextElementSibling){
+          utils.log('最后一项的内容是：',ulChildNodes[i].innerText);
+        }
+      }
+
+      //转为数组的兼容性写法
+      function converToArray(nodes,isSaveText){
+        var array = null;
+        try {
+          array = Array.prototype.slice.call(nodes);
+        }
+        catch(error){
+          array = new Array();
+          for(let i = 0;i<nodes.length;i++){
+            array.push(nodes[i]);
+          }
+        }
+        //如果不需要保存text文本标签则清除
+        if(utils.isArray(array) && !isSaveText){
+          let arr = new Array();
+          array.forEach((item)=>{
+            if(!utils.isTextDom(item) && utils.isDom(item)){
+              arr.push(item)
+            }
+          })
+          array = arr;
+        }
+        return array;
+      }
+    }
+
+    {
+      //appendchild方法
+      let p = document.createElement('p');
+      let body = document.body;
+      let lang = body.children.length;
+      p.innerText = `这是一个新增的子节点${lang}`;
+      let returnNode = body.appendChild(p);
+      utils.log('新增的节点p，是否与新增返回的returnNode相等：',p === returnNode);
+      utils.log('新增的节点p,是否是body的最后一个节点：',body.lastChild === p);
+    }
+  </script>
+</body>
+</html>
