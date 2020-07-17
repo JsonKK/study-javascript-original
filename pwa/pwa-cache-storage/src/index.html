@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>落地页</title>
+	<meta http-equiv="Content-type" content="text/html">
+	<meta content="yes" name="apple-mobile-web-app-capable">
+	<meta content="yes" name="apple-touch-fullscreen">
+	<meta content="telephone=no" name="format-detection">
+	<meta name="viewport" content="width=720, viewport-fit=cover">
+	<link rel="manifest" href="../manifest.json">
+	<!-- build:css css/index.css -->
+	<link rel="stylesheet" href="css/reset.css">
+	<link rel="stylesheet" href="css/index.css">
+	<!-- endbuild -->
+	<script src="https://market-h5.taqu.cn/public/js/HBUtils.js"></script>
+</head>
+<body>
+	<div id="app" class="app">
+		<div class="logo"></div>
+		<div class="main-content">
+			<section class="info">
+				<ul class="person-list">
+					<li class="person-item">
+						<img src="./img/person-1.png" />
+					</li>
+					<li class="person-item">
+						<img src="./img/person-2.png" />
+					</li>
+					<li class="person-item">
+						<img src="./img/person-3.png" />
+					</li>
+					<li class="person-item">
+						<img src="./img/person-4.png" />
+					</li>
+				</ul>
+			</section>
+			<footer>
+				<div class="cut-time">
+					<div class="font-con">限时免费倒计时</div>
+					<ul class="time-list" id="js-time-list">
+						<li class="time">00</li>
+						<li class="doc">:</li>
+						<li class="time">00</li>
+						<li class="doc">:</li>
+						<li class="time">00</li>
+					</ul>
+				</div>
+				<a class="btn-download" href="https://a.app.qq.com/o/simple.jsp?pkgname=com.xingjiabi.shengsheng">
+					<img src="./img/btn-download.png" alt="下载他趣"/>
+				</a>
+			</footer>
+		</div>
+	</div>
+
+	<!-- build:js js/index.js -->
+	<script src="js/index.js"></script>
+	<!-- endbuild -->
+
+	<script>
+		window.addEventListener('load',async()=>{
+			if('serviceWorker' in navigator){
+				try{
+					const registration = await navigator.serviceWorker.register('../sw.js');
+					console.log('注册成功');
+				}
+				catch(error){
+					console.log('注册失败');
+				}
+			}
+		})
+	</script>
+</body>
+</html>

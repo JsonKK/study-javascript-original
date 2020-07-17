@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>字符串最大出现频率</title>
+  <link rel="stylesheet" href="../../assets/css/base.css">
+</head>
+<body>
+  <div id="content"></div>
+  <script type="module">
+    import utils from '../../utils/utils.js';
+    /**
+     * @param {string} 
+     * @return {number}
+     */
+    var lengthOfLongestSubstring = function(s) {
+      let res = '';
+      let resLong = '';
+      let l = 0;
+      for (let i = 0; i < s.length; i++) {
+        if (res.includes(s[i])) {
+          res = res.slice(res.indexOf(s[i]) + 1);
+        }
+        res += s[i];
+        l = Math.max(res.length, l);
+        resLong.length > res.length ? this : resLong = res;
+      }
+      return {l,resLong};
+    };
+    var str = 'jfdsjfiuhrehbfjfdsjfnkjckjujrewjrklfdsjsakdfcnjkaehdjjiiw';
+    var longObj = lengthOfLongestSubstring(str);
+    utils.log('最大不重复字符串长度是：' + longObj.l);
+    utils.log('最大不重复字符串是：' + longObj.resLong);
+
+  </script>
+</body>
+</html>

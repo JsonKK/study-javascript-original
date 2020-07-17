@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>service-work-event</title>
+  <!-- <script src="https://market-h5.taqu.cn/public/js/HBUtils.js"></script> -->
+  <link rel="manifest" href="./manifest.json">
+  <link rel="stylesheet" href="./assets/css/index.css">
+</head>
+<body>
+  <h3>service work event</h3>
+  <script>
+    window.onload = function(){
+      //判断浏览器是否支持
+      if('serviceWorker' in navigator){
+        navigator.serviceWorker.register('./sw.js')
+      }
+    }
+  </script>
+</body>
+</html>

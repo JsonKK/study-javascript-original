@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>textNode</title>
+</head>
+<body>
+  <div id="content"></div>
+  <script>
+    {
+      // 创建textNode
+      let ele = document.createElement('div');
+      ele.className = 'message';
+      ele.id = 'message';
+      let nodeText = document.createTextNode('hello world');
+      ele.appendChild(nodeText);
+      let nodeText2 = document.createTextNode('hello world2');
+      ele.appendChild(nodeText2);
+      
+      document.body.append(ele);
+      ele.normalize();
+      console.log(ele.childNodes);
+    }
+
+    {
+      function nodeListToArray(nodes){
+        let array = null;
+        try {
+          array = Array.prototype.slice.call(nodes,0);
+        }
+        catch(err){
+          array = new Array();
+          for (let i = 0;i<nodes.length;i++){
+            array.push(nodes[i]);
+          }
+        }
+      }
+    }
+  </script>
+</body>
+</html>

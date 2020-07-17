@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Access-Control-Allow-Origin" content="*" />
+  <title>图片滤镜功能</title>
+  
+</head>
+
+<body>
+  <div id="content">
+    <!-- <img src="../../assets/img/demo/pineapple.jpg" id="orig" alt=""> -->
+    <img src="https://www.runoob.com/try/demo_source/pineapple.jpg" id="orig" alt="">
+    <canvas id="canvas" width="500" height="500" ></canvas>
+    <button onclick="grayscale()">filter</button>
+  </div>
+
+  <script type="text/javascript">
+    window.onload = function () {
+
+      var xhr = new XMLHttpRequest();
+      xhr.onload = function () {
+          var url = URL.createObjectURL(this.response);
+          var img = new Image();
+          img.onload = function () {
+              // 此时你就可以使用canvas对img为所欲为了
+              // ... code ...
+              // 图片用完后记得释放内存
+              URL.revokeObjectURL(url);
+          };
+          img.src = url;
+      };
+      // xhr.open('GET', 'https://www.runoob.com/try/demo_source/pineapple.jpg', true);
+      // xhr.responseType = 'blob';
+      // xhr.send();
+
+      var img = document.getElementById('orig');
+      // var canvas = document.createElement('canvas');
+      // var context = canvas.getContext('2d');
+      
+      // var img = new Image();
+      // img.onload = function () {
+      //     context.drawImage(this, 0, 0);
+      //     context.getImageData(0, 0, this.width, this.height);
+      // };
+      // img.src = 'https://www.runoob.com/try/demo_source/pineapple.jpg';
+      // document.getElementById('content').appendChild(img);
+
+      function runFilter(id, filter, arg1, arg2, arg3) {
+        var c = document.getElementById(id);
+        // var s = c.previousSibling.style;
+        // var b = c.parentNode.getElementsByTagName('button')[0];
+        var idata = Filters.filterImage(filter, img, arg1, arg2, arg3);
+        c.width = idata.width;
+        c.height = idata.height;
+        var ctx = c.getContext('2d');
+        ctx.putImageData(idata, 0, 0);
+        // 使用toDataURL()方法，可以导出在<canvas>元素上绘制的图像。这个方法接受一个参数，即图像的MIME类型格式，而且适合用于创建图像的任何上下文。比如，要取得画布中的一幅PNG格式的图像，可以使用以下代码。
+        //url为一个base64的图片路径
+        //如果绘制到画布上的图像源自不同的域，toDataURL()方法会抛出错误。
+        let imgURI = c.toDataURL('image/png');
+        //创建img标签
+        let image = document.createElement('img');
+        //为图片赋值路径
+        img.src = imgURI;
+        // s.display = 'none';
+        // c.style.display = 'inline';
+        // b.textContent = 'Restore original image';
+        return;
+        //把按钮的文本赋值给originalText
+        if (b.originalText == null) {
+          b.originalText = b.textContent;
+        }
+        if (s.display == 'none') {
+          s.display = 'inline';
+          c.style.display = 'none';
+          b.textContent = b.originalText;
+        } else {
+          var idata = Filters.filterImage(filter, img, arg1, arg2, arg3);
+          c.width = idata.width;
+          c.height = idata.height;
+          var ctx = c.getContext('2d');
+          ctx.putImageData(idata, 0, 0);
+          s.display = 'none';
+          c.style.display = 'inline';
+          b.textContent = 'Restore original image';
+        }
+      }
+
+      Filters = {};
+      Filters.getPixels = function (img) {
+        var c = this.getCanvas(img.width, img.height);
+        var ctx = c.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+        return ctx.getImageData(0, 0, c.width, c.height);
+      };
+
+      Filters.getCanvas = function (w, h) {
+        var c = document.getElementById('canvas');
+        c.width = w;
+        c.height = h;
+        return c;
+      };
+      Filters.filterImage = function (filter, image, var_args) {
+        var args = [this.getPixels(image)];
+        for (var i = 2; i < arguments.length; i++) {
+          args.push(arguments[i]);
+        }
+        return filter.apply(null, args);
+      };
+
+      Filters.grayscale = function (pixels, args) {
+        var d = pixels.data;
+        for (var i = 0; i < d.length; i += 4) {
+          var r = d[i];
+          var g = d[i + 1];
+          var b = d[i + 2];
+          // CIE luminance for the RGB
+          // The human eye is bad at seeing red and blue, so we de-emphasize them.
+          var v = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+          d[i] = d[i + 1] = d[i + 2] = v
+        }
+        return pixels;
+      };
+
+      grayscale = function () {
+        runFilter('canvas', Filters.grayscale);
+      }
+    }
+
+  </script>
+</body>
+
+</html>

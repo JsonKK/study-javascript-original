@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>internet相关方法</title>
+  <link rel="stylesheet" href="../../assets/css/base.css">
+</head>
+<body>
+  <div id="content">
+
+  </div>
+  <script type="module">
+    import utils from '../../utils/utils.js'
+    utils.log(`document.URL：${document.URL}`);
+    //获取来源，可以用来判断是否为第一个页面
+    utils.log(`document.referrer：${document.referrer}`);
+    // 取得域名
+    utils.log(`document.domain：${document.domain}`);
+
+    {
+      //domain一般用于操作iframe嵌入的不同域名的html文件，通过修改两个页面的域名来操作页面
+      // document.domain = 'test-gw-k8s-web.taqu.cn';
+      //建立跨域get请求
+      // const url = 'https://test-gw-k8s-web.taqu.cn/live_api/v1/Activity/getMarriageProp?ticket_id=053c40866f7726ce4ba3e479a0371987';
+      // const request = new XMLHttpRequest();
+      // request.open('GET', url);
+
+      // request.onload = function(){
+      //   // 请求状态成功
+      //   if(request.status == 200){
+      //     console.log(request.response);
+      //   }
+      //   else{
+      //     console.error(Error('Image didn\'t load successfully;error code :'+request.statusText))
+      //   }
+      // }
+
+      // request.error = function(){
+      //   console.log(Error('There was a network error.'));
+      // }
+
+      // request.send();
+    }
+  </script>
+</body>
+</html>

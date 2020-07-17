@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>始终没表针</title>
+  <style>
+    #clock{
+      background-color: aliceblue;
+    }
+  </style>
+</head>
+<body>
+  <div id="content">
+    <canvas id="clock" width="500" height="500"></canvas>
+  </div>
+  <script type="text/javascript">
+    // 表盘绘制
+    function clockPlate({centerX,centerY,raduis,context}){
+      //重新开始绘制路径
+      context.beginPath();
+      context.lineWidth = 2;
+      //第一第二个参数是坐标的中心,x\y
+      // 第三个参数是圆的半径
+      // 第四个参数是起始角(必须要是弧度制)
+      // 第五个参数是结束角
+      //第六个参数是否逆时针，默认是逆时针
+      context.arc(centerX,centerY,raduis,0,2 * Math.PI);
+      //绘制内圆
+      //需要把画笔的笔头落在圆的开始的位置
+      context.moveTo(centerX + raduis-10,centerY);
+      //绘制新的圆
+      context.arc(centerX,centerY,raduis-10,0,2 * Math.PI);
+      context.stroke();
+    }
+
+    //绘制指针
+    function clockPointer({context,centerX,centerY,raduis}){
+      context.beginPath();
+      context.moveTo(centerX,centerY);
+      context.lineTo(centerX+raduis-50,centerY * Math.random());
+      context.stroke();
+    }
+
+    //绘制数字
+    function clockNum({context,centerX,centerY,raduis}){
+      context.font = 'bold 18px Arial';
+      context.textAlign = 'center';
+      context.textBaseline = 'middle';
+      //第一个参数绘制的文本内容
+      //第二、第三参数是绘制的起始点，相对于画布
+      // 第四个参数是最大宽度
+      context.fillText('12',centerX,centerX-raduis+30,raduis)
+    }
+
+    let clock = document.getElementById('clock');
+    if(clock.getContext){
+      let context = clock.getContext('2d');
+      let width = clock.width;
+      let height = clock.height;
+      let centerX = width/2 - 1;
+      let centerY = height/2 - 1;
+      let raduis = width/2 - 50 > 0 ? width/2 - 50 : width/2;
+      let baseInfo = {
+        centerX,centerY,raduis,context
+      };
+
+      //绘制表盘
+      clockPlate(baseInfo);
+      //绘制指针
+      clockPointer(baseInfo);
+      clockPointer(baseInfo);
+      //绘制数字
+      clockNum(baseInfo);
+      //删除某个区域
+      // context.clearRect(centerX,centerY,raduis-50,2);
+    }
+  </script>
+</body>
+</html>

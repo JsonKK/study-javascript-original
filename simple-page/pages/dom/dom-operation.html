@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>dom操作</title>
+</head>
+<body>
+  <div id="content">
+    <div id="middle">中间</div>
+  </div>
+  <script type="module">
+    import utils from '../../utils/utils.js';
+    {
+      //insertBefore 使用
+      //获取盒子
+      let divList = document.getElementsByTagName('div');
+      let content,middle;
+      //nodeList不是数组
+      if(divList && divList.length > 0){
+        for(let i = 0;i<divList.length;i++){
+          let item = divList[i];
+          if(item.id == 'content'){
+            content = item;
+          }
+          if(item.id == 'middle'){
+            middle = item;
+          }
+        }
+      }
+      let newItem = document.createElement('div');
+      newItem.innerText = '前面';
+      //获取middle的父容器
+      //middle.parentNode
+
+      //insertBefore详解
+      //content为容器
+      //第一个参数是需要插入的节点，必须
+      //第二个参数是参数的标准，如果有传此节点，会把插入的节点放在这个前面
+      content.insertBefore(newItem,middle)
+      let newItem2 = document.createElement('div');
+      newItem2.innerText = '前前面';
+      content.insertBefore(newItem2,middle);
+      //后面添加
+      let newItem3 = document.createElement('div');
+      newItem3.innerText = '后面';
+      // 方法可向节点的子节点列表的末尾添加新的子节点
+      content.appendChild(newItem3);
+      let newItem4 = document.createElement('div');
+      newItem4.innerText = '后后面';
+      // 方法可向节点的子节点列表的末尾添加新的子节点
+      content.appendChild(newItem4);
+
+      let newItem5 = document.createElement('div');
+      newItem5.innerText = '被替换的中间';
+      //被替换的节点会被拷贝出来
+      let clone = content.replaceChild(newItem5,middle);
+      //把拷贝出来的节点增加到容器末尾
+      content.appendChild(clone);
+      console.log(content.lastChild);
+    }
+  </script>
+</body>
+</html>

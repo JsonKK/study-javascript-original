@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>window.url.createObjectURL</title>
+</head>
+<body>
+  <div id="content"></div>
+  <script type="module">
+    {
+      //增加图片
+      let content = document.getElementById('content');
+      let myImage = new Image();
+      imgLoad('/assets/img/demo/vuex.png').then((response)=>{
+        //把二进制文件转为http请求
+        let imgUrl = window.URL.createObjectURL(response)
+        myImage.src = imgUrl;
+        content.appendChild(myImage);
+
+      }).catch((error)=>{
+        console.log(error);
+      })
+    }
+
+    function imgLoad(url){
+      return new Promise(function(resolve,reject){
+        const request = new XMLHttpRequest();
+        request.open('GET', url);
+        //返回数据是二进制数据
+        request.responseType = 'blob';
+
+        request.onload = function(){
+          // 请求状态成功
+          if(request.status == 200){
+            resolve(request.response);
+          }
+          else{
+            reject(Error('Image didn\'t load successfully;error code :'+request.statusText))
+          }
+        }
+
+        request.error = function(){
+          reject(Error('There was a network error.'));
+        }
+
+        request.send();
+      })
+      
+    }
+  </script>
+</body>
+</html>

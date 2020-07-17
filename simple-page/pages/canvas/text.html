@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>文本测试</title>
+</head>
+<body>
+  <div id="content">
+    <canvas id="text" width="300" height="300"></canvas>
+  </div>
+  <script type="text/javascript">
+    {
+      //measureText文本大小的方法实际应用
+      let text = document.getElementById('text');
+      if(text.getContext){
+        let context = text.getContext('2d');
+        let fontSize = 100;
+        let width = text.width;
+        //在canvas中\n无效
+        let textStr = 'hello world';
+        context.font = fontSize + 'px Arial';
+        
+        //让字体大小自适应某个宽度，不溢出，不被遮挡
+        while(context.measureText(textStr).width > width){
+          fontSize--;
+          context.font = fontSize + 'px Arial';
+        }
+        console.log(fontSize);
+        //基线对齐方式，如果对齐方式是底部，起始坐标为0,0则图像不会显示
+        context.textBaseline = 'top';
+        context.fillText(textStr,0,0);
+      }
+
+    }
+
+    {
+      // 绘制画布宽高的矩形
+      let text = document.getElementById('text');
+      if(text.getContext){
+        let context = text.getContext('2d');
+        let width = text.width;
+        let height = text.height;
+        context.lineWidth = 3;
+        context.strokeRect(0,0,width,height);
+      }
+    }
+  </script>
+</body>
+</html>

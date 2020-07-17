@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>fetch-api</title>
+</head>
+<body>
+  <script type="module">
+    //加载json文件
+    fetch('./person.json').then((res)=>{
+      //返回promise对象，可以在外层继续链式调用
+      return res.json();
+    }).then((res)=>{
+      console.log(res);
+    })
+    // 加载文本文件
+    fetch('./person.txt').then((res)=>{
+      //返回promise对象，可以在外层继续链式调用
+      return res.text();
+    }).then((res)=>{
+      console.log(res);
+    })
+  </script>
+</body>
+</html>

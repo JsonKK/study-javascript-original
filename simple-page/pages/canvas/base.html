@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>canvas-base</title>
+</head>
+<body>
+  <div id="content">
+    <canvas id="drawing" width="200" height="200">
+      A drawing of something.
+    </canvas>
+    <canvas id="path">A draw of path</canvas>
+  </div>
+  <script type="text/javascript">
+    let drawing = document.getElementById('drawing');
+    let box = document.getElementById('content');
+    // 判断浏览器是否支持canvas元素
+    if(drawing.getContext){
+      let content = drawing.getContext('2d');
+      // 描边
+      {
+        //增加描边颜色
+        content.strokeStyle = 'yellowgreen';
+        //设置变宽宽度
+        //是外边距，宽度会向外延长
+        //必须在绘制描边strokeRect之前调用，否则无效
+        content.lineWidth = '10';
+        //线条交界处的形状
+        //bevel 斜角
+        //round 圆角
+        //miter 直角
+        content.lineJoin = 'round';
+        // 绘制描边
+        content.strokeRect(40,40,180,180);
+      }
+
+      // 画直线
+      {
+        content.beginPath();
+        //设置线条末端的形状
+        //在绘制描边strokeRect上并不会生效
+        //butt 加粗
+        //butt \ round \ square
+        content.lineCap = 'round';
+        content.moveTo(10,10);
+        content.lineTo(100,10);
+        content.stroke();
+        
+      }
+
+      // 背景色
+      {
+        //为画布增加背景色
+        content.fillStyle = 'rgb(112,112,112)';
+        //第一和第二个参数是，矩形绘制的起点x\y坐标
+        //第三和第四个参数是，矩形绘制的宽和高
+        content.fillRect(40,40,180,180);
+      }
+      
+      {
+        // clearRect()方法用于清除画布上的矩形区域。本质上，这个方法可以把绘制上下文中的某一矩形区域变透明。通过绘制形状然后再清除指定区域，就可以生成有意思的效果
+        //第一和第二个参数是起始点
+        //第三和第四个区域是要清楚的宽度和高度
+        content.clearRect(100,100,50,50);
+      }
+      
+      {
+        // 使用toDataURL()方法，可以导出在<canvas>元素上绘制的图像。这个方法接受一个参数，即图像的MIME类型格式，而且适合用于创建图像的任何上下文。比如，要取得画布中的一幅PNG格式的图像，可以使用以下代码。
+        //url为一个base64的图片路径
+        //如果绘制到画布上的图像源自不同的域，toDataURL()方法会抛出错误。
+        let imgURI = drawing.toDataURL('image/png');
+        //创建img标签
+        let image = document.createElement('img');
+        //为图片赋值路径
+        image.src = imgURI;
+        box.append(image);
+      }
+    }
+  </script>
+</body>
+</html>

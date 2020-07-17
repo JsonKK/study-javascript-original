@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>attribute测试</title>
+</head>
+<body>
+  <div id="content">
+    <button class="pop-btn" onclick="alert('弹窗1')">触发弹窗</button>
+    <button class="pop-btn" id="pop-btn">触发弹窗2</button>
+    <button class="pop-btn">触发弹窗3</button>
+  </div>
+  <script>
+    function popBtn3(){
+      alert('弹窗3')
+    }
+    //获取标签节点上的所有属性
+    function outputAttributes(element){
+      let paris = new Array(),
+          attrName,attrValue,i,len;
+      for(i = 0,len = element.attributes.length; i<len; i++){
+        // 每个特性节点都有一个名为specified的属性，这个属性的值如果为true，则意味着要么是在HTML中指定了相应特性，要么是通过setAttribute()方法设置了该特性。
+        if(element.attributes[i].specified){
+          attrName = element.attributes[i].nodeName;
+          attrValue = element.attributes[i].nodeValue;
+          paris.push({
+            [attrName] : attrValue
+          })
+        } 
+      }
+      return paris;
+    }
+
+    {
+      let popBtns = document.getElementsByClassName('pop-btn');
+      let popBtn = document .getElementById('pop-btn');
+      //赋值点击事件
+      popBtn.onclick = function(){
+        alert('弹窗2');
+      }
+      popBtn.setAttribute('mycolor','hehe')
+      //不能使用for in 循环nodelist,会把length当作一项进入遍历
+      // for(let i in popBtns){  
+        
+      // }
+      for(let i = 0 ; i < popBtns.length;i++){
+        if(i == 2){
+          popBtns[i].setAttribute('onclick','popBtn3()')
+        }
+        console.log(outputAttributes(popBtns[i]));
+        console.log(popBtns[i].innerText,popBtns[i].getAttribute('onclick'),typeof popBtns[i].getAttribute('onclick'));
+      }
+    }
+  </script>
+</body>
+</html>

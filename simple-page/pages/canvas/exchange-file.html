@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>处理上传的图片</title>
+</head>
+<body>
+  <input type="file" accept="image/*" name="file" id="file"/>
+  <a id="download" download="downImage">
+    <img src="" alt="">
+  </a>
+  <script type="text/javascript">
+    // 监听上传文件变化
+    function initFileEvent(){
+      let fileDom = document.getElementById('file');
+      fileDom.addEventListener('change',(file)=>{
+        console.log(fileDom.files)
+        //置空上传按钮
+        // fileDom.value = '';
+        let fileReader = new FileReader();
+        fileReader.onload = function(e){
+          // 本地图片
+          let img = e.target.result;
+          document.getElementsByTagName('img')[0].src = img;
+          document.getElementById('download').href = img;
+          //触发点击事件下载
+          document.getElementById('download').click();
+          console.log(e)
+          
+        }
+        fileReader.readAsDataURL(fileDom.files[0]);
+      })
+    }
+    initFileEvent();
+  </script>
+</body>
+</html>
