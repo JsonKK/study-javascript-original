@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>商品放大镜</title>
+  <style>
+    body{
+      margin: 0;
+      padding: 0;
+    }
+    .demo{
+      max-width: 1000px;
+      margin: 100px auto;
+      position: relative;
+    }
+    .small-box{
+      width: 300px;
+      height: 300px;
+      border: 1px solid #ccc;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+    }
+    .big-box img,
+    .small-box img{
+      width: 100%;
+      height: auto;
+      object-fit : contain;
+      vertical-align: middle;
+    }
+    .anchor-content{
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      background-color: blanchedalmond;
+      opacity: .6;
+      left: 0;
+      top: 0;
+      display: none;
+    }
+    .big-box{
+      position: absolute;
+      left: 310px;
+      top: 0;
+      width: 300px;
+      height: 300px;
+      border:1px solid #ccc;
+      overflow: hidden;
+      display: none;
+    }
+    .big-img-wrap{
+      width: 900px;
+      height: 900px;
+      line-height: 900px;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+    h3{
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  
+  <h3>鼠标移上去，试试放大镜吧</h3>
+  <div class="demo" id="js-main-box">
+    <div class="small-box" id="small-box">
+      <img src="../../assets/img/demo/glass-little.jpg" alt="">
+      <div class="anchor-content" id="js-anchor"></div>
+    </div>
+    <div class="big-box" id="big-box">
+      <div class="big-img-wrap" id="js-big-img-wrap">
+        <img src="../../assets/img/demo/glass-big.jpg" alt="">
+      </div>
+    </div>
+  </div>
+  <script>
+    window.onload = function(){
+      // 定义内容盒子
+      let domSmallBox = document.getElementById('small-box');
+      // 定义放大镜锚点
+      let domAnchor = document.getElementById('js-anchor');
+      //定义放大镜内容
+      let domBigBox = document.getElementById('big-box');
+      //主盒子
+      let mainBox = document.getElementById('js-main-box');
+      //放大镜主内容
+      let domBigImgWrap = document.getElementById('js-big-img-wrap');
+      //鼠标进入显示放大镜
+      domSmallBox.onmouseover = function(){
+        domAnchor.style.display = 'block';
+        domBigBox.style.display = 'block';
+      }
+      //鼠标离开隐藏放大镜相关
+      domSmallBox.onmouseout = function(){
+        domAnchor.style.display = 'none';
+        domBigBox.style.display = 'none';
+      }
+      //计算放大镜相关偏移量
+      domSmallBox.onmousemove = function(event){
+        let left = event.clientX - mainBox.offsetLeft - domSmallBox.offsetLeft - domAnchor.offsetWidth/2;
+        let top = event.clientY - mainBox.offsetTop - domSmallBox.offsetTop - domAnchor.offsetHeight/2;
+        //可移动最大值
+        let anchorMaxLeft = domSmallBox.offsetWidth - domAnchor.offsetWidth;
+        let anchorMaxTop = domSmallBox.offsetHeight - domAnchor.offsetHeight;
+        if(left < 0){
+          left = 0;
+        }
+        else if(left > anchorMaxLeft){
+          left = anchorMaxLeft;
+        }
+        if(top < 0){
+          top = 0;
+        }
+        else if(top > anchorMaxTop){
+          top = anchorMaxTop;
+        }
+        domAnchor.style.left = left + 'px';
+        domAnchor.style.top = top + 'px';
+
+        //设置放大镜内容偏移量
+        domBigImgWrap.style.left = -left*3 + 'px';
+        domBigImgWrap.style.top = -top*3 + 'px';
+      }
+    }
+  </script>
+</body>
+</html>
