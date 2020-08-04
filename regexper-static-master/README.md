@@ -1,6 +1,4 @@
-# Regexper [![Build Status](https://travis-ci.org/javallone/regexper-static.svg?branch=master)](https://travis-ci.org/javallone/regexper-static)
-
-**This project has been migrated to https://gitlab.com/javallone/regexper-static**
+# Regexper
 
 Code for the http://regexper.com/ site.
 
@@ -33,3 +31,5 @@ These other gulp tasks are available:
 ## License
 
 See [LICENSE.txt](/LICENSE.txt) file for licensing details.
+
+#### 需要使用node 8.**版本
