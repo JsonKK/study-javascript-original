@@ -47,6 +47,7 @@ gulp.task('server', 'Start development server.', ['build'], function() {
   });
 
   return connect.server({
+    port : 8000,
     root: config.buildRoot,
     livereload: true
   });
