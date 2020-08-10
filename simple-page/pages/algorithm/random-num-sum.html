@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>随机计算随机数数组中两项和</title>
+  <link rel="stylesheet" href="../../assets/css/base.css">
+</head>
+
+<body>
+  <div id="content"></div>
+  <script type="module">
+    import utils from '../../utils/utils.js';
+    const privateMethod = {
+      initSum() {
+        //获取随机数，如果未定义区间，则取100以内随机整数
+        function random(num) {
+          if (num === undefined) {
+            num = 100;
+          }
+          return parseInt(Math.random() * num)
+        }
+        // 在数组内随机抽取两个数的和
+        function sum(arr) {
+          var num1 = arr[random(arr.length - 1)]
+          var num2;
+          while (!(num2 >= 0)) {
+            var cacheNum = arr[random(arr.length - 1)];
+            if (cacheNum != num1) {
+              num2 = cacheNum;
+            }
+          }
+          return num1 + num2;
+        }
+        var arr = [];
+        var i = 0;
+        while (i < 10) {
+          var num = random();
+          if (!arr.includes(num)) {
+            i++;
+            arr.push(num);
+          }
+        }
+        var target = sum(arr);
+        utils.log('两数之和是', target);
+        utils.log('随机数数组', arr);
+        utils.log('两个数在数组内索引(从0开始)',this.twoSum(arr, target));
+      },
+      //返回随机数和的索引（即和是由哪两项组成）
+      twoSum(nums, target) {
+        let map = {};//key数字 value下标
+        let loop = 0;//循环次数
+        let dis;//目标与当前值的差
+        while (loop < nums.length) {
+          dis = target - nums[loop];
+          if (map[dis] != undefined) {
+            return [map[dis], loop];
+          }
+          map[nums[loop]] = loop;
+          loop++;
+        }
+        return 0;
+      }
+    }
+    privateMethod.initSum();
+  </script>
+</body>
+
+</html>
