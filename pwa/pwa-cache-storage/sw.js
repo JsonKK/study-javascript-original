@@ -8,9 +8,22 @@ self.addEventListener('install',async event => {
     '/pwa-cache-storage/src/index.html',
     '/pwa-cache-storage/src/js/index.js',
     '/pwa-cache-storage/src/css/index.css',
-    '/pwa-cache-storage/src/css/reset.css'
+    '/pwa-cache-storage/src/css/reset.css',
+    '/pwa-cache-storage/manifest.json',
+    //图潘缓存
+    '/pwa-cache-storage/src/img/app-icon144.png',
+    '/pwa-cache-storage/src/img/bg.png',
+    '/pwa-cache-storage/src/img/btn-download.png',
+    '/pwa-cache-storage/src/img/logo.png',
+    '/pwa-cache-storage/src/img/person-1.png',
+    '/pwa-cache-storage/src/img/person-2.png',
+    '/pwa-cache-storage/src/img/person-3.png',
+    '/pwa-cache-storage/src/img/person-4.png',
+    '/pwa-cache-storage/src/img/time-bg.png',
+    '/pwa-cache-storage/src/img/title.png'
   ]);
   await self.skipWaiting();
+  console.log('install')
 })
 
 //增加活动
@@ -55,7 +68,7 @@ self.addEventListener('activate' ,async event => {
 self.addEventListener('fetch', (event)=> {
   console.log(event.request.url);
   const req = event.request;
-  event.respondWidth(netWorkFirst(req))
+  event.respondWith(netWorkFirst(req))
 });
 
 async function netWorkFirst(req){
