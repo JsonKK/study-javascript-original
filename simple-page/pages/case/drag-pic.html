@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>拖拽图片</title>
+  <link rel="stylesheet" href="../../assets/css/case/drag-pic.css">
+</head>
+<body>
+  <div class="box">
+    <h2 class="title">拖拽图片案例</h2>
+    <ul class="list" id="list">
+      <li class="item">
+        <img src="../../assets/img/case/bo.png" alt="">
+      </li>
+      <li class="item">
+        <img src="../../assets/img/case/fz.png" alt="">
+      </li>
+      <li class="item">
+        <img src="../../assets/img/case/jyd.png" alt="">
+      </li>
+      <li class="item">
+        <img src="../../assets/img/case/mb.png" alt="">
+      </li>
+      <li class="item">
+        <img src="../../assets/img/case/my.png" alt="">
+      </li>
+      <li class="item">
+        <img src="../../assets/img/case/sz.png" alt="">
+      </li>
+      <li class="item">
+        <img src="../../assets/img/case/yp.png" alt="">
+      </li>
+      <li class="item">
+        <img src="../../assets/img/case/tb.png" alt="">
+      </li>
+      <li class="item">
+        <img src="../../assets/img/case/yzs.png" alt="">
+      </li>
+    </ul>
+  </div>
+  <script type="module">
+    import drag from './drag-pic.js';
+    window.onload = function(){
+      drag.initPosition();
+    }
+  </script>
+</body>
+</html>

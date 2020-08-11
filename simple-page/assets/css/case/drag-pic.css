@@ -1,0 +1,45 @@
+html,body,ul{
+  margin: 0;
+  padding: 0;
+}
+.title{
+  font-size: 30px;
+  text-align: center;
+  color: #438a76;
+}
+li{
+  list-style: none;
+}
+.list{
+  width: 630px;
+  height: auto;
+  margin: 50px auto;
+  border:1px solid #ccc;
+  border-radius: 12px;
+  position: relative;
+  padding: 0 10px 10px 0;
+  box-sizing: content-box;
+}
+.list:after{
+  content: '';
+  display: block;
+  clear: both;
+  overflow: hidden;
+  height: 0;
+  line-height: 0;
+}
+li.item{
+  float: left;
+  width: 200px;
+  height: 200px;
+  margin: 10px 0 0 10px;
+  transition: all .5s;
+  border-radius: 12px;
+}
+li.item:hover{
+  background-color: #ccc;
+}
+li.item img{
+  width: 100%;
+  height: 100%;
+}
