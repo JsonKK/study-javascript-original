@@ -33,7 +33,7 @@ li.item{
   width: 200px;
   height: 200px;
   margin: 10px 0 0 10px;
-  transition: all .5s;
+  transition: background .5s;
   border-radius: 12px;
 }
 li.item:hover{
