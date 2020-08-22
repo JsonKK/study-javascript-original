@@ -93,9 +93,8 @@ var privateMethod = {
           // 鼠标距离窗口顶部位置
           dragObj.moveY = e.clientY;
           privateMethod.initItem();
-          dragObj.el.style.left = dragObj.startX + dragObj.moveX - dragObj.clickX + 'px';
-          dragObj.el.style.top = dragObj.startY + dragObj.moveY - dragObj.clickY + 'px';
-          dragObj.el.style.zIndex = 3;
+          //移动图片
+          privateMethod.moveItem();
           //鼠标距离容器左侧距离
           let mouseDistanceLeft = dragObj.moveX - listDom.offsetLeft;
           //鼠标距离顶部距离
@@ -107,15 +106,22 @@ var privateMethod = {
             y:mouseDistanceTop,
             el
           });
-          console.log(dragObj.moveX - listDom.offsetLeft,dragObj.moveY - listDom.offsetTop);
-          console.log(dragObj.el.offsetLeft,dragObj.el.offsetTop);
+          // console.log(dragObj.moveX - listDom.offsetLeft,dragObj.moveY - listDom.offsetTop);
+          // console.log(dragObj.el.offsetLeft,dragObj.el.offsetTop);
         }
         break;
       case 'mouseup':
         dragObj.onOff = false;
         let {trigger} = dragObj;
+        //如果有碰撞节点，将节点的坐标赋予当前坐标
+        //把初始的坐标赋予碰撞元素
         if(trigger){
-
+          dragObj.el.style.left = trigger.offsetLeft + 'px';
+          dragObj.el.style.top = trigger.offsetTop + 'px';
+          trigger.style.left = dragObj.startX + 'px';
+          trigger.style.top = dragObj.startY + 'px';
+          trigger.style.transform = '';
+          trigger.style.boxShadow = '';
         }
         else{
           //图形回到原始位置
@@ -164,6 +170,34 @@ var privateMethod = {
         break;
       }
     }
+  },
+  //移动图片
+  moveItem(){
+    let moveLeft = dragObj.startX + dragObj.moveX - dragObj.clickX;
+    let moveTop = dragObj.startY + dragObj.moveY - dragObj.clickY;
+    //获取容器
+    let box = document.getElementById('list');
+    //宽高需要不包括边线
+    let boxHeight = box.clientHeight;
+    let boxWidth = box.clientWidth;
+    let itemWidth = dragObj.el.offsetWidth;
+    let itemHeight = dragObj.el.offsetHeight;
+    console.log(boxWidth,moveLeft);
+    if(moveLeft < 0){
+      moveLeft = 0;
+    }
+    else if(moveLeft > boxWidth - itemWidth){
+      moveLeft = boxWidth - itemWidth;
+    }
+    if(moveTop < 0){
+      moveTop = 0;
+    }
+    else if(moveTop > boxHeight - itemHeight){
+      moveTop = boxHeight - itemHeight;
+    }
+    dragObj.el.style.left = moveLeft + 'px';
+    dragObj.el.style.top = moveTop + 'px';
+    dragObj.el.style.zIndex = 3;
   }
 }
 
