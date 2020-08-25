@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>positon 对比 translate</title>
+  <link rel="stylesheet" href="../../assets/css/normalize.css">
+  <style>
+    .move-box{
+      width: 300px;
+      height: 300px;
+      margin: 0 auto;
+      position: absolute;
+      background-color: bisque;
+      animation: animate2 3s infinite;
+    }
+    @keyframes animate1{
+      from{
+        top:0;
+      }
+      to{
+        top:100px;
+      }
+    }
+    @keyframes animate2{
+      from{
+        transform:translateY(0px);
+      }
+      to{
+        transform:translateY(100px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="move-box"></div>
+</body>
+</html>
