@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>打气球</title>
+  <link rel="stylesheet" href="../../assets/css/normalize.css">
+  <link rel="stylesheet" href="../../assets/css/case/aim-balloon.css">
+</head>
+<body>
+  <div id="ball-box" class="ball-box"></div>
+  <script type="module">
+    import aimBalloon from './aim-balloon.js';
+    window.onload = function(){
+      // 初始化小球
+      aimBalloon.initBall();
+    }
+  </script>
+</body>
+</html>
