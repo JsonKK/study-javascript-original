@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>使用canvas绘制多边形</title>
+  <link rel="stylesheet" href="../../assets/css/bootstrap.css" />
+  <style>
+    *{
+      margin:0;
+    }
+    body{
+      background-color: #f5f5f5;
+    }
+    .canvas-box{
+      width: 1200px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      margin:0 auto;
+      background: #fff;
+      min-height: 100vh;
+      padding: 20px 0;
+    }
+    .canvas-wrap{
+      max-width: 390px;
+    }
+    canvas{
+      width: 380px;
+      height: 214px;
+      border: 1px solid #888;
+    }
+    button:focus{
+      outline: none!important;
+    }
+    .hint-box{
+      position: fixed;
+      top: -500px;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      transition: all .5s;
+    }
+    .hint-box.active{
+      top: 0;
+    }
+    .min-title{
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <div class="alert alert-warning hint-box" role="alert" id="hint-box"></div>
+  <div class="canvas-box" id="canvas-box">
+    <div class="canvas-wrap">
+      <canvas id="triangle" ></canvas>
+      <p class="min-title">输入等腰三角形的边长</p>
+      <div class="input-group">
+        <input type="text" class="form-control side-input" name="triangle">
+        <div class="input-group-btn">
+          <!-- Buttons -->
+          <button type="button" class="btn btn-primary btn-side">确定</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script type="module">
+    import polygons from '../../assets/js/canvas/polygons.js';
+    window.onload = function(){
+      //初始化边长赋值事件
+      polygons.sideInputEvent();
+      
+    }
+  </script>
+</body>
+</html>

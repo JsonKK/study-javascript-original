@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>canvas translate</title>
+  <style>
+    #canvas{
+      border:1px solid;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas"  width="200" height="200"></canvas>
+  <script type="text/javascript">
+    window.addEventListener('load',drawDiagonal,true);
+    function drawDiagonal(){
+      //获取画布节点
+      let canvas = document.getElementById('canvas');
+      //绘图获取上下文
+      let context = canvas.getContext('2d');
+      //保存当前绘图状态
+      context.save();
+      //向右下方移动绘图上下文
+      //重新映射远点位置
+      context.translate(70,80);
+      
+      // 以远点为起点绘制对角线
+      context.beginPath();
+      context.moveTo(0,0);
+      context.lineTo(70,-70);
+      context.stroke();
+
+      //恢复原有的绘图状态
+      //后续的圆点位置不会被修改
+      context.restore();
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    canvas{
+      border: 1px solid #888;
+    }
+  </style>
+</head>
+<body>
+  <!-- 未设置宽高的画布，默认为宽300，高150 -->
+  <canvas id="canvas"></canvas>
+  <script>
+    drawDiagonal();
+    function drawDiagonal(){
+      // 获取canvas元素
+      let canvas = document.getElementById('canvas');
+      //获取绘图上下文
+      let context = canvas.getContext('2d');
+
+      //开始绘制路径
+      context.beginPath();
+      //起笔
+      context.moveTo(0,0)
+      //绘制路径
+      context.lineTo(300,150)
+      //渲染出线条
+      context.stroke();
+
+    }
+  </script>
+</body>
+</html>

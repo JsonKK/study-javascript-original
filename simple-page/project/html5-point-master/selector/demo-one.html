@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Query Selector Demo</title>
+  <style>
+    td{
+      border-style: solid;
+      border-width: 1px;
+      font-size: 3em;
+    }
+    td:hover{
+      background-color: cyan;
+    }
+    #hover-result{
+      color:green;
+      font-size: 2em;
+    }
+  </style>
+</head>
+<body>
+  <section>
+    <table id="table">
+      <tr>
+        <td>A1</td>
+        <td>A2</td>
+        <td>A2</td>
+      </tr>
+      <tr>
+        <td>B1</td>
+        <td>B2</td>
+        <td>B2</td>
+      </tr>
+      <tr>
+        <td>C1</td>
+        <td>C2</td>
+        <td>C2</td>
+      </tr>
+    </table>
+    <div>Focus the button,hover over the tabel cells.and hit Enter to identify them using querySelector('td:hover')</div>
+    <button type="button" id="find-hover" autofocus>Find 'td:hover' target</button>
+    <div id="hover-result"></div>
+  </section>
+  <script type="text/javascript">
+    document.getElementById('find-hover').onclick = function(){
+      let hover = document.querySelector('td:hover');
+      if(hover){
+        document.getElementById('hover-result').innerHTML = hover.innerHTML;
+      }
+    }
+    document.getElementById('table').addEventListener('mouseenter',function(e){
+      if(e.target.tagName == 'TD'){
+        document.getElementById('hover-result').innerHTML = e.target.innerHTML;
+      }
+    },true)
+
+
+  </script>
+</body>
+</html>
