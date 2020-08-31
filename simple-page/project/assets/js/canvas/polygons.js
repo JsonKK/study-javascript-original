@@ -1,4 +1,7 @@
-
+const localData = {
+  // 图形距离顶部距离
+  pointeTop : 10
+}
 
 const privateMethod = {
   //提醒吐司
@@ -38,9 +41,15 @@ const privateMethod = {
         //三角形
         case 'triangle':
           privateMethod.drawTriangle(Number(inputDomValue));
-          inputDom.value = '';
+          break;
+        case 'rectangle':
+          privateMethod.drawRectangle(Number(inputDomValue));
+          break;
+        default:
+          this.toast('该图形还没开发，请稍后~~');
           break;
       }
+      inputDom.value = '';
       console.log(dom);
     },false);
   },
@@ -57,15 +66,18 @@ const privateMethod = {
     let context = canvas.getContext('2d');
     // 获取画布宽度和高度
     let canvasWidth = canvas.width;
-    // let canvasHeight = canvas.height;
-    console.log(canvasWidth);
+    let canvasHeight = canvas.height;
+    //清除画布内容重新绘制
+    context.clearRect(0,0,canvasWidth,canvasHeight);
+    // 重新开始一个新的路径
+    context.beginPath();
     //计算三角形高度
     //因为sin60 = 直角边（高）/斜边 => 直角边（高） = sin(60) * 斜边;
     let height = Math.sin(Math.PI / 3) * side;
     //三角形中点
     //中点是画布宽度的中心
     let centerPointX = canvasWidth / 2;
-    let centerPointY = 10;
+    let centerPointY = localData.pointeTop;
     //起笔点固定在中点
     context.moveTo(centerPointX,centerPointY);
     //绘制从中点至左下边
@@ -76,6 +88,49 @@ const privateMethod = {
     context.lineTo(centerPointX,centerPointY);
     //绘制轨迹
     context.stroke();
+  },
+  //绘制正方形
+  drawRectangle(side){
+    //如果边长不合规则不处理
+    if(!(side > 0)){
+      return;
+    }
+    //获取画布节点
+    let canvas = document.getElementById('rectangle');
+    //获取画布上下文
+    let context = canvas.getContext('2d');
+    //获取画布宽度
+    let canvasWidth = canvas.width;
+    let canvasHeight = canvas.height;
+    //中心起点位置
+    let centerPointX = canvasWidth/2;
+    let centerPointY = localData.pointeTop;
+    //清除画布内容重新绘制
+    context.clearRect(0,0,canvasWidth,canvasHeight);
+    // 重新开始一个新的路径
+    context.beginPath();
+    // 起笔定位在中心位置
+    context.moveTo(centerPointX,centerPointY);
+    //绘制左上边
+    context.lineTo(centerPointX-side/2,centerPointY);
+    // 绘制左边
+    context.lineTo(centerPointX-side/2,side);
+    //绘制底边
+    context.lineTo(centerPointX+side/2,side);
+    //绘制右边
+    context.lineTo(centerPointX+side/2,centerPointY);
+    //回到起点
+    context.lineTo(centerPointX,centerPointY);
+    //绘制轨迹
+    context.stroke();
+  },
+  // 绘制正五边形
+  drawFiveShape(side){
+    // 如果边长不符合规范不处理
+    if(!(side > 0)){
+      return;
+    }
+    
   }
 }
 
