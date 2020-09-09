@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>globalCompositeOperation属性学习和尝试</title>
+  <link rel="stylesheet" href="../../assets/css/bootstrap.css" />
+  <style>
+    *{
+      margin: 0;
+    }
+    ui,li{
+      list-style: none;
+    }
+    .content-box{
+      width: 1024px;
+      margin: 0 auto;
+    }
+    .list{
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+
+    }
+    .item{
+      width: 300px;
+    }
+    .item-title{
+      font-weight: 600;
+    }
+    .item-sub-title{
+      color: #888;
+    }
+    .item-canvas{
+      border:1px solid #ccc;
+      width: 300px;
+      height: 300px;
+
+    }
+  </style>
+</head>
+<body>
+  <div class="content-box">
+    <ul class="list" id="list">
+      <li class="item">
+        <h5 class="item-title">source-over</h5>
+        <p class="item-sub-title">默认，在目标图像上显示源图像</p>
+        <canvas class="item-canvas"></canvas>
+      </li>
+    </ul>
+  </div>
+  <script type="module">
+    import page from '../../assets/js/canvas/globalCompositeOperation.js';
+    window.onload = function(){
+      page.initPage();
+    }
+  </script>
+</body>
+</html>
