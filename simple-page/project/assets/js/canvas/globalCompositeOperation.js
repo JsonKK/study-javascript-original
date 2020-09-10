@@ -92,29 +92,36 @@ const privateMethod = {
     //3.创建canvas标签，往Li种增加canvas标签
     //4.返回处理好的li给外部，由外部一次性渲染
     const li = document.createElement('li');
-    const titleStr = `<h5 class="item-title">${title || ''}</h5>
+    const titleStr = `<h5 class="item-title">${key || ''}</h5>
     <p class="item-sub-title">${subTitle || ''}</p>`;
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
     // 获取画布宽高
     const canvasWidth = canvas.width;
     const canvasHeight = canvas.height;
+    li.classList += 'item';
     li.innerHTML = titleStr;
     context.fillStyle = 'yellowgreen';
     // 平铺图形
     //1、2参数：起始位置的x、y坐标
     //3、4参数：绘制的宽度和高度
-    context.fillRect(0,0,canvasWidth,canvasHeight);
+    context.fillRect(10,10,canvasWidth/3,canvasHeight/3);
+    context.globalCompositeOperation = key;
+    context.beginPath();
+    context.fillStyle = 'gold';
+    context.arc(canvasWidth/3,canvasHeight/3,40,0,2*Math.PI);
+    context.fill();
     li.appendChild(canvas);
     return li;
   },
   //初始化页面
   initPage(){
-    let lis = this.renderGraph({
-      title : '测试主标题',
-      subTitle : '测试副标题'
+    let list = document.getElementById('list');
+    list.innerHTML = '';
+    localData.arr.forEach((item)=>{
+      let node = this.renderGraph({key : item.key,subTitle : item.subTitle,title : item.title()});
+      list.appendChild(node);
     })
-    document.getElementById('list').appendChild(lis);
   }
 }
 
