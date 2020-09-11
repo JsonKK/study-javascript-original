@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>html5 audio</title>
+</head>
+<body>
+  <audio controls>
+    <!-- 使用source代替src -->
+    <!-- 如果有多种类型的资源，就可以使用此方式 -->
+    <source src="../../assets/video/Various Artists _ Johann Sebastian Bach - Air.mp3">
+    an audio content
+  </audio>
+
+  <script type="module">
+    import methods from '../../assets/js/audioVideo/audio.js';
+    window.addEventListener('load',()=>{
+      methods.init();
+
+      //测试是否支持音频 mp3
+      console.log(methods.verifyMedia({type : 1,mime : 'mp3'}))
+    })
+  </script>
+</body>
+</html>

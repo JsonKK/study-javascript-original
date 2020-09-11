@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>使用自定义音频播放器</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    .scroll {
+      width: 400px;
+      height: 8px;
+      background-color: #ccc;
+      margin: 50px;
+      position: relative;
+    }
+
+    .bar {
+      position: absolute;
+      width: 10px;
+      height: 20px;
+      background: #369;
+      top: -50%;
+      margin-top: -2px;
+      cursor: pointer;
+      left: 0;
+    }
+
+    .mask {
+      width: 0;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background-color: #369;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="audio-box">
+    <audio controls src="../../assets/video/Various Artists _ Johann Sebastian Bach - Air.mp3" id="audio"></audio>
+    <button id="play">播放</button>
+  </div>
+  <div class="scroll" id="scroll">
+    <div class="bar"></div>
+    <div class="mask"></div>
+  </div>
+  <div id="demo"></div>
+  <script type="module">
+    import methods from '../../assets/js/audioVideo/audio.js';
+    window.addEventListener('load', () => {
+      //判断页面是否支持audio mp3，支持增加点击播放和暂停事件
+      if (methods.verifyMedia({ type: 1, mime: 'mp3' })) {
+        let playBtn = document.getElementById('play');
+        let audio = document.getElementById('audio');
+        playBtn.onclick = function () {
+          // 判断音频是否暂停
+          if (audio.paused) {
+            audio.play();
+            playBtn.innerText = '暂停';
+          }
+          else {
+            audio.pause();
+            playBtn.innerText = '开始';
+          }
+        }
+      }
+
+      //拖拽
+      methods.dragBar();
+    })
+  </script>
+</body>
+
+</html>
