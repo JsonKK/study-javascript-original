@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>文档间消息通信</title>
+</head>
+<body>
+  <input type="color" name="color" id="color">
+  <iframe src="./document-child" frameborder="0" width="800" height="600" id="my-frame"></iframe>
+  <script>
+    //白名单源
+    const localData = {
+      whiteOrigin : ['http://10.10.80.203:8000/']
+    }
+
+    const privateMethods = {
+      //获取拾色器色值
+      getColor(){
+        let colorInput = document.getElementById('color');
+        colorInput.onchange = function(e){
+          let value = e.target.value;
+          privateMethods.postMessage(value);
+        }
+      },
+      postMessage(color){
+        //如果没有颜色则返回
+        if(!color){
+          return;
+        }
+        let myFrame = document.getElementById('my-frame');
+        //iframe对象内容
+        //第一个参数为需要传递的数据
+        // 第二个参数为能够接收到的数据源地址(*为所有路径)
+        myFrame.contentWindow.postMessage(color,'*');
+      },
+      // 初始化色值
+      initColor(color){
+        // 如果没有颜色返回
+        if(!color){
+          return;
+        }
+        let colorInput = document.getElementById('color');
+        colorInput.value = color;
+      }
+    }
+
+
+    window.onload = function(){
+      //色值变化
+      privateMethods.getColor();
+    }
+
+    //message数据
+    window.addEventListener('message',(e)=>{
+        console.log('parent',e);
+        privateMethods.initColor(e.data);
+    },false);
+  </script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>文档间消息通信子页面</title>
+  <style>
+    p{
+      color: #212121;
+      background-color: bisque;
+      line-height: 2em;
+      font-size: 34px;
+    }
+  </style>
+</head>
+<body>
+  <h1>是一个iframe的子页面</h1>
+  <input type="color" id="color" name="color" />
+  <p>一个会变色的段落</p>
+  <script>
+    const privateMethods = {
+      catchMessage(){
+        window.addEventListener('message',privateMethods.messageHandler,true);
+      },
+      //数据处理方法
+      messageHandler(e){
+        if(e.data){
+          let tagP = document.getElementsByTagName('p');
+          for(let i = 0,len = tagP.length;i<len;i++){
+            tagP[i].style.backgroundColor = e.data; 
+          }
+          if(e.type != 1){
+            let colorInput = document.getElementById('color');
+            colorInput.value = e.data;
+          }
+        }
+      },
+      //获取拾色器色值
+      getColor(){
+        let colorInput = document.getElementById('color');
+        colorInput.onchange = function(e){
+          let value = e.target.value;
+          privateMethods.postMessage(value);
+        }
+      },
+      //通知父页面
+      postMessage(color){
+        let colorInput = document.getElementById('color');
+        if(!color){
+          return;
+        }
+        privateMethods.messageHandler({data:color,type:1})
+        window.top.postMessage(color,'*');
+      }
+    }
+
+    window.onload = function(){
+      privateMethods.getColor();
+    }
+
+    privateMethods.catchMessage();
+  </script>
+</body>
+</html>

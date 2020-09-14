@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>屏幕快照</title>
+  <style>
+    .content{
+      background: #ccc;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="content" id="content">
+    <h5>这是个很大的标题</h5>
+    <p>这是一段话</p>
+  </div>
+  <script>
+    window.onload = function(){
+      //屏幕快照
+      function screen(){
+        //创建canvas
+        let canvas = document.createElement('canvas');
+        //获取页面body
+        let content = document.getElementById('content');
+        //创建画布内容
+        let context = canvas.getContext('2d');
+        canvas.width = 400;
+        canvas.height = 300;
+        context.canvas.toDataURL("image/jpeg");
+        document.body.appendChild(canvas);
+      }
+
+      screen();
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>video示例</title>
+</head>
+<body>
+  <!-- autobuffer 自动缓存 -->
+  <video id="movies" autobuffer="true" width="400" height="300" autoplay controls="controls">
+    <source src="../../assets/video/告白气球.mp4" type="video/mp4">
+  </video>
+  <canvas id="timeline" style="border:1px solid #ccc;"></canvas>
+  <script type="module">
+    import methods from '../../assets/js/audioVideo/video.js';
+
+    window.addEventListener('load',()=>{
+      methods.init();
+    })
+  </script>
+</body>
+</html>
