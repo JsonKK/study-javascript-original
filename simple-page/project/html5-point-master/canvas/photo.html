@@ -16,24 +16,40 @@
     <h5>这是个很大的标题</h5>
     <p>这是一段话</p>
   </div>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.js"></script>
   <script>
-    window.onload = function(){
-      //屏幕快照
-      function screen(){
-        //创建canvas
-        let canvas = document.createElement('canvas');
-        //获取页面body
-        let content = document.getElementById('content');
-        //创建画布内容
-        let context = canvas.getContext('2d');
-        canvas.width = 400;
-        canvas.height = 300;
-        context.canvas.toDataURL("image/jpeg");
-        document.body.appendChild(canvas);
-      }
+    var saveFile = function(data, filename){
+      var save_link = document.createElementNS('http://www.w3.org/1999/xhtml', 'a');
+      save_link.href = data;
+      save_link.download = filename;
 
-      screen();
-    }
+      var event = document.createEvent('MouseEvents');
+      event.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+      save_link.dispatchEvent(event);
+    };
+    html2canvas(document.body).then(function(canvas) {
+      var image = new Image();
+      image.src = canvas.toDataURL("image/png");
+      // document.body.appendChild(image);
+      saveFile(image.src.replace("image/jpeg", "image/octet-stream"),new Date().getTime()+".png");
+    });
+    // window.onload = function(){
+    //   //屏幕快照
+    //   function screen(){
+    //     //创建canvas
+    //     let canvas = document.createElement('canvas');
+    //     //获取页面body
+    //     let content = document.getElementById('content');
+    //     //创建画布内容
+    //     let context = canvas.getContext('2d');
+    //     canvas.width = 400;
+    //     canvas.height = 300;
+    //     context.canvas.toDataURL("image/jpeg");
+    //     document.body.appendChild(canvas);
+    //   }
+
+    //   screen();
+    // }
   </script>
 </body>
 </html>
