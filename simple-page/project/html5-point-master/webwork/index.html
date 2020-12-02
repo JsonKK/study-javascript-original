@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>熟悉api</title>
+</head>
+<body>
+  <button id="stopButton">Stop Task</button>
+  <button id="helloButton">Post a Message</button>
+  <button onclick="document.location = document.location">Reload</button>
+
+  <label for="workerCount">Number of Workers</label>
+  <select name="workerCount" id="workerCount">
+    <option value="1">1</option>
+    <option value="2" selected>2</option>
+    <option value="4">4</option>
+    <option value="8">8</option>
+    <option value="16">16</option>
+  </select>
+  <div id="imageContainer"></div>
+  <div id="logOutput"></div>
+  
+  <script type="module">
+    // 判断是否支持
+    if(!(typeof(Worker) != 'undefined')){
+      return;
+    }
+    const worker = new Worker('./worker.js');
+    //关闭worker线程
+    function stopWorker(){
+      worker.terminate();
+    }
+
+    //接收到worker数据
+    function messageHandler(e){
+      console.log(e.data);
+    }
+
+    //错误监听
+    function errorHandler(e){
+      console.warn(e.message,e);
+    }
+
+    //监听消息
+    worker.addEventListener('message',messageHandler,true);
+
+    //监听错误
+    worker.addEventListener('error',errorHandler,true);
+
+    //发送数据
+    document.getElementById('helloButton').onclick = function(){
+      worker.postMessage('here\'s a message for you');
+    }
+
+    // 停止worker
+    document.getElementById('stopButton').onclick = stopWorker;
+
+
+  </script>
+</body>
+</html>

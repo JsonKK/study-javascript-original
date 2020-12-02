@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>测试</title>
+  <style>
+    .box{
+      width: 30px;
+      background-color: gold;
+      height: 0;
+      padding-bottom: 50%;
+    }
+    .input:-webkit-autofill{
+      -webkit-text-fill-color: #000 !important;
+      outline: none;
+      background-color:rgb(250,255,189)!important;
+      background-image:none!important;
+      -webkit-box-shadow:0px 1000px white inset;
+      border:1px solid #CCC !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <span>123</span>
+  </div>
+  <form action="/">
+    <input class="input" type="text" name="name"/>
+    <button type="submit">提交</button>
+  </form>
+  <button id="testListen">测试监听</button>
+  <script>
+    window.onload = function(){
+      let $dom = document.getElementById('testListen');
+      // $dom.addEventListener('click',()=>{
+      //   console.log('第一次')
+      // })
+      // $dom.addEventListener('click',()=>{
+      //   console.log('第二次')
+      // })
+      $dom.onclick = function(){
+        console.log('第一次')
+      }
+      $dom.onclick = function(){
+        console.log('第二次')
+      }
+    }
+  </script>
+</body>
+</html>

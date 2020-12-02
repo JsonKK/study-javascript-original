@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>from表单新部件</title>
+</head>
+<body>
+  <form name="myForm">
+    <div class="row">
+      <label for="tel">电话号码</label>
+      <input type="tel" name="tel" id="tel" placeholder="请输入信息" >
+    </div>
+    <div class="row">
+      <label for="email">电子邮件地址文本框</label>
+      <input type="email" name="email" id="email" placeholder="请输入信息" autofocus>
+    </div>
+    <div class="row">
+      <label for="url">网页的URL</label>
+      <input type="url" name="url" id="url" placeholder="请输入信息" autofocus>
+    </div>
+    <div class="row">
+      <label for="search">用于搜索</label>
+      <input type="search" name="search" id="search" placeholder="请输入信息">
+    </div>
+    <div class="row">
+      <label for="range">数值选择器</label>
+      <input type="range" name="range" id="range" min="10" max="30" placeholder="请输入信息">
+      <span class="js-range-num"></span>
+    </div>
+    <div class="row">
+      <label for="color">颜色选择器</label>
+      <input type="color" name="color" id="color" placeholder="请输入信息">
+    </div>
+    <div class="row">
+      <label for="number">只包含数值的文本框</label>
+      <input type="number" name="number" id="number" placeholder="请输入信息" />
+    </div>
+    <div class="row">
+      <label for="datetime">显示完整的日期和时间、包括时区</label>
+      <input type="datetime" name="datetime" id="datetime" placeholder="请输入信息">
+    </div>
+    <div class="row">
+      <label for="dateLocal">显示日期和时间，不含时区</label>
+      <input type="datetime-local" name="datetimeLocal" id="datetimeLocal" placeholder="请输入信息">
+    </div>
+    <div class="row">
+      <label for="time">不含时区的时间选择器和指示器</label>
+      <input type="time" name="time" id="time" placeholder="请输入信息">
+    </div>
+    <div class="row">
+      <label for="date">日期选择器</label>
+      <input type="date" name="date" id="date" placeholder="请输入信息">
+    </div>
+    <div class="row">
+      <label for="week">某年中的周选择器</label>
+      <input type="week" name="week" id="week" placeholder="请输入信息">
+    </div>
+    <div class="row">
+      <label for="month">某年中的月选择器</label>
+      <input type="month" name="month" id="month" placeholder="请输入信息">
+    </div>
+    <div class="row">
+      <label for="contacts">
+        datalist的使用
+      </label>
+      <input type="email" name="datalistEmail" id="datalistEmail" list="con">
+      <datalist id="contactList">
+        <option value="x@example.com" label="racer x"></option>
+        <option value="peter@example.com" label="peter"></option>
+      </datalist>
+    </div>
+  </form>
+
+  <script type="module">
+    // 初始化数值选择器 change事件
+    function initRange(){
+      // 获取range节点
+      let range = document.getElementById('range');
+      //获取数值渲染框
+      let rangeNum = document.getElementsByClassName('js-range-num')[0];
+      //设置range值
+      range.valueAsNumber = 12;
+      // 对数值内容进行赋值
+      rangeNum.innerText = range.valueAsNumber || '';
+
+      {
+        //监控实时滑动
+        let onOff = false;
+        //按下的按钮触发开关，滑动时候改变值，按钮松开开关关闭
+        range.onmousedown = function(){
+          onOff = true;
+        }
+        // 监听range的change事件，改变文本框的值
+        range.onmousemove = function(e){
+          if(onOff){
+            let dom = e.currentTarget;
+            rangeNum.innerText = dom.value || '';
+          }
+        }
+        //鼠标松开开关关闭
+        range.onmouseup = function(){
+          onOff = false;
+        }
+      }
+
+      
+    }
+    
+    window.onload = function(){
+      initRange();
+    }
+  </script>
+</body>
+</html>

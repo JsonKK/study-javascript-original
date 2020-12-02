@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>drawImage</title>
+</head>
+<body>
+  <canvas id="canvas" width="1000" height="600"></canvas>
+  <script>
+    window.addEventListener('load',()=>{
+      let canvas = document.getElementById('canvas');
+      let context = canvas.getContext('2d');
+      let url = '../../../assets/img/demo/pineapple.jpg';
+      let image = new Image();
+      image.src = url;
+
+      image.onload = function(){
+        //把图片绘制在画布上
+        context.drawImage(image,0,0);
+        //取出图片像素
+        let imageData = context.getImageData(0,0,50,100);
+        // 清除当前画布所有内容
+        context.clearRect(0,0,canvas.width,canvas.height);
+        // 把生成的图片绘制到画布上
+        context.putImageData(imageData,0,0);
+
+      }
+
+    })
+  </script>
+</body>
+</html>

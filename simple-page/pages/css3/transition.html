@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>transition过度效果</title>
+  <style>
+    .box{
+      width: 100px;
+      height: 100px;
+      transition: width 1s ease;
+      background-color: #000;
+    }
+    .box:hover{
+      width: 300px;
+    }
+    .box-1{
+      width: 100px;
+      height: 100px;
+      background-color: #000;
+      margin-top: 50px;
+      transition: transform 1s ease-out;
+    }
+    .box-1:hover{
+      transform: rotate(45deg);
+    }
+  </style>
+</head>
+<body>
+  <div class="box"></div>
+  <div class="box-1"></div>
+</body>
+</html>

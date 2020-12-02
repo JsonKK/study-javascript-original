@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>animation处理</title>
+  <style>
+    .demo{
+      width: 50px;
+      height: 50px;
+      background-color: antiquewhite;
+      border-radius: 50%;
+      animation: jump 2s ease-in-out infinite alternate;
+    }
+    @keyframes jump{
+      0% {
+        transform: translateY(0);
+      }
+      50%{
+        transform: translateY(200px);
+      }
+      100%{
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="demo"></div>
+</body>
+</html>

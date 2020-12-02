@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>画布基础使用</title>
+</head>
+<body>
+  <canvas id="canvas" style="border: 1px solid #ccc;"></canvas>
+  <canvas id="draw_pen" width="500px" height="300px" style="border:1px solid lightgreen"></canvas>
+  <script type="module">
+    window.onload = function(){
+      {
+        //绘制矩形
+        let canvas = document.getElementById('canvas');
+        let context = canvas.getContext('2d');
+        context.fillRect(10,10,50,50);
+      }
+
+      {
+        let canvas = document.getElementById('canvas');
+        let context = canvas.getContext('2d');
+        //清空画布
+        context.clearRect(0,0,canvas.width,canvas.height);
+        //开始路径
+        context.beginPath();
+        //设置中心
+        context.moveTo(canvas.width/2,canvas.height/2);
+        //画第一条线
+        context.lineTo(100,100)
+        // context.beginPath();
+        context.moveTo(canvas.width/2,canvas.height/2);
+        context.lineTo(50,100);
+        // context.closePath();
+        context.stroke();
+      }
+
+      {
+        let canvas = document.getElementById('canvas');
+        let context = canvas.getContext('2d');
+        //清空画布
+        context.clearRect(0,0,canvas.width,canvas.height);
+        context.beginPath();
+        //绘制一个弧度
+        context.arc(canvas.width/2,canvas.height/2,40,-0.5*Math.PI,0.5*Math.PI);
+        //结束路径,会把路径进行闭合
+        // context.closePath();
+        //描边
+        // context.stroke();
+        //填充
+        context.fillStyle = '#ff00ff';
+        context.fill();
+      }
+
+      {
+        //文本输出
+        let canvas = document.getElementById('canvas');
+        let context = canvas.getContext('2d');
+        //绘制文本
+        let text = 'hello world';
+        context.fillStyle = '#ff0000';
+        //设置字体
+        context.font = '30px serif';
+        //渲染文字
+        context.fillText(text,40,40);
+        //使用文字秒表
+        context.strokeText(text,40,100)
+      }
+
+      {
+        // 测试绘制正多边形
+        var canvas = document.getElementById("draw_pen");
+        var ctx = canvas.getContext("2d");
+        //参数说明 ctx(canvas上下文) n多边形的边数 dx,dy为圆心坐标 size为多边形大小
+        function createPolygon(ctx,n,dx,dy,size){
+            ctx.clearRect(0,0,500,300);//清空画布
+            ctx.strokeStyle = "red";//设置填充色
+            ctx.beginPath();//开始绘制
+            var degree = (2*Math.PI)/n;
+            for(var i = 0;i < n;i ++){
+                var x = Math.cos(i*degree);
+                var y = Math.sin(i*degree);
+                console.log('x',x);
+                ctx.lineTo(x*size+dx,y*size+dy);
+            }
+            ctx.closePath();
+            ctx.stroke();
+            console.log(n);
+        }
+        //小球自动变化的效果
+        var m = 3;
+        setInterval(function(){
+            createPolygon(ctx,m,200,150,50);
+            m++;
+        },1000);
+      }
+    }
+  </script>
+</body>
+</html>
