@@ -1,7 +1,8 @@
 import Express from 'express'
 //测试字符串正则
 import './src/single-string.js';
-
+//正则匹配位置攻略
+import './src/position-ways.js';
 
 let app = Express()
 app.get('/', (req, res) => {
