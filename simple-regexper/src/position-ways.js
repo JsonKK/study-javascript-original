@@ -128,6 +128,17 @@ import utils from '../utils/index.js';
 }
 
 {
+  //价格格式化
+  function format(num){
+    //?=是匹配某个字符的前面
+    //
+    return num.toFixed(2).replace(/\B(?=(\d{3})+\b)/g,',').replace(/^/,'$ ');
+  }
+  let num = format(1888);
+  console.log(num);
+}
+
+{
   //所有字符间隔3位加_，第一个位置不匹配
   let str = 'fsadrfawrwe434324fsdfrewr fdsfsdf'.replace(/(?!^)(?=(.{3})+$)/g,'_');
   console.log(str);
@@ -152,3 +163,37 @@ import utils from '../utils/index.js';
   
 }
 
+{
+  //验证码问题
+
+  //需求：密码长度为6~12位数字、大小写字母；必须包含数字和小写字母
+  {
+    //先列举满足条件一
+    let regex = /[0-9a-zA-Z]{6,12}/g
+    let str = '323211233';
+    utils.log(regex.test(str),str);
+  }
+
+  {
+    //增加条件2
+    let regex = /(?=.*[0-9])^[0-9a-zA-Z]{6,12}/g;
+    let str = 'fdsdwf2er';
+    utils.log(regex.test(str),str);
+  }
+
+  {
+    //增加条件3
+    //目前是只是限制小写字母和数字
+    let regex = /(?=.*[a-z])(?=.*[0-9])^[0-9a-zA-Z]{6,12}$/g;
+    let str = 'fsdffd23sf';
+    utils.log(regex.test(str),str);
+  }
+
+  {
+    //整理综合
+    //限制必须包含大小写字母或者数字任意两种，和6~12个字符完整
+    let regex = /((?=.*[0-9])(?=.*[a-z])|(?=.*[0-9])(?=.*[A-Z])|(?=.*[a-z])(?=.*[A-Z]))^[0-9a-zA-Z]{6,12}$/g
+    let str = 'erwrwerAwfsd';
+    utils.log(regex.test(str),str);
+  }
+}

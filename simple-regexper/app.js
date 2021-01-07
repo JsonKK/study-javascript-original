@@ -3,6 +3,8 @@ import Express from 'express'
 import './src/single-string.js';
 //正则匹配位置攻略
 import './src/position-ways.js';
+//慕课网视频教程
+import './src/muke.js';
 
 let app = Express()
 app.get('/', (req, res) => {
