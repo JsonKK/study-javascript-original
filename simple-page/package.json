@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "http-server -a 0.0.0.0 -p 8000 -c-1"
+    "start": "http-server -a 0.0.0.0 -p 8001 -c-1"
   },
   "keywords": [],
   "author": "",

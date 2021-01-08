@@ -197,3 +197,16 @@ import utils from '../utils/index.js';
     utils.log(regex.test(str),str);
   }
 }
+
+{
+  //验证码解法2（使用反向推理）
+  //1.限定只能是大小写字母、数字
+  //2.不能全是数字、不能全是小写字母、不能全是大写字母
+  let min = 7,max = 12;
+  let regex = /(?!^[0-9]{6,12}$)(?!^[a-z]{6,12}$)(?!^[A-Z]{6,12}$)^[0-9A-Za-z]{6,12}$/g;
+  //使用Js实例就可以让一些特定的字符变为变量进行检测使用
+  let jsRegex = new RegExp(`(?!^[0-9]{${min},${max}}$)(?!^[a-z]{${min},${max}}$)(?!^[A-Z]{${min},${max}}$)^[0-9A-Za-z]{${min},${max}}$`,'g');
+  let str = '123fds1';
+  utils.log(regex.test(str),str);
+  utils.log(jsRegex.test(str),str);
+}

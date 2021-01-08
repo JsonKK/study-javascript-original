@@ -3,6 +3,8 @@ import Express from 'express'
 import './src/single-string.js';
 //正则匹配位置攻略
 import './src/position-ways.js';
+//括号的作用
+import './src/bracket.js';
 //慕课网视频教程
 import './src/muke.js';
 
