@@ -6,7 +6,9 @@
   <title>String对象知识点</title>
 </head>
 <body>
+  <div id="text-box"></div>
   <script>
+    const textBox = document.getElementById('text-box');
     var stringValue = 'hello world';
     //截取下标3（包括3）到7（不包括7）的字符串
     console.log(stringValue.slice(3,7));
@@ -30,6 +32,64 @@
     console.log(stringValue.substring(4,-1));
     //第二个参数会被转换为0
     console.log(stringValue.substr(3,-4))
+
+    //使用Big标签显示内容
+    {
+      let text = document.createElement('p');
+      text.innerHTML = stringValue.big();
+      textBox.appendChild(text);
+    }
+
+    {
+      let text = document.createElement('p');
+      text.innerHTML = stringValue.blink();
+      textBox.appendChild(text);
+      console.log(stringValue.blink());
+    }
+
+    {
+      //返回指定位置的字符
+      //索引从0开始
+      console.log(stringValue.charAt(6))
+    }
+
+    {
+      // 返回指定位置字符的uicode编码
+      console.log(stringValue.charCodeAt(6));
+    }
+
+    {
+      //连接字符串
+      console.log(stringValue.concat(' java script'));
+      //打印文本显示
+      console.log(stringValue.fixed());
+    }
+
+    {
+      let text = document.createElement('p');
+      text.innerHTML = stringValue.fontcolor('#d4d4d4');
+      textBox.appendChild(text);
+    }
+
+    {
+      //截取字符串前3位数字
+      // 包括start ,不包括end
+      console.log(stringValue.slice(0,3));
+    }
+
+    {
+      // 字符串分割为数组
+      let str = '要坚持党的绝对领导，坚持政治建警方针，增强“四个意识”、坚定“四个自信”、做到“两个维护”，始终以党的旗帜为旗帜、以党的方向为方向、以党的意志为意志，坚决听从党中央命令、服从党中央指挥，确保绝对忠诚、绝对纯洁、绝对可靠。';
+      //以党和个为分隔符，把段落以数组形式分割
+      //第二个参数可以限制数组的长度
+      console.log(str.split(/党|个/))
+    }
+
+    {
+      //字符串截取
+    }
+
+    
   </script>
 </body>
 </html>

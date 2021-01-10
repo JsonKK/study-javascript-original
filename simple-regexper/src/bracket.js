@@ -21,7 +21,9 @@ import utils from '../utils/index.js';
   //疑问（为什么规则增加g全局参数后，str2就无法校验通过）
   let str1 = 'I love JavaScript';
   let str2 = 'I love Regular Expression';
+  let str3 = 'fsdfhiuewr';
   utils.log(regex.test(str1),str1);
   utils.log(regex.test(str2),str2);
-  console.log((str1+' '+str2).match(regex));
+  // console.log((str1+' '+str2).match(/I love (JavaScript|Regular Expression)/));
+  console.log((str1+ ' ' + str2).split(/I love (JavaScript|Regular Expression)/));
 }
