@@ -88,3 +88,53 @@ import utils from '../utils/index.js';
   d'
   console.log(str2)
 }
+
+{
+  //量词的使用
+  //数字出现10次、一个单词、0或者1次数字、单词至少1次、数字任意次、数字3次、单词3-5次、数字至少3次
+  let regex = /\d{10}\w\d?\w+\d*\d{3}\w{3,5}\d{3,}/;
+}
+
+{
+  let str = '12345678';
+  //贪婪模式、如果使用了量词，就会尽可能多的去匹配
+  let regex = /\d{3,6}/g;
+  console.log(str.replace(regex,'X'));
+  //不使用贪婪模式，在规则后面加上问号，只要匹配到就行
+  let regex2 = /\d{3,6}?/g;
+  console.log(str.replace(regex2,'X'));
+}
+
+{
+  // 分组
+  // 匹配一个字符加一个数字替换为X
+  let str = 'a1b2c3d4e5';
+  let regex = /([a-z]\d){1}/g;
+  console.log(str.replace(regex,'X'));
+  
+}
+
+{
+  // 变量捕获和不需要捕获变量
+  let str = '12-09-2011';
+  //匹配日期，输出年和月
+  //分组可以使用$加出现的起始序号
+  //?: 可以忽略当前分组捕获、序号瞬移至下一个
+  let regex = /(?:\d{2})-(\d{2})-(\d{4})/g;
+  console.log(str.replace(regex,'$2-$1'));
+}
+
+{
+  // 前瞻
+  //在规则后面增加需要的规则肯定或者规则否定
+  //匹配单词后面是数字的，替换为@
+  let str = 'hello123 world007 kitty';
+  let regex = /[a-zA-Z]+(?=\d)/g;
+  console.log(str.replace(regex,'@'));
+  //匹配后面不是字母的单词替换为@
+  let regex2 = /([a-zA-Z]+)(?=\d)/g;
+  console.log(str.replace(regex2,'#'));
+  //匹配单词
+  let regex3 = /\b[a-zA-Z]+\b/g;
+  console.log(str.replace(regex3,'^'));
+}
