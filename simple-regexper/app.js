@@ -6,7 +6,7 @@ import './src/position-ways.js';
 //括号的作用
 import './src/bracket.js';
 //慕课网视频教程
-import './src/muke.js';
+// import './src/muke.js';
 
 let app = Express()
 app.get('/', (req, res) => {
