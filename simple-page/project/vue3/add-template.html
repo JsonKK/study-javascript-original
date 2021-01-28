@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>增加组件</title>
+  <script src="../assets/js/vue3.0.js"></script>
+</head>
+<body>
+  <div id="app">
+    <ol>
+      <!--
+       现在我们为每个 todo-item 提供 todo 对象
+       todo 对象是变量，即其内容可以是动态的。
+       我们也需要为每个组件提供一个“key”，稍后再
+       作详细解释。
+     -->
+     <todo-item
+       v-for="item in groceryList"
+       v-bind:todo="item"
+       v-bind:key="item.id"
+     ></todo-item>
+   </ol>
+   <div class="row">
+    <!-- 动态事件名 -->
+    <!-- 不要使用驼峰，会被忽略 -->
+   <button v-on:[eventname]="one">动态事件名</button>
+   </div>
+   
+  </div>
+
+  <script type="module">
+    function getUserInfo(vm){
+      console.log(vm.todo);
+    }
+    const TodoList = {
+      data(){
+        return{
+          groceryList: [
+            { id: 0, text: 'Vegetables' },
+            { id: 1, text: 'Cheese' },
+            { id: 2, text: 'Whatever else humans are supposed to eat' }
+          ],
+          eventname : 'click'
+        }
+      },
+      methods : {
+        one(){
+          console.log('one');
+        },
+        two(){
+          console.log('two');
+        }
+      },
+      mounted(){
+        // 点击事件改为鼠标经过事件
+        this.eventname = 'mouseover';
+      }
+    }
+
+    const app = Vue.createApp(TodoList);
+    // 增加组件todo-item
+    app.component('todo-item',{
+      props : {
+        todo : {
+          type : Object
+        }
+      },
+      setup(props){
+        //可以获取到props
+        console.log(props.todo);
+        //把方法释放出去，此时方法里的this 与setup的相等，为undefind
+        return {name:'哈哈',getUserInfo}
+      },
+      methods : {
+        getUserInfo(){
+          console.log(2)
+        }
+      },
+      template : `<li v-if="todo" @click="getUserInfo(this)">{{todo.text}}{{name}}</li>`
+    })
+    console.log(app);
+    app.mount('#app');
+  </script>
+</body>
+</html>

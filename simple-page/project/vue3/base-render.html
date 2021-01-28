@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>基础数据渲染</title>
+  <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+  <div id="counter">
+    Counter: {{ counter }}
+    <span v-bind:title="message">
+      鼠标悬停几秒钟查看此处动态绑定的提示信息！
+    </span>
+    <div class="row">
+      <button v-text="counterMove ? '暂停' : '开始'" v-on:click="judgeMove"></button>
+    </div>
+    <div id="list-rendering">
+      <ol>
+        <li v-for="todo in todos">
+          {{ todo.text }}
+        </li>
+      </ol>
+    </div>
+    
+  </div>
+  
+  <script type="module">
+    const Counter = {
+      data() {
+        return {
+          counter: 0,
+          counterMove : false,
+          message: 'You loaded this page on ' + new Date().toLocaleString(),
+          todos: [
+            { text: 'Learn JavaScript' },
+            { text: 'Learn Vue' },
+            { text: 'Build something awesome' }
+          ]
+        }
+      },
+      mounted(){
+        this.doMove();
+      },
+      methods : {
+        doMove(){
+          this.counterMove = setInterval(()=>{
+            this.counter++;
+          },1000)
+        },
+        //判断计时器开关
+        judgeMove(){
+          let {counterMove} = this;
+          if(counterMove){
+            clearInterval(this.counterMove);
+            this.counterMove = false;
+          }
+          else{
+            this.doMove();
+          }
+        }
+      }
+    }
+
+    Vue.createApp(Counter).mount('#counter')
+
+  </script>
+</body>
+</html>
