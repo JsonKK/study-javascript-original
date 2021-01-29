@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>图片缓存至本地为base64</title>
+  <style>
+    *{
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas-wrap"></canvas>
+  <script type="module">
+    const loacalData = {
+      imgInfo : '',
+      //宽高比
+      whScale : 4087/3789,
+      //本地图片
+      cacheImg : localStorage.getItem('mapBg'),
+      //本地缓存信息
+      localImgInfo : {
+        title : 'mapImg',
+        time : '1611903230309',
+        src : '../../assets/img/taqu-pc-office/map-bg.jpg'
+      }
+    }
+
+    const mapWrap = document.getElementById('canvas-wrap');
+    const mapContent = mapWrap.getContext('2d');
+
+    const localMethod = {
+      // 初始化画布宽度
+      initSize(){
+        const bodyWidth = document.body.clientWidth;
+        const {whScale} = loacalData;
+        mapWrap.width = bodyWidth;
+        mapWrap.height = bodyWidth/whScale;
+      },
+      // 初始化渲染图片
+      initRenderImg(){
+        let {imgInfo,cacheImg} = loacalData;
+        if(!imgInfo && !cacheImg){
+          let img = new Image();
+          img.src = '../../assets/img/taqu-pc-office/map-bg.jpg';
+          img.onload = function(){
+            mapContent.drawImage(img, 0, 0, mapWrap.width, mapWrap.height);
+            let base64Img = mapWrap.toDataURL('image/jpg');
+            localStorage.setItem('mapBg',base64Img);
+            console.log(base64Img);
+          }
+        }
+
+        if(cacheImg){
+          let img = new Image();
+          img.src = cacheImg;
+          img.onload = function(){
+            mapContent.drawImage(img, 0, 0, mapWrap.width, mapWrap.height);
+          }
+          
+        }
+      }
+    }
+
+    const cacheImgMethod = {
+      // 获取图片路径
+      getImgUrl(obj){
+        if(!obj || !obj.title || !obj.time || !obj.src){
+          return '';
+        }
+        //获取本地数据
+        let localImg = JSON.parse(localStorage.getItem(obj.title) || '{}');
+        let src = '';
+        //如果本地缓存和需要图片的时间戳key一致，则使用本地图片
+        if(localImg && localImg.time == obj.time){
+          src = localImg.src;
+        }
+        else{
+          //使用本地图片本地图片
+          src = obj.src;
+          cacheImgMethod.saveLocalImg(obj);
+        }
+        return src;
+      },
+      //构建绘图和图片实例，保存为本地图片
+      saveLocalImg(obj){
+        let img = new Image();
+        img.src = obj.src;
+        img.onload = function(){
+          //构造canvas对象
+          let canvas = document.createElement('canvas');
+          let canvasContent = canvas.getContext('2d');
+          document.body.appendChild(canvas);
+          canvas.style.display = 'none';
+          canvas.width = img.width;
+          canvas.height = img.height;
+          canvasContent.drawImage(img, 0, 0, canvas.width, canvas.height);
+          let base64Img = canvas.toDataURL('image/jpg');
+          // localStorage.setItem(obj.title,JSON.stringify({
+          //   time : obj.time,
+          //   src : base64Img
+          // }));
+          cacheImgMethod.initIndexDb({
+            id : obj.title,
+            time : obj.time,
+            src : base64Img
+          })
+        }
+      },
+      //数据库初始化
+      initIndexDb(obj){
+        // 创建或打开数据库
+        const myDB = window.indexedDB.open('myDB', 1);
+        // 数据库连接成功
+        myDB.addEventListener('success', e => {
+          console.log("数据库连接成功~");
+          const dbResult = e.target.result;
+          const dbTrans = dbResult.transaction(['UserInfo'], 'readwrite');
+          const dbStore = dbTrans.objectStore('UserInfo');
+          const dbRequest = dbStore.add(obj);
+          dbRequest.onsuccess = e => {
+            const { result } = dbRequest;
+            console.log(result);
+          };
+          dbRequest.onerror = e => {
+            const dbRequest = dbStore.get(obj.id);
+            dbRequest.onsuccess = e => {
+              const { result } = dbRequest;
+              console.log(result);
+            };
+            console.log('数据添加失败~');
+          };
+          console.log(dbRequest);
+        });
+        // 数据库连接失败
+        myDB.addEventListener('error', e => {
+          console.log("数据库连接失败~");
+        });
+
+        myDB.addEventListener('upgradeneeded', e => {
+          const dbResult = e.target.result;
+          // 创建一个"用户信息"仓库 UserInfo
+          const createdStore = dbResult.createObjectStore(
+            'UserInfo',
+            {
+              keyPath : 'id',
+              autoIncrement: false
+            }
+          );
+
+          
+        });
+
+        
+      }
+    }
+
+
+    //构思，读取需要读取的路径对象
+    //判断本地缓存里有没有该数据，没有该数据返回路径（创建canvas节点,生成base64图片），如果有则直接返回路径
+  
+
+    window.onload = function(){
+      // localMethod.initSize();
+      // localMethod.initRenderImg();
+
+      //获取图片路径
+      let src = cacheImgMethod.getImgUrl(loacalData.localImgInfo);
+      //书实话数据库
+      // cacheImgMethod.initIndexDb();
+    }
+  </script>
+</body>
+</html>
