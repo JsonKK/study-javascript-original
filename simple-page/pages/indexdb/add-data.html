@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>存储数据</title>
+</head>
+<body>
+  <script type="module">
+    import data from '/assets/data/indexdb-pic.js';
+    console.log(data);
+    const normalMethod = {
+      add(db,key,transaction){
+        let request = db.transaction([key],'readwrite').objectStore(key).add({
+          activeId:4,
+          postion:'index',
+          src:data.picList[0].pic
+        });
+        
+        request.onsuccess = function(){
+          console.log('数据写入成功');
+        }
+
+        request.onerror = function(){
+          console.log('数据写入失败');
+        }
+
+      },
+      //读写数据
+      read(db,key){
+        let transaction = db.transaction([key]);
+        let objectStore = transaction.objectStore(key);
+        let request = objectStore.get(4);
+
+        request.onerror = function(event){
+          console.log('获取记录事物失败');
+        }
+
+        request.onsuccess = function(event){
+          if(request.result){
+            console.log(request.result);
+          }
+          else{
+            console.log('未获得数据记录')
+          }
+        }
+      }
+    }
+
+    const localMethod = {
+      initDb(){
+        let db,objectStroe;
+        let dbVersion = this.getIndexDbVersion();
+        let request = window.indexedDB.open('demoData',dbVersion);
+        request.onerror = function(){
+          console.log('数据库打开失败');
+        }
+        request.onsuccess = function(){
+          console.log('数据库连接成功');
+          db = request.result;
+          console.log(db);
+        }
+        //创建更表
+        request.onupgradeneeded = function(event){
+          let key = 'pic';
+          db = event.target.result;
+          if(!db.objectStoreNames.contains(key)){
+            objectStroe = db.createObjectStore(key,{keyPath : 'activeId'});
+            //创建索引
+            //索引名称、属性名称、是否重复
+            //当前位置
+            objectStroe.createIndex('positon','position',{unique:false});
+            //图片路径
+            objectStroe.createIndex('src','src',{unique:true});
+          }
+          let transaction = event.target.transaction;
+          transaction.oncomplete = function(){
+            // 增加数据
+            normalMethod.add(db,key,transaction);
+
+            //读取数据
+            normalMethod.read(db,key);
+          }
+        }
+      },
+      // 获取版本
+      getIndexDbVersion(){
+        const num = localStorage.getItem('dbVersion') || 1;
+        localStorage.setItem('dbVersion',Number(num)+1);
+        return num;
+      }
+    }
+
+    window.onload = function(){
+      localMethod.initDb();
+    }
+  </script>
+</body>
+</html>
