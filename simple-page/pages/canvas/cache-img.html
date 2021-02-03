@@ -9,22 +9,96 @@
       margin: 0;
       padding: 0;
     }
+    .img-list{
+      width: 350px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .img-list li{
+      width: 100%;
+      overflow: hidden;
+      font-size: 0;
+      text-align: center;
+    }
+    .img-list li>img{
+      max-width: 100%;
+    }
   </style>
 </head>
 <body>
   <canvas id="canvas-wrap"></canvas>
+  <ul id="img-list" class="img-list">
+  </ul>
   <script type="module">
-    const loacalData = {
+    const localData = {
       imgInfo : '',
-      //宽高比
-      whScale : 4087/3789,
       //本地图片
       cacheImg : localStorage.getItem('mapBg'),
       //本地缓存信息
-      localImgInfo : {
-        title : 'mapImg',
-        time : '1611903230309',
-        src : '../../assets/img/taqu-pc-office/map-bg.jpg'
+      localImgInfo : [
+        {
+          name : 'map1',
+          id : 'map1',
+          src : '../../assets/img/taqu-pc-office/map-bg.jpg'
+        },
+        {
+          name : 'map2',
+          id : 'map2',
+          src : '../../assets/img/demo/game-map.jpg'
+        },
+        {
+          name : 'map3',
+          id : 'map3',
+          src : '../../assets/img/demo/mmexport1542285932253.jpg'
+        },
+        {
+          name : 'rule1',
+          id : 'rule1',
+          src : '../../assets/img/demo/rule_01.png',
+          v : 1
+        },
+        {
+          name : 'rule2',
+          id : 'rule2',
+          src : '../../assets/img/demo/rule_02.png'
+        },
+        {
+          name : 'rule3',
+          id : 'rule3',
+          src : '../../assets/img/demo/rule_03.png'
+        },
+        {
+          name : 'rule4',
+          id : 'rule4',
+          src : '../../assets/img/demo/rule_04.png'
+        },
+        {
+          name : 'rule5',
+          id : 'rule5',
+          src : '../../assets/img/demo/rule_05.png'
+        },
+        {
+          name : 'rule6',
+          id : 'rule6',
+          src : '../../assets/img/demo/rule_06.png'
+        }
+      ],
+      //数据库请求
+      request : false,
+      //数据库对象
+      indexedDB : false,
+      //数据库实例
+      db : false,
+      //仓库对象
+      objectStore : false,
+      //新创建的对象数据库
+      customerObjectStore : false,
+      maxSize : 1920*1080,
+      //图片缓存对象
+      imgCacheObj : {
+
       }
     }
 
@@ -32,16 +106,9 @@
     const mapContent = mapWrap.getContext('2d');
 
     const localMethod = {
-      // 初始化画布宽度
-      initSize(){
-        const bodyWidth = document.body.clientWidth;
-        const {whScale} = loacalData;
-        mapWrap.width = bodyWidth;
-        mapWrap.height = bodyWidth/whScale;
-      },
       // 初始化渲染图片
       initRenderImg(){
-        let {imgInfo,cacheImg} = loacalData;
+        let {imgInfo,cacheImg} = localData;
         if(!imgInfo && !cacheImg){
           let img = new Image();
           img.src = '../../assets/img/taqu-pc-office/map-bg.jpg';
@@ -61,99 +128,318 @@
           }
           
         }
+      },
+      //初始化构造图片
+      initCreateImg(box,obj){
+        let li = document.createElement('li');
+        li.innerHTML = `<img src="${obj.src}" alt="${obj.name}">`;
+        box.appendChild(li);
       }
     }
 
     const cacheImgMethod = {
-      // 获取图片路径
-      getImgUrl(obj){
-        if(!obj || !obj.title || !obj.time || !obj.src){
-          return '';
-        }
-        //获取本地数据
-        let localImg = JSON.parse(localStorage.getItem(obj.title) || '{}');
-        let src = '';
-        //如果本地缓存和需要图片的时间戳key一致，则使用本地图片
-        if(localImg && localImg.time == obj.time){
-          src = localImg.src;
+      // 校验数据库
+      judgeIndexDb(){
+        localData.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
+        if(!indexedDB){
+          console.log('浏览器不支持indexdb');
+          return false;
         }
         else{
-          //使用本地图片本地图片
-          src = obj.src;
-          cacheImgMethod.saveLocalImg(obj);
+          return true;
         }
-        return src;
+      },
+      //初始化数据库
+      initIndexDb(cacheDate){
+        let that = this;
+        return new Promise((resolve)=>{
+          // 判断是否可以执行数据库
+          //没有数据，和数据唯一标识
+          if(!that.judgeIndexDb() || !cacheDate || !cacheDate.id){
+            resolve(cacheDate)
+            return;
+          }
+          let version = that.getDbVersion();
+          let {indexedDB} = localData;
+          let request,objectStore,db,customerObjectStore;
+          request = localData.request = indexedDB.open('myPicDatabase',version);
+          //成功失败函数处理
+          request.onerror = function(event){
+            console.log('连接数据库失败,错误代码'+ event.target.errorCode);
+            resolve(cacheDate);
+          }
+          //成功执行函数
+          request.onsuccess = function(event){
+            console.log('连接数据库成功');
+            db = event.target.result;
+            db.onversionchange = function(event) {
+              db.close();
+            };
+          }
+
+          request.onblocked = function(event) {
+            console.log('请关闭其它打开应用的窗口');
+            that.createIndexDb(event).then((customerObjectStore)=>{
+              that.readData(customerObjectStore,cacheDate).then((res)=>{
+                if(res){
+                  resolve(res)
+                }
+                else{
+                  resolve(cacheDate)
+                }
+              });
+            });
+          }
+
+          //多次升级版本并不会触发该事件
+          request.onupgradeneeded = function(event){
+            localData.db = event.target.result;
+            that.createIndexDb(event).then((customerObjectStore)=>{
+              that.readData(customerObjectStore,cacheDate).then((res)=>{
+                if(res){
+                  resolve(res)
+                }
+                else{
+                  resolve(cacheDate)
+                }
+              });
+            });
+          }
+        })
+        
+      },
+      // 创建库
+      createIndexDb(event){
+        return new Promise((resolve)=>{
+          let db = localData.db;
+          let objectStore,customerObjectStore;
+          if(!db.objectStoreNames.contains('picture')){
+            //为该数据库创建一个对象仓库
+            //仓库名为picture 
+            //主键为alt
+            objectStore = localData.objectStore = db.createObjectStore('picture',{keyPath:'name'});
+            //创建数据库索引
+            objectStore.createIndex('id','id',{unique:false});
+          }
+          let transaction = event.target.transaction;
+          //使用事务的oncomplete 事件确保在插入数据前对象仓库已经创建完毕
+          transaction.oncomplete = function(event){
+            // 将数据保存到新建的仓库对象
+            customerObjectStore = localData.customerObjectStore = db.transaction('picture','readwrite').objectStore('picture');
+            resolve(customerObjectStore);
+          }
+          
+          //错误处理
+          transaction.onerror = function(event){
+            console.log('创建新建对象事务失败');
+            resolve(false);
+          }
+        });
+      },
+      // 读取数据
+      readData(objectStore,item){
+        let that = this;
+        return new Promise((resolve)=>{
+          // 如果objectStore\item不是对象返回
+          if(typeof objectStore != 'object' || typeof item != 'object' || !item.id){
+            resolve(false);
+            return;
+          }
+          let request = objectStore.get(item.id);
+          request.onerror = function(){
+            console.log('数据获取失败');
+            that.addData(objectStore,item);
+            resolve(false);
+          }
+
+          request.onsuccess = function(event){
+            let result = request.result;
+            if(result){
+              //判断版本号
+              //如果新进来的版本号大于缓存的版本号，用新进来的数据，并且更新数据
+              if(item.v && item.v > (result.v || 0 )){
+                that.addData(objectStore,item);
+                resolve(item);
+              }
+              else{
+                resolve(result);
+              }
+              console.log('数据获取成功'+result.name);
+            }
+            else{
+              console.log('数据获取失败');
+              that.addData(objectStore,item);
+              resolve(false);
+            }
+          }
+        })
+      },
+      // 增加数据
+      //第一个参数，对象仓库
+      addData(objectStore,item){
+        let that = this,request;
+        return new Promise((resolve)=>{
+          // 如果objectStore\item不是对象返回
+          if(typeof objectStore != 'object' || typeof item != 'object' || !item.id){
+            resolve(false);
+            return;
+          }
+          //如果是已经处理过的数据
+          if(item.oldsrc){
+            try{
+              request = objectStore.put(item);
+            }
+            catch(err){
+              console.log(err);
+              request = {};
+            }
+            request.onsuccess = function(){
+              console.log('成功增加数据'+ item.name);
+              resolve(item);
+            }
+
+            request.onerror = function(){
+              console.log('数据写入失败');
+              resolve(false)
+            }
+            return;
+          }
+          that.getLocalImg(item).then((res)=>{
+            if(!res){
+              // 如果没有图片生成返回
+              resolve(false)
+              return;
+            }
+            try{
+              request = objectStore.put(res);
+            }
+            catch(err){
+              request = {};
+              cacheImgMethod.getImgUrl(res).then((obj)=>{
+                resolve(obj);
+              })
+            }
+            request.onsuccess = function(){
+              console.log('成功增加数据'+ res.name);
+              resolve(res);
+            }
+
+            request.onerror = function(){
+              console.log('数据写入失败');
+              resolve(false)
+            }
+          })
+        })
+      },
+      // 获取版本
+      getDbVersion(){
+        const num = Number(localStorage.getItem('dbVersion')) || 1;
+        localStorage.setItem('dbVersion',num+1);
+        return num;
+      },
+      // 获取图片路径
+      getImgUrl(obj){
+        let that = this;
+        return new Promise((resolve)=>{
+          //如果需要获取的图片对象不存在，则返回空字符串
+          if(!obj || !obj.name || !obj.id || !obj.src){
+            resolve('');
+            return;
+          }
+          that.initIndexDb(obj).then((res)=>{
+            resolve(res);
+          });
+        });
       },
       //构建绘图和图片实例，保存为本地图片
-      saveLocalImg(obj){
-        let img = new Image();
-        img.src = obj.src;
-        img.onload = function(){
-          //构造canvas对象
-          let canvas = document.createElement('canvas');
-          let canvasContent = canvas.getContext('2d');
-          document.body.appendChild(canvas);
-          canvas.style.display = 'none';
-          canvas.width = img.width;
-          canvas.height = img.height;
-          canvasContent.drawImage(img, 0, 0, canvas.width, canvas.height);
-          let base64Img = canvas.toDataURL('image/jpg');
-          // localStorage.setItem(obj.title,JSON.stringify({
-          //   time : obj.time,
-          //   src : base64Img
-          // }));
-          cacheImgMethod.initIndexDb({
-            id : obj.title,
-            time : obj.time,
-            src : base64Img
-          })
-        }
-      },
-      //数据库初始化
-      initIndexDb(obj){
-        // 创建或打开数据库
-        const myDB = window.indexedDB.open('myDB', 1);
-        // 数据库连接成功
-        myDB.addEventListener('success', e => {
-          console.log("数据库连接成功~");
-          const dbResult = e.target.result;
-          const dbTrans = dbResult.transaction(['UserInfo'], 'readwrite');
-          const dbStore = dbTrans.objectStore('UserInfo');
-          const dbRequest = dbStore.add(obj);
-          dbRequest.onsuccess = e => {
-            const { result } = dbRequest;
-            console.log(result);
-          };
-          dbRequest.onerror = e => {
-            const dbRequest = dbStore.get(obj.id);
-            dbRequest.onsuccess = e => {
-              const { result } = dbRequest;
-              console.log(result);
-            };
-            console.log('数据添加失败~');
-          };
-          console.log(dbRequest);
-        });
-        // 数据库连接失败
-        myDB.addEventListener('error', e => {
-          console.log("数据库连接失败~");
-        });
-
-        myDB.addEventListener('upgradeneeded', e => {
-          const dbResult = e.target.result;
-          // 创建一个"用户信息"仓库 UserInfo
-          const createdStore = dbResult.createObjectStore(
-            'UserInfo',
-            {
-              keyPath : 'id',
-              autoIncrement: false
+      getLocalImg(obj){
+        const that = this;
+        return new Promise((resolve)=>{
+          that.disposeImgInfo(obj).then((img)=>{
+            //如果不满足质量限制，只缓存路径
+            if(!img){
+              resolve(obj);
+              return;
             }
-          );
-
+            //通过尾缀判断
+            let index = obj.src.lastIndexOf('.');
+            let indexQuestion = obj.src.lastIndexOf('?');
+            //资源类型
+            let suffix;
+            // 如果有路径参数
+            if(indexQuestion > index){
+              suffix = obj.src.slice(index+1,indexQuestion);
+            }
+            else{
+              suffix = obj.src.slice(index+1);
+            }
+            //构造canvas对象
+            let canvas = document.createElement('canvas');
+            let canvasContent = canvas.getContext('2d');
+            document.body.appendChild(canvas);
+            canvas.style.display = 'none';
+            canvas.width = img.width;
+            canvas.height = img.height;
+            canvasContent.drawImage(img, 0, 0, canvas.width, canvas.height);
+            let base64Img = canvas.toDataURL(`image/${suffix}`);
+            obj.oldsrc = obj.src.toString();
+            obj.src = base64Img;
+            resolve(obj);
+          });
           
-        });
-
+        })
         
+      },
+      // 获取图片信息
+      disposeImgInfo(obj){
+        const that = this;
+        return new Promise((resolve)=>{
+          // 如果没有图片信息，则返回
+          if(!obj || !obj.name || !obj.src){
+            resolve(false);
+          }
+          let img = localData.imgCacheObj[obj.name];
+          if(img){
+            if(that.judgeImg(img)){
+              resolve(img);
+            }
+            else{
+              resolve(false);
+            }
+          }
+          else{
+            img = new Image();
+            img.src = obj.src;
+            // 图片加载成功处理
+            img.onload = function(){
+              localData.imgCacheObj[obj.name] = img;
+              if(that.judgeImg(img)){
+                resolve(img);
+              }
+              else{
+                resolve(false);
+              }
+            }
+            // 图片加载失败处理
+            img.onerror = function(){
+              resolve(false);
+            }
+          }
+        })
+      },
+      //判断图片是否符合
+      judgeImg(img){
+        if(!img){
+          return false;
+        }
+        // 判断图片尺寸，目前只能先用宽高判断
+        if(img.width * img.height < localData.maxSize){
+          return true;
+        }
+        else{
+          return false;
+        }
+        console.log(img);
       }
     }
 
@@ -163,13 +449,16 @@
   
 
     window.onload = function(){
-      // localMethod.initSize();
-      // localMethod.initRenderImg();
 
-      //获取图片路径
-      let src = cacheImgMethod.getImgUrl(loacalData.localImgInfo);
-      //书实话数据库
-      // cacheImgMethod.initIndexDb();
+      let box = document.getElementById('img-list');
+      localData.localImgInfo.forEach((item)=>{
+        cacheImgMethod.disposeImgInfo(item);
+        //获取图片路径
+        cacheImgMethod.getImgUrl(item).then((obj)=>{
+          console.log('图片路径回去回调',obj);
+          localMethod.initCreateImg(box,obj);
+        });
+      });
     }
   </script>
 </body>

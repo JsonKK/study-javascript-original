@@ -8,7 +8,6 @@
 <body>
   <script type="module">
     import data from '/assets/data/indexdb-pic.js';
-    console.log(data);
     const normalMethod = {
       add(db,key,transaction){
         let request = db.transaction([key],'readwrite').objectStore(key).add({

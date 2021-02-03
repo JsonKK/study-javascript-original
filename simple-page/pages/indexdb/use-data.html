@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>按照规范使用、存储数据</title>
+</head>
+<body>
+
+  <script type="module">
+    //图片对象会有哪些字段 name:图片名称  alt:图片描述名称  id:图片标志位 src:图片路径
+    import data from '/assets/data/indexdb-pic.js';
+    const localData = {
+      //数据库请求
+      request : false,
+      //数据库对象
+      indexedDB : false,
+      //数据库实例
+      db : false,
+      //仓库对象
+      objectStore : false,
+      //新创建的对象数据库
+      customerObjectStore : false
+    }
+
+    const localMethod = {
+      // 校验数据库
+      judgeIndexDb(){
+        localData.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
+        if(!indexedDB){
+          console.log('浏览器不支持indexdb');
+          return false;
+        }
+        else{
+          return true;
+        }
+      },
+      //初始化数据库
+      initIndexDb(cacheDate){
+        // 判断是否可以执行数据库
+        //没有数据，和数据唯一标识
+        if(!this.judgeIndexDb() || !cacheDate || !cacheDate.id){
+          return;
+        }
+        let that = this;
+        let version = this.getDbVersion();
+        let {indexedDB} = localData;
+        let request,objectStore,db,customerObjectStore;
+        request = localData.request = indexedDB.open('myTestDatabase',version);
+        //成功失败函数处理
+        request.onerror = function(event){
+          console.log('连接数据库失败,错误代码'+ event.target.errorCode);
+        }
+        //成功执行函数
+        request.onsuccess = function(event){
+          console.log('连接数据库成功');
+        }
+
+        request.onblocked = function(event) {
+          console.log('请关闭其它打开应用的窗口');
+          that.createIndexDb().then((customerObjectStore)=>{
+            that.readData(customerObjectStore,cacheDate).then((res)=>{
+              console.log(res);
+            });
+          });
+        }
+
+        //多次升级版本并不会触发该事件
+        request.onupgradeneeded = function(event){
+          localData.db = event.target.result;
+          that.createIndexDb().then((customerObjectStore)=>{
+            that.readData(customerObjectStore,cacheDate).then((res)=>{
+              console.log(res);
+            });
+          });
+        }
+      },
+      // 创建库
+      createIndexDb(){
+        return new Promise((resolve)=>{
+          let db = localData.db;
+          let objectStore,customerObjectStore;
+          if(!db.objectStoreNames.contains('picture')){
+            //为该数据库创建一个对象仓库
+            //仓库名为picture 
+            //主键为alt
+            objectStore = localData.objectStore = db.createObjectStore('picture',{keyPath:'name'});
+            //创建数据库索引
+            objectStore.createIndex('id','id',{unique:false});
+          }
+          let transaction = event.target.transaction;
+          //使用事务的oncomplete 事件确保在插入数据前对象仓库已经创建完毕
+          if(localData.customerObjectStore){
+            resolve(db.transaction('picture','readwrite').objectStore('picture'));
+          }
+          else{
+            transaction.oncomplete = function(event){
+              // 将数据保存到新建的仓库对象
+              customerObjectStore = localData.customerObjectStore = db.transaction('picture','readwrite').objectStore('picture');
+              resolve(customerObjectStore);
+            }
+          }
+          
+          //错误处理
+          transaction.onerror = function(event){
+            console.log('创建新建对象事务失败');
+            resolve(false);
+          }
+        });
+      },
+      // 读取数据
+      readData(objectStore,item){
+        let that = this;
+        return new Promise((resolve)=>{
+          // 如果objectStore\item不是对象返回
+          if(typeof objectStore != 'object' || typeof item != 'object' || !item.id){
+            resolve(false);
+            return;
+          }
+          let request = objectStore.get(item.id);
+          request.onerror = function(){
+            console.log('数据获取失败');
+            that.addData(objectStore,item);
+            resolve(false);
+          }
+
+          request.onsuccess = function(event){
+            let result = request.result;
+            resolve(result);
+            console.log('数据获取成功'+result.name);
+          }
+        })
+      },
+      // 增加数据
+      //第一个参数，对象仓库
+      addData(objectStore,item){
+        return new Promise((resolve)=>{
+          // 如果objectStore\item不是对象返回
+          if(typeof objectStore != 'object' || typeof item != 'object' || !item.id){
+            resolve(false);
+            return;
+          }
+          let request = objectStore.put(item);
+          request.onsuccess = function(){
+            console.log('成功增加数据'+ item.name);
+            resolve(item);
+          }
+
+          request.onerror = function(){
+            console.log('数据写入失败');
+            resolve(false)
+          }
+        })
+      },
+      // 获取版本
+      getDbVersion(){
+        const num = Number(localStorage.getItem('dbVersion')) || 1;
+        localStorage.setItem('dbVersion',num+1);
+        return num;
+      }
+    }
+
+    window.onload = function(){
+      data.testBaseData.forEach((item)=>{
+        localMethod.initIndexDb(item);
+      })
+    }
+  </script>
+</body>
+</html>
