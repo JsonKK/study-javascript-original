@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>缓存图片读写使用第三方插件</title>
+  <style>
+    *{
+      margin: 0;
+      padding: 0;
+    }
+    .img-list{
+      width: 350px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .img-list li{
+      width: 100%;
+      overflow: hidden;
+      font-size: 0;
+      text-align: center;
+    }
+    .img-list li>img{
+      max-width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <ul id="img-list" class="img-list">
+  </ul>
+  <script src="../../utils/localforage.js"></script>
+  <script type="module">
+    const localData = {
+      //本地缓存信息
+      localImgInfo : [
+        {
+          name : 'map1',
+          id : 'map1',
+          src : '../../assets/img/taqu-pc-office/map-bg.jpg'
+        },
+        {
+          name : 'map2',
+          id : 'map2',
+          src : '../../assets/img/demo/game-map.jpg'
+        },
+        {
+          name : 'map3',
+          id : 'map3',
+          src : '../../assets/img/demo/mmexport1542285932253.jpg'
+        },
+        {
+          name : 'rule1',
+          id : 'rule1',
+          src : '../../assets/img/demo/rule_01.png',
+          v : 1
+        },
+        {
+          name : 'rule2',
+          id : 'rule2',
+          src : '../../assets/img/demo/rule_02.png'
+        },
+        {
+          name : 'rule3',
+          id : 'rule3',
+          src : '../../assets/img/demo/rule_03.png'
+        },
+        {
+          name : 'rule4',
+          id : 'rule4',
+          src : '../../assets/img/demo/rule_04.png'
+        },
+        {
+          name : 'rule5',
+          id : 'rule5',
+          src : '../../assets/img/demo/rule_05.png'
+        },
+        {
+          name : 'rule6',
+          id : 'rule6',
+          src : '../../assets/img/demo/rule_06.png'
+        }
+      ],
+      maxSize : 3000*2000,
+      //图片缓存对象
+      imgCacheObj : {}
+    }
+
+    const localMethod = {
+      //初始化构造图片
+      initCreateImg(box,obj){
+        let li = document.createElement('li');
+        li.innerHTML = `<img src="${obj.src}" alt="${obj.name}">`;
+        box.appendChild(li);
+      }
+    }
+
+    const cacheImgMethod = {
+      // 获取图片路径
+      getImgUrl(obj){
+        let that = this;
+        return new Promise((resolve)=>{
+          //如果需要获取的图片对象不存在，则返回空字符串
+          if(!obj || !obj.name || !obj.id || !obj.src){
+            resolve('');
+            return;
+          }
+          that.readData(obj).then((res)=>{
+            resolve(res);
+          });
+        });
+      },
+      //初始化配置数据库
+      initIndexDb(){
+        localforage.config({
+          //库名
+          name : 'cacheImgLocalforage',
+          // 表名
+          storeName : 'cacheImg',
+          //最大限制2G
+          size : 2147483648
+        })
+      },
+      //获取数据
+      readData(obj){
+        const that = this;
+        return new Promise((resolve)=>{
+          localforage.getItem(obj.name).then((res)=>{
+            if(res){
+              obj.src = res;
+              resolve(obj);
+            }
+            else{
+              //增加数据
+              that.addData(obj);
+              resolve(obj);
+            }
+          })
+        })
+      },
+      //增加数据
+      addData(obj){
+        const that = this;
+        that.getLocalImg(obj).then((res)=>{
+          if(obj.oldsrc){
+            localforage.setItem(obj.name,obj.src);
+          }
+        })
+      },
+      //构建绘图和图片实例，保存为本地图片
+      getLocalImg(obj){
+        const that = this;
+        return new Promise((resolve)=>{
+          that.disposeImgInfo(obj).then((img)=>{
+            //如果不满足质量限制，只缓存路径
+            if(!img){
+              resolve(obj);
+              return;
+            }
+            //通过尾缀判断
+            let index = obj.src.lastIndexOf('.');
+            let indexQuestion = obj.src.lastIndexOf('?');
+            //资源类型
+            let suffix;
+            // 如果有路径参数
+            if(indexQuestion > index){
+              suffix = obj.src.slice(index+1,indexQuestion);
+            }
+            else{
+              suffix = obj.src.slice(index+1);
+            }
+            //构造canvas对象
+            let canvas = document.createElement('canvas');
+            let canvasContent = canvas.getContext('2d');
+            document.body.appendChild(canvas);
+            canvas.style.display = 'none';
+            canvas.width = img.width;
+            canvas.height = img.height;
+            canvasContent.drawImage(img, 0, 0, canvas.width, canvas.height);
+            let base64Img = canvas.toDataURL(`image/${suffix}`);
+            obj.oldsrc = obj.src.toString();
+            obj.src = base64Img;
+            resolve(obj);
+          });
+          
+        })
+        
+      },
+      // 获取图片信息
+      disposeImgInfo(obj){
+        const that = this;
+        return new Promise((resolve)=>{
+          // 如果没有图片信息，则返回
+          if(!obj || !obj.name || !obj.src){
+            resolve(false);
+          }
+          let img = localData.imgCacheObj[obj.name];
+          if(img){
+            if(that.judgeImg(img)){
+              resolve(img);
+            }
+            else{
+              resolve(false);
+            }
+          }
+          else{
+            img = new Image();
+            img.src = obj.src;
+            // 图片加载成功处理
+            img.onload = function(){
+              localData.imgCacheObj[obj.name] = img;
+              if(that.judgeImg(img)){
+                resolve(img);
+              }
+              else{
+                resolve(false);
+              }
+            }
+            // 图片加载失败处理
+            img.onerror = function(){
+              resolve(false);
+            }
+          }
+        })
+      },
+      //判断图片是否符合
+      judgeImg(img){
+        if(!img){
+          return false;
+        }
+        // 判断图片尺寸，目前只能先用宽高判断
+        if(img.width * img.height < localData.maxSize){
+          return true;
+        }
+        else{
+          return false;
+        }
+      }
+    }
+
+    window.onload = function(){
+      cacheImgMethod.initIndexDb();
+
+      let box = document.getElementById('img-list');
+      localData.localImgInfo.forEach((item)=>{
+        console.time(item.name);
+        //获取图片路径
+        cacheImgMethod.getImgUrl(item).then((obj)=>{
+          console.log('图片路径回去回调',obj);
+          localMethod.initCreateImg(box,obj);
+          console.timeEnd(item.name);
+        });
+      });
+    }
+  </script>
+</body>
+</html>

@@ -179,8 +179,10 @@
 
           request.onblocked = function(event) {
             console.log('请关闭其它打开应用的窗口');
+            console.time(cacheDate.name);
             that.createIndexDb(event).then((customerObjectStore)=>{
               that.readData(customerObjectStore,cacheDate).then((res)=>{
+                console.timeEnd(cacheDate.name);
                 if(res){
                   resolve(res)
                 }
@@ -194,8 +196,10 @@
           //多次升级版本并不会触发该事件
           request.onupgradeneeded = function(event){
             localData.db = event.target.result;
+            console.time(cacheDate.name);
             that.createIndexDb(event).then((customerObjectStore)=>{
               that.readData(customerObjectStore,cacheDate).then((res)=>{
+                console.timeEnd(cacheDate.name);
                 if(res){
                   resolve(res)
                 }

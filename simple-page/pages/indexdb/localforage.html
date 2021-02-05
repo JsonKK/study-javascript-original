@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>localForage第三方离线插件</title>
+</head>
+<body>
+  <script src="../../utils/localforage.js"></script>
+  <script type="module">
+    import data from '/assets/data/indexdb-pic.js';
+    console.log(data);
+    window.onload = function(){
+      localforage.config({
+        name : 'testOne',
+        storeName : 'localforageTest'
+      })
+      data.testBaseData.forEach((item)=>{
+        localforage.setItem(item.id,item.src).then((res)=>{
+        });
+        console.time(item.id);
+        localforage.getItem(item.id).then((res)=>{
+          console.timeEnd(item.id);
+        })
+      })
+
+      
+    }
+    
+  </script>
+</body>
+</html>
