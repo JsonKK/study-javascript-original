@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>对象知识杂项</title>
+</head>
+<body>
+  <div class="content"></div>
+  <script type="module">
+
+    const localMethod = {
+      // 测试对象被拷贝后，值变化
+      copy(){
+        let a = {
+          name : 'lily',
+          age : 22
+        }
+
+        function change(o){
+          //会修改原数据的age
+          o.age = 24;
+          // 不会修改原数据
+          o = {
+            name : 'lucy',
+            age : 30
+          }
+          return o;
+        }
+
+        let b = change(a);
+        console.log('a Age',a.age);
+        console.log('a Name',a.name);
+        console.log('b Age',b.age);
+        console.log('b Name',b.name);
+      },
+      //测试typeof
+      testTypeof(){
+        console.log('typeof 1',typeof 1);
+        console.log('typeof "1"',typeof '1');
+        console.log('typeof undefind',typeof undefined);
+        console.log('typeof true',typeof true);
+        console.log('typeof Symbol()',typeof Symbol());
+        console.log('typeof null',typeof null);
+        console.log('typeof []',typeof []);
+        console.log('typeof {}',typeof {});
+        console.log('typeof console',typeof console);
+        console.log('typeof console.log',typeof console.log);
+      },
+      //测试instanceof
+      testInstanceof(){
+        const that = this;
+        let Car = function(){}
+        let benz = new Car();
+        console.log('benz instanceof Car',benz instanceof Car);
+        let car = new String('Mercedes Benz');
+        console.log('car instanceof String',car instanceof String);
+        //使用自定义方法测试
+        console.log('that.myInstanceof(benz,Car)',that.myInstanceof(benz,Car));
+        console.log('that.myInstanceof(car,String)',that.myInstanceof(car,String));
+      },
+      // 自定义instanceof
+      myInstanceof(left,right){
+        //如果左边不是对象，或者右边是null则返回false
+        if(typeof left !== 'object' || right === null){
+          return false;
+        }
+        //通过getProtypeof 拿到对象原型
+        let proto = Object.getPrototypeOf(left);
+        while(true){
+          if(proto === null){
+            return false;
+          }
+          if(proto === right.prototype){
+            return true;
+          }
+          proto = Object.getPrototypeOf(proto);
+        }
+      },
+      // 使用原型判断数据类型
+      testPrototypeCall(){
+        console.log('Object.prototype.toString.call({})',Object.prototype.toString.call({}));
+        console.log('Object.prototype.toString.call(1)',Object.prototype.toString.call(1));
+        console.log('Object.prototype.toString.call("1")',Object.prototype.toString.call('1'));
+        console.log('Object.prototype.toString.call(true)',Object.prototype.toString.call(true));
+        console.log('Object.prototype.toString.call(null)',Object.prototype.toString.call(null));
+        console.log('Object.prototype.toString.call(undefind)',Object.prototype.toString.call(undefined));
+        console.log('Object.prototype.toString.call(Symbol)',Object.prototype.toString.call(Symbol()));
+        console.log('Object.prototype.toString.call([])',Object.prototype.toString.call([]));
+        console.log('Object.prototype.toString.call(/123/g)',Object.prototype.toString.call(/123/g));
+        console.log('Object.prototype.toString.call(document)',Object.prototype.toString.call(document));
+        console.log('Object.prototype.toString.call(window)',Object.prototype.toString.call(window));
+        console.log('Object.prototype.toString.call(new Date())',Object.prototype.toString.call(new Date()));
+
+        const {getType} = this;
+        console.log('getType({})',getType({}));
+        console.log('getType(1)',getType(1));
+        console.log('getType("1")',getType('1'));
+        console.log('getType(true)',getType(true));
+        console.log('getType(null)',getType(null));
+        console.log('getType(undefind)',getType(undefined));
+        console.log('getType(Symbol)',getType(Symbol()));
+        console.log('getType([])',getType([]));
+        console.log('getType(/123/g)',getType(/123/g));
+        console.log('getType(document)',getType(document));
+        console.log('getType(window)',getType(window));
+        console.log('getType(new Date())',getType(new Date()));
+      },
+      // 测试数据类型判断
+      testJudgeTypeDemo(){
+        console.log('123' == 123)   // false or true?
+        console.log('' == null)    // false *****
+        console.log('' == 0)        // false or true?
+        console.log([] == 0)        // true 空数组 == false
+        console.log([] == '')       // true 空数组 == false
+        console.log([] == ![])      // true
+        console.log(null == undefined )//  true
+        console.log(Number(null))     // 0
+        console.log(Number(''))      // 0
+        console.log(parseInt(''));    // NaN
+        console.log({}+10)           // [object Object]10
+       
+        let obj = {
+           //是一个内置的 Symbol 值，它是作为对象的函数值属性存在的，当一个对象转换为对应的原始值时，会调用此函数。
+          [Symbol.toPrimitive](){
+            return 200;
+          },
+          valueOf(){
+            return 400;
+          },
+          toString(){
+            return 'hello';
+          }
+        }
+        let obj2 = {
+          valueOf(){
+            return NaN;
+          },
+          toString(){
+            return 'hello';
+          }
+        }
+        console.log(obj+200);//400
+        console.log(Number(obj2)+'world');
+      },
+      // symbol.toPrimitive 使用例子
+      testSymbolToprimitive(){
+        let obj = {
+          //hint 参数的取值是 "number"、"string" 和 "default" 中的任意一个。
+          [Symbol.toPrimitive](hint){
+            if(hint == 'number'){
+              return 200;
+            }
+            if(hint == 'string'){
+              return 'hello';
+            }
+            return true;
+          }
+        }
+
+        console.log(+obj);
+        console.log(`${obj}`);
+        console.log(obj+'');
+      },
+      //获取对象类型
+      getType(obj){
+        let type = typeof obj;
+        if(type !== 'object'){
+          //首字母转为大写
+          type = type.charAt(0).toUpperCase() + type.slice(1);
+          return type;
+        }
+        return Object.prototype.toString.call(obj).replace(/^\[object (\S+)\]$/,'$1');
+      },
+      //测试number类型
+      testNumber(){
+        console.log(Number(true));        // 1
+        console.log(Number(false));       // 0
+        console.log(Number('0111'));      //111
+        console.log(Number(null));        //0
+        console.log(Number(''));          //0
+        console.log(Number('1a'));        //NaN
+        console.log(Number(-0X11));       //-17
+        console.log(Number('0X11'))      //17
+      },
+      //测试布尔值
+      testBoolean(){
+        console.log(Boolean(0))          //false
+        console.log(Boolean(null))       //false
+        console.log(Boolean(undefined))  //false
+        console.log(Boolean(NaN))        //false
+        console.log(Boolean(1))          //true
+        console.log(Boolean(13))         //true
+        console.log(Boolean('12'))      //true
+      },
+      //测试object.assign
+      testObjectAssign(){
+        let target = {};
+        let source = { a: { b: 2 } };
+        Object.assign(target, source);
+        console.log(target); // { a: { b: 10 } }; 
+        source.a.b = 10; 
+        console.log(source); // { a: { b: 10 } }; 
+        console.log(target); // { a: { b: 10 } };
+      }
+    }
+
+    window.onload = function(){
+      localMethod.copy();
+      localMethod.testTypeof();
+      localMethod.testInstanceof();
+      localMethod.testPrototypeCall();
+      localMethod.testJudgeTypeDemo();
+      localMethod.testSymbolToprimitive();
+    }
+  </script>
+</body>
+</html>
