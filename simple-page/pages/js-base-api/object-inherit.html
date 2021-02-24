@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>对象的继承</title>
+</head>
+<body>
+  <script type="module">
+    const testDemo = function(){
+      // 原型链继承 
+      {
+        function Parent(){
+          this.name = 'parent';
+          this.play = [1,2,3];
+        }
+
+        function Child(){
+          this.type = 'child';
+        }
+
+        Child.prototype = new Parent();
+        console.log(new Child());
+        //会造成的问题
+        const s1 = new Child();
+        const s2 = new Child();
+        s1.play.push(4);
+        //都是1，2，3，4
+        //修改s1 造成s2的原型也被修改了
+        //因为两个实例使用的是同一个原型对象。它们的内存空间是共享的，当一个发生变化的时候，另外一个也随之进行了变化，这就是使用原型链继承方式的一个缺点。
+        console.log(s1.play,s2.play);
+      }
+
+      // 构造函数继承
+      {
+        function Parent(){
+          this.name = 'parent';
+        }
+
+        Parent.prototype.getName = function(){
+          return this.name;
+        }
+
+        function Child(){
+          Parent.call(this);
+          this.type = 'child';
+        }
+
+        let child = new Child();
+        //parent 成功返回属性
+        console.log(child.name);
+        //undefined 并没有继承方法
+        console.log(child.getName);
+        console.log(child);
+      }
+
+      //结合以上两种方法
+      {
+        function Parent(){
+          this.name = 'parent';
+          this.play = [1,2,3];
+        }
+
+        Parent.prototype.getName = function(){
+          return this.name;
+        }
+
+        function Child(){
+          // 第二次调用parent
+          //多执行了一次parent原型的调用
+          Parent.call(this);
+          this.type = 'child';
+        }
+
+        //第一次调用parent
+        Child.prototype = new Parent();
+        //原型构造器指向本身
+        Child.prototype.constructor = Child;
+        const s1 = new Child();
+        const s2 = new Child();
+        s1.play.push(4);
+        console.log(s1.play,s2.play);
+        console.log(s1.name);
+        console.log(s1.getName());
+        console.log(s1);
+      }
+
+      //原型式继承
+      {
+        //普通对象继承
+        const Parent = {
+          name : 'parent',
+          play : [1,2,3],
+          getName(){
+            return this.name;
+          }
+        }
+
+        function Child(){
+        }
+        Child.prototype = Object.create(Parent);
+        Child.prototype.constructor = Child;
+        
+        const s1 = new Child();
+        const s2 = new Child();
+        s1.play.push(4);
+        //共用play属性，同时被修改了
+        //数据源也被修改了
+        console.log(s1.play,s2.play,Parent.play);
+      }
+
+      //寄生组合式继承
+      {
+       //继承
+        function clone(parent,child){
+         child.prototype = Object.create(parent.prototype);
+         child.prototype.constructor = child;
+        }
+
+        //定义父类
+        function Parent(){
+          this.name = 'parent';
+          this.play = [1,2,3];
+        }
+
+        Parent.prototype.getName = function(){
+          return this.name;
+        }
+
+        function Child(){
+          Parent.call(this);
+          this.type = 'child';
+        }
+
+        clone(Parent,Child);
+
+        const s1 = new Child();
+        const s2 = new Child();
+        s1.play.push(4);
+        console.log(s1,s2);
+      }
+    }
+
+    window.onload = function(){
+      testDemo();
+    }
+  </script>
+</body>
+</html>

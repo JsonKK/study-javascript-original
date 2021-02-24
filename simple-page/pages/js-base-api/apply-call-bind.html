@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>apply、call、bind实践</title>
+</head>
+<body>
+  <script type="module">
+    const testDemo = function(){
+      
+      //基本用法
+      {
+        let a = {
+          name : 'jack',
+          getName(msg){
+            return this.name + msg;
+          }
+        }
+
+        let b = {
+          name : 'lily'
+        }
+        //apply和call执行的效果是一致的，都是立即执行；区别在于传参的形式
+        console.log(a.getName.apply(b,['hi~']));
+        console.log(a.getName.call(b,'hi~'));
+        //bind并不会立即执行，而是返回一个重新构造的函数
+        let name = a.getName.bind(b,'hello~');
+        console.log(name());
+      }
+
+      //使用数组的push方法为对象实现类数组方法
+      {
+        //必须要有length属性，不然对象内存在的值会被全部覆盖
+        //每增加一项，length长度会增加一，如果要保证长度正确，则初始化长度需要正确
+        let arrLike = {
+          0 : 'lucy',
+          1 : 'lily',
+          key : 'xixi',
+          length : 2
+        }
+
+        Array.prototype.push.call(arrLike,'jack','tom');
+        console.log(typeof arrLike);
+        console.log(arrLike);
+      }
+    }
+
+    window.onload = function(){
+      testDemo();
+    }
+  </script>
+</body>
+</html>
