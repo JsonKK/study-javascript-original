@@ -44,7 +44,52 @@
         Array.prototype.push.call(arrLike,'jack','tom');
         console.log(typeof arrLike);
         console.log(arrLike);
+
+        //手撕call
+        // 在function显式原型上定义callSelf方法
+        Function.prototype.callSelf = function(context,...args){
+          let contxt = context || window;
+          contxt.fn = this;
+          let result = eval('contxt.fn(...args)');
+          delete contxt.fn;
+          return result;
+        }
+
+        //手撕apply
+        //在function原型上定义apply方法
+        Function.prototype.applySelf = function(context,args){
+          let contxt = context || window;
+          contxt.fn = this;
+          let result = contxt.fn(...args);
+          delete contxt.fn;
+          return result;
+        }
+
+        Array.prototype.push.applySelf(arrLike,['daduanduan'])
+        Array.prototype.push.callSelf(arrLike,'jsonKK');
+        console.log(arrLike);
+
+        //手撕bind
+        Function.prototype.bindSelf = function(context,...args){
+          let self = this;
+          if(typeof self !== 'function'){
+            throw new Error('this is must be a function');
+          }
+          const fBound = function(){
+            self.apply(this instanceof self ? this : context,args.concat(Array.prototype.slice.call(arguments)))
+          }
+
+          if(self.prototype){
+            fBound.prototype = Object.create(this.prototype);
+          }
+          //返回函数
+          return fBound;
+        }
+
       }
+
+      
+
     }
 
     window.onload = function(){

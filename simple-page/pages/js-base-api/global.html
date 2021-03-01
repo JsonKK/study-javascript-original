@@ -26,8 +26,28 @@
 
     {
       //eval方法
-      // console.log(eval(cosno('hide')))
+      //如果里面时字符串，则会直接执行输出
+      console.log(eval("console.log('hide')"))
     }
+
+    {
+      // 输出自增函数
+      for(var i = 1;i<=5;i++){
+        //通过传参的方式解决循环调用自增
+        setTimeout((index)=>{
+          console.log(index,'循环调用');
+        },100,i)
+      }
+
+      //通过let的方式输出自增函数
+      for(let i = 1;i<=5;i++){
+        setTimeout(()=>{
+          console.log(i,'循环自增2');
+        },10);
+      }
+    }
+
+
   </script>
 </body>
 </html>
