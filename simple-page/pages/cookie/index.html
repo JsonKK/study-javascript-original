@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>cookie实践</title>
+</head>
+<body>
+  <section class="main"></section>
+  <script type="module">
+
+    const localMethod = {
+      //数组对转对象 
+      //['moe', 'larry', 'curly'], [30, 40, 50] 转 {moe: 30, larry: 40, curly: 50}
+      //[['moe', 30], ['larry', 40], ['curly', 50]] 转 {moe: 30, larry: 40, curly: 50}
+      object(list,values){
+        let result = {};
+        // 去除首尾空格
+        function trim(str){
+          if(typeof str === 'string'){
+            //去除首尾空格
+            return str.replace(/^\s|\s+$/g,'');
+          }
+          else{
+            return str;
+          }
+        }
+        for(let i = 0,length = list.length;i< length;i++){
+          if(values && Array.isArray(values)){
+            result[trim(list[i])] = unescape(values[i]);
+          }
+          else{
+            result[trim(list[i][0])] = unescape(list[i][1]);
+          }
+        }
+        return result;
+      },
+      // 获取cookie
+      getCookie(key){
+        let cookie = decodeURIComponent(document.cookie);
+        //返回的是一个字符串
+        cookie = cookie.split(';').map((item)=>{
+          return item.split('=');
+        });
+        cookie = localMethod.object(cookie);
+        return typeof key === 'string' && key? cookie[key] : cookie;
+      },
+      //增加cookie Key
+      //默认浏览器关闭就删除
+      setCookie(obj={},time){
+        // 删除对象expires字段
+        delete obj.expires;
+        let date = new Date();
+        // 过期时间
+        date.setTime(date.getTime() + time*24*60*60*1000);
+        //把时间转为格林尼治时间
+        //或者把时间转为世界时间 date.toUTCString()都是可以的
+        let outTime = date.toGMTString();
+        for(let key in obj){
+          document.cookie = `${key}=${escape(obj[key])};expires=${outTime};path=/;`;
+        }
+      },
+      //删除cookie
+      delCookie(keys){
+        // 需要删除的项转为数组
+        if(typeof keys == 'string'){
+          keys = [keys];
+        }
+        for(let i = 0 ,length = keys.length;i<length;i++){
+          //需要指定路径否则无法删除
+          localMethod.setCookie({[keys[i]]:''},-1);
+        }
+      }
+    }
+
+    window.onload = function(){
+      //相同的key后一个会覆盖前一个
+      localMethod.setCookie({test1:'test1'});
+      localMethod.setCookie({test1:'test2'});
+      localMethod.delCookie('test1');
+      console.log(localMethod.getCookie());
+    }
+  </script>
+</body>
+</html>
