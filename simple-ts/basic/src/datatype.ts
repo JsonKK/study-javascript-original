@@ -59,6 +59,15 @@ let num: number = u;
   let colorName : string = Color[2];
   //获取索引为第二项的枚举名称
   console.log(colorName);
+
+
+  // 定义性别的枚举
+  enum Sex {men = 1,women};
+  //返回undefind
+  let m : string = Sex[3];
+  //返回women
+  m = Sex[2];
+  console.log('越界的sex',m);
 }
 
 /**
@@ -91,4 +100,32 @@ let num: number = u;
   let stringLength : number = (<string>someValue).length;
   let stringLength2 : number = (someValue as string).length;
   console.log(stringLength,stringLength2);
+}
+
+/**
+* 解构调换数据的值
+* @param name   定义
+*/
+{
+  let a = 1,b = 2;
+  [a,b] = [b,a];
+  console.log(`a:${a};b:${b}`);
+
+  let defaults = { food: "spicy", price: "$$", ambiance: "noisy" ,f(){return 'function'}};
+  let search = { food: "rich", ...defaults };
+  //在对象结构中，food被覆盖
+  console.log(search);
+  console.log(defaults.f());
+}
+
+/**
+* 解构用于函数声明
+* 类型推断的例子
+* @param name   定义
+*/
+{
+  type C = { a: string, b? : number};
+  function f({a,b}:C):void{
+
+  }
 }
