@@ -34,3 +34,22 @@ interface Interest {
 let Lily : Interest = {
   sport : 'swimming'
 }
+
+// 定义接口
+//接收两个参数为字符串，返回一个布尔值
+interface _judgeStr {
+  (str : string , sub : string) : Boolean
+}
+
+var judgeStr:_judgeStr = function(str,sub){
+  let index = str.search(sub);
+  if(index > -1){
+    return true;
+  }
+  else{
+    return false;
+  }
+
+}
+
+console.log(judgeStr('hello world','world'))
