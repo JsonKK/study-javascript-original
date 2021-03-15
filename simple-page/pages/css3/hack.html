@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>兄弟宽度一样，定位的样式会造成一像素溢出</title>
+  <meta content="yes" name="apple-mobile-web-app-capable">
+  <meta content="yes" name="apple-touch-fullscreen">
+  <meta content="telephone=no" name="format-detection">
+  <meta name="viewport" content="width=750">
+  <script src="https://market.h5-pages.cn/public/js/HBUtils.js"></script>
+  <style>
+    body, dl, dd, p, form, input, ol, ul, h1, h2, h3, h4, h5, h6, pre, figure {
+      margin: 0;
+    }
+    ol, ul, td, input, dialog {
+      padding: 0;
+    }
+    h1, h2, h3, h4, h5, h6, b, label, table {
+      font-weight: normal;
+      font-size: inherit;
+    }
+    img, dialog {
+      border: none;
+    }
+    img, a {
+      -webkit-touch-callout: none;
+    }
+    ul {
+      list-style: none;
+    }
+    a {
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      text-decoration: none;
+      user-select: none;
+      cursor: pointer;
+      color: inherit;
+    }
+    em, i {
+      font-style: normal;
+      font-size: inherit;
+    }
+    mark {
+      background: none;
+      color: inherit;
+    }
+
+    body {
+      width: 750px;
+      margin: 0 auto;
+      line-height: 1;
+      font-size: 24px;
+      font-family: "-apple-system", "Helvetica Neue", "Roboto", "Segoe UI", sans-serif;
+      color: #333;
+    }
+
+
+    /*chrome/cn font-size<12*/
+    html {
+      -webkit-text-size-adjust: none;
+    }
+
+    /*android < 4.4 vh fix*/
+    html, body, .app {
+      height: 100%;
+    }
+    .main-section{
+      height: 600px;
+      width: 300px;
+      background: #f1f1f1;
+      position: relative;
+      margin: 0 auto;
+    }
+    .box{
+      background: green;
+      padding: 0;
+      margin: 0;
+    }
+    .inside-box{
+      width: 300px;
+      height: 120px;
+      background: #fff;
+      position: absolute;
+    }
+    .box-2{
+      width: 300px;
+      height: 2000px;
+      background-color: rebeccapurple;
+    }
+  </style>
+</head>
+<body>
+  <!-- 背景色溢出 -->
+  <section class="main-section">
+    <div class="box">
+      <div class="inside-box">第一个盒子内容</div>
+    </div>
+    
+    <div class="box-2">
+
+    </div>
+  </section>
+</body>
+</html>
