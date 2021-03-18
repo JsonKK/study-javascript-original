@@ -23,13 +23,154 @@
     console.log('void')
   }
 
-  //定义 枚举类型
-  //枚举不能被定义为函数返回类型
-  // function how() : enum{
-  //   let a : string = 'red';
-  //   let b : string= 'blue';
-  //   let c : string = 'orange';
-  //   enum Color {a,b,c}
-  //   return Color;
-  // }
+  {
+    // 定义布尔值
+    let isDone : boolean = false;
+    //定义数值型
+    // 十进制
+    let decLiteral : number = 6;
+    // 十六进制
+    let hexLiteral : number = 0xf00d;
+    // 二进制
+    let binaryLiteral : number = 0b1010;
+    // 八进制
+    let octalLiteral : number = 0o7444;
+    //定义字符串
+    let name : string = 'box';
+    name = 'smith';
+    let sentence:string = `helle,my name is ${name};my age is ${decLiteral};`
+    console.table([isDone,decLiteral,hexLiteral,binaryLiteral,octalLiteral,name,sentence]);
+  }
+
+  {
+    //定义数组
+    let list:number [] = [1,2,3];
+    // 需要在尖括号内定义参数类型
+    //或是一条竖线  定义类型为number 或者string
+    let list2: Array<number|string> = [1,2,'3'];
+    //第一个参数可以定义为对象，对象的键名就是表头
+    //第二个参数代表需要输出的字段（数组格式），如果不传则全部输出
+    console.table([
+      {table : list},
+      {table : list2}
+    ])
+  }
+
+  {
+    // 定义元组
+    //分别定义数组各个值的类型
+    let arr : [number,string];
+    //不会默认初始值
+    arr = [1,'2'];
+    //第一个值必须为数值
+    arr[0] = 123;
+    // 第二个值必须为字符串
+    arr[1] = '456';
+    //2.6版本之后定义长度的元组长度需要和目标函数一致
+    //报错无法赋值
+    //2.6版本以前只要设置的值是定义的类型中的一种即可
+    //使用了trycatch 编译还是报错
+    // arr[2] = 789;
+    console.table(arr)
+  }
+
+  {
+    // 我们不希望类型检查器对这些值进行检查而是直接让它们通过编译阶段的检查。 那么我们可以使用 any类型来标记这些变量
+    //定义一个值改变类型不会报错
+    let change : any ;
+    change = 'string';
+    change = 123;
+    change = false;
+    console.log('改变的change',typeof change);
+
+    let changeObj : any = {money:100};
+    let changeNum : any = 100;
+    console.table([
+      ['定义any对象上的num,使用toFixed方法',changeObj.money.toFixed(2)],
+      ['定义any数值上的num,使用toFixed方法',changeNum.toFixed(2)]
+    ]);
+
+  }
+
+  {
+    //某种程度上来说，void类型像是与any类型相反，它表示没有任何类型。
+    //声明一个void变量
+    //只能被赋值null 或者 undefined
+    let obj : void = null;
+    obj = undefined;
+  }
+
+  {
+    //定义对象类型
+    //declare 是声明的意思
+    const create  = function(o: object | null):void{};
+    create({ prop: 0 }); // OK
+    create(null); // OK
+
+    //传入数值报错
+    //create(42); // Error
+    // 传入字符串报错
+    //create("string"); // Error
+    // 传入布尔值报错
+   // create(false); // Error
+    // 传入undefined 报错
+    //create(undefined); // Error
+
+
+  }
+
+  {
+    //类型断言
+    // 使用断言，简单来说就是先做好一个假设，使得编译通过。
+    let someValue : any = 'this maybe string';
+    someValue = false;
+    //将字符串定义成了布尔值，因为使用了类型断言，所以不会报错
+    let strLength : number = (<string>someValue).length;
+    console.log('断言输出字符串长度',strLength);
+
+    //断言也可以使用as的写法
+    let strLength2 : number = (someValue as string).length;
+    console.log('断言输出字符串长度2',strLength2);
+  }
+
+}
+
+{
+  // 推断类型
+  window.onmousedown = function(mouseEvent){
+    console.log(mouseEvent.button);
+  }
+}
+
+{
+  interface Named { 
+    name : string
+  }
+  let x : Named;
+  let y = {name : 'Alice',location:'xian'};
+  //赋值成功，因为y里包含了x校验的name属性
+  x = y;
+}
+
+{
+  enum EventType { Mouse, Keyboard }
+
+  interface Event { timestamp: number; }
+  interface MouseEvent extends Event { x: number; y: number }
+  interface KeyEvent extends Event { keyCode: number }
+
+  function listenEvent(eventType: EventType, handler: (n: Event) => void) {
+      /* ... */
+  }
+  listenEvent(EventType.Mouse, (e: MouseEvent) => console.log(e.x + ',' + e.y));
+  listenEvent(EventType.Mouse, (e: Event) => console.log((<MouseEvent>e).x + ',' + (<MouseEvent>e).y));
+}
+
+{
+  enum Status { Ready, Waiting };
+  enum Color { Red, Blue, Green };
+
+  let status = Status.Ready;
+  //不同的枚举类型是不兼容的
+  // status = Color.Green; 
 }

@@ -129,3 +129,10 @@ let num: number = u;
 
   }
 }
+
+{
+  let defaults = { food: "spicy", price: "$$", ambiance: "noisy" };
+  let search = { food: "rich", ...defaults };
+  //合并后defaults数据被改变了
+  console.log(defaults,search);
+}
