@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XMLHttpRequest</title>
+</head>
+<body>
+  <script>
+    const localMethod = {
+      //适用于ie7之前的版本
+      createXHROld(){
+        if(typeof arguments.callee.activeXSring !== 'string'){
+          let versions = ['MSXML2.XMLHttp6.0','MSXML2.XMLHttp3.0','MSXML2.XMLHttp'];
+          for(let i =0;i<versions.length;i++){
+            try{
+              new ActiveXObject(versions[i]);
+              arguments.callee.activeXSring = versions[i];
+            }
+            catch(err){
+            }
+          }
+          return new ActiveXObject(arguments.callee.activeXSring);
+        }
+      },
+      //生成常规异步对象
+      createXHR(){
+        if(typeof XMLHttpRequest !== 'undefined'){
+          return new XMLHttpRequest();
+        }
+        else if(typeof ActiveXObject !== 'undefined'){
+          return this.createXHROld();
+        }
+        else{
+          console.log('浏览器不支持xmlrequest')
+        }
+      },
+      //基于原生封装ajax，并返回请求数据
+      ajax(){
+        const that = this;
+        //实例化
+        const xhr = that.createXHR();
+        console.log(xhr);
+        //三个参数
+        //1.请求方式 2.请求地址 3.是否异步
+        //如果使用同步加载的方式，会报出警告
+        //[Deprecation] Synchronous XMLHttpRequest on the main thread is deprecated because of its detrimental effects to the end user's experience.
+        // xhr.open('get','/assets/data/indexdb-pic.json',true);
+        xhr.open('get','https://test-gw-k8s-web.taqu.cn/live_trade/v1/RegularActivity/getHostRank?id=7',true);
+        //目前看是无效的
+        //不要随意加请求头，会造成请求失败
+        // xhr.setRequestHeader('CODE','myValue');
+        let data = new FormData();
+        data.append('name','xixihaha');
+        
+        //设置超时时间，毫秒
+        xhr.timeout = 10000;
+        //超时执行方法
+        xhr.ontimeout = function(){}
+        xhr.overrideMimeType('text/json');
+        xhr.send(data);
+        xhr.onreadystatechange = function(){
+          //如果超时后再访问status属性会报错
+          try{
+            if(xhr.readyState == 2){
+              const allHeaders = xhr.getAllResponseHeaders();
+              // xhr.abort();
+            }
+            if(xhr.readyState == 4){
+              //判断成功
+              if((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304){
+                // console.log(xhr.responseText);
+              }
+              else{
+                console.log(xhr.status);
+              }
+            }
+          }
+          catch(err){
+            console.log(err);
+          }
+        }
+        //进度条使用
+        xhr.onloadstart = function(e){
+          // console.log('onloadstart',e);
+        }
+        xhr.onload = function(e){
+          // console.log('onload',e);
+        }
+        xhr.onprogress = function(e){
+          // console.log('onprogress',e);
+        }
+        xhr.onloadend = function(e){
+          // console.log('onloadend',e);
+        }
+      }
+    }
+    window.onload = function(){
+      localMethod.ajax();
+    }
+  </script>
+</body>
+</html>
