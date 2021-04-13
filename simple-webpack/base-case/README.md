@@ -8,6 +8,25 @@ npm install webpack@4
 #### 执行编译
 `webpck`
 
+#### 自动执行编译
+弊端是不会自动刷新
+`webpack --watch`
+
+#### 使用webpack-dev-server
+```
+//安装
+npm install --save-dev webpack-dev-server
+//在package.json中配置
+"serve": "webpack serve --mode development"
+//在配置文件中配置
+devServer : {
+  //配置host 可以使服务器外访问
+  host : '0.0.0.0',
+  //配置端口号
+  port : 8001
+}
+```
+
 #### 配置html模板
 
 ```
@@ -91,6 +110,72 @@ module : {
     {
       test : /\.(css)$/,
       use: [MiniCssExtractPlugin.loader, 'css-loader'],
+    }
+  ]
+}
+```
+
+#### babel-loader，使用最新版本的js
+```
+//安装
+npm install babel-loader babel-core babel-preset-env webpack
+//配置
+module: {
+  rules: [
+    {
+      test: /\.js$/,
+      exclude: /(node_modules|bower_components)/,
+      use: {
+        loader: 'babel-loader',
+        options: {
+          presets: ['@babel/preset-env']
+        }
+      }
+    }
+  ]
+}
+
+```
+
+#### vue-loader安装，能够解析vue文件
+事例文档：[官方事例](https://vue-loader.vuejs.org/zh/guide/#vue-cli)
+```
+//安装(注意，vue-template-compiler必须要安装，除非你是使用自行 fork 版本的 Vue 模板编译器的高阶用户)
+npm install -D vue-loader vue-template-compiler
+//webpack中配置
+const { VueLoaderPlugin } = require('vue-loader')
+
+plugins: [
+  // 请确保引入这个插件来施展魔法
+  new VueLoaderPlugin()
+]
+
+module: {
+  rules: [
+    {
+      test: /\.vue$/,
+      loader: 'vue-loader'
+    }
+  ]
+}
+```
+
+#### 安装scss-loader
+```
+//安装
+npm install sass-loader node-sass --save-dev
+//配置文件中配置
+module: {
+  rules: [
+    {
+      test: /\.scss$/,
+      use: [{
+          loader: "style-loader" // 将 JS 字符串生成为 style 节点
+      }, {
+          loader: "css-loader" // 将 CSS 转化成 CommonJS 模块
+      }, {
+          loader: "sass-loader" // 将 Sass 编译成 CSS
+      }]
     }
   ]
 }
