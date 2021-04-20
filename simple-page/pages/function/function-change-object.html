@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>自定义apply\bind\call</title>
+</head>
+<body>
+  <script>
+    
+    Function.prototype.mycall = function(ctx,...args){
+      // 定义缓存对象为传入的对象或者为全局对象
+      const content = ctx || globalThis;
+      //获取当前时间戳，避免重名
+      const hash = new Date().getTime();
+      //对象key 为hash值为当前执行方法
+      content[hash] = this;
+      // 执行结果赋值给result
+      const result = content[hash](...args);
+      // 删除缓存的数据
+      delete content[hash];
+      return result;
+    }
+
+    //同理实现apply方法
+    Function.prototype.myapply = function(ctx,args){
+      //定义对象为传进来的或者全局
+      const content = ctx || globalThis;
+      //定义时间戳避免重复
+      const hash = new Date().getTime();
+      //定义key为hash的值为当前方法
+      content[hash] = this;
+      const result = content[hash](...args);
+      delete content[hash];
+      return result;
+    }
+
+    //实现bind函数
+    Function.prototype.mybind = function(ctx,...rests){
+      if(typeof this !== 'function'){
+        throw new Error('bind get not a function');
+      }
+      const self = this;
+      return function F(...args){
+        if(self instanceof F){
+          return new self(...rests,...args);
+        }
+        else{
+          return self.apply(ctx,rests.concat(args));
+        }
+      }
+    }
+
+    const add = function(c,d){
+      return (this.a || this.b || 0) + c + d;
+    }
+    const cut = function(c,d){
+      return (this.a || this.b || 0) - c - d;
+    }
+
+    const multiplication = function(c,d){
+      return (this.a || this.b) * c * d;
+    }
+
+    const obj = {a : 10};
+    console.log('mycall',add.mycall(obj,1,2))
+    console.log('myapply',cut.myapply(obj,[1,2]))
+    const minMultip = multiplication.mybind(obj,2);
+    console.log('mybind',minMultip(3));
+  </script>
+</body>
+</html>

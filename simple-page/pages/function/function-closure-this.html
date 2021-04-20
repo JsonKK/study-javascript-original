@@ -6,6 +6,8 @@
   <title>闭包环境下的this</title>
 </head>
 <body>
+  <button id="debounce-btn" type="button">防抖测试</button>
+  <button id="debounce-cancel-btn" type="button">取消防抖</button>
   <script>
     var name = 'the window';
     {
@@ -23,6 +25,73 @@
       }
       console.log('在闭包方法内返回this.name',object.getNameFunc()());
     }
+
+    //防抖函数
+    //检疫版本为两个参数，每次都会延迟执行，第三个参数加入是否立即执行参数
+    //终结版增加取消方法
+    function debounce(fn,wait=100,immediate){
+      let timeout;
+      //增加记录原函数执行结果
+      let result;
+      const debounced = function(){
+        const context = this;
+        const args = arguments;
+        //不论是否立即执行，都需要清除正在执行的事件
+        clearTimeout(timeout);
+        if(immediate){
+          const callNow = !timeout;
+          timeout = setTimeout(()=>{
+            timeout = null;
+          },wait)
+          if(callNow) result = fn.apply(context,args);
+        }
+        else{
+          timeout = setTimeout(()=>{
+            fn.apply(context,args)
+          },wait)
+        }
+        return result;
+      }
+
+      debounced.cancel = function(){
+        clearTimeout(timeout);
+        timeout = null;
+      }
+
+      return debounced;
+    }
+
+    const btn = document.getElementById('debounce-btn');
+
+    const clickDebounce = debounce(function(ev){
+      //最简易版本，this指向windowse
+      //第二版传入当前对象
+      console.log('出发了',this);
+      //输出参数
+      //第二版无法输出参数
+      console.log('parms',ev);
+    },1000)
+    
+    //执行点击
+    btn.onclick = clickDebounce;
+    //取消点击
+    document.getElementById('debounce-cancel-btn').onclick = clickDebounce.cancel;
+
+    function curry(fn) {
+      const args = Array.prototype.slice.call(arguments, 1);
+      return function() {
+        const innerArgs = Array.prototype.slice.call(arguments);
+        const finalArgs = args.concat(innerArgs);
+        return fn.apply(null, finalArgs);
+      };
+    }
+
+    const curryFn = curry(function(){
+      console.log(this);
+    })
+
+    curryFn();
+    
   </script>
 </body>
 </html>
