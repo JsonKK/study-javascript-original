@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>defineproperty</title>
+  <style>
+    *{
+      margin: 0;
+      padding: 0;
+    }
+    section{
+      margin: 1em 0;
+    }
+    .flex-row{
+      display: flex;
+      align-items: center;
+      font-size: 18px;
+      padding: 4px 0;
+    }
+    sub,input{
+      font-size: 18px;
+    }
+    .left-text{
+      margin-right: .5em;
+    }
+  </style>
+</head>
+<body>
+  <div id="box">
+    <section class="from-content">
+      <form name="formData">
+        <div class="flex-row">
+          <label class="left-text" for="name">姓名</label><input type="text" name="name" id="name" />
+        </div>
+        <div class="flex-row">
+          <label class="left-text" for="name">电话</label><input type="text" name="phone" id="phone" />
+        </div>
+      </form>
+    </section>
+    <hr/>
+    <section class="reactive-content">
+      <div class="flex-row">
+        <sub class="left-text">姓名文本</sub>
+        <p data-name="name"></p>
+      </div>
+      <div class="flex-row">
+        <sub class="left-text">电话文本</sub>
+        <p data-name="phone"></p>
+      </div>
+    </section>
+    <hr/>
+    <section>
+      <ul class="list-ul" id="list-ul"></ul>
+    </section>
+  </div>
+
+  <script type="module">
+      function testConfigurable(){
+        let obj = {};
+        //配置可配置
+        //configurable 意义为所有描述配置后就不能修改，修改就会抛出异常
+        //configurable 也决定了该属性是否可以删除
+        Object.defineProperty(obj,'noConfig',{
+          configurable : false,
+          writable : false
+        })
+
+        try{
+          // 由于writeable为false,所以赋值异常，抛出
+          obj.noConfig = 'begin';
+        }
+        catch(err){
+          try{
+            Object.defineProperty(obj,'noConfig',{
+              writable : true
+            })
+            obj.noConfig = 'begin';
+          }
+          catch(err){
+            console.log(err,'重新定义writeable并且复制失败')
+          }
+        }
+        
+        try{
+          //因为可配置属性为false,所以删除会抛出异常
+          delete obj.noConfig;
+        }
+        catch(err){
+          console.log(err,'删除noConfig属性失败')
+        }
+        
+
+        //重新定义新属性
+        //是否可以描述为true
+        //是否可以写入true
+        Object.defineProperty(obj,'yesConfig',{
+          configurable : true,
+          writable : true
+        })
+
+        //成功赋值
+        obj.yesConfig = 'begin';
+        // 成功删除
+        delete obj.yesConfig;
+        console.log(obj);
+      }
+
+      // 测试枚举属性
+      function testEnumerable(){
+        const obj = {};
+        Object.defineProperty(obj,'noEnum',{
+          enumerable : false
+        })
+        Object.defineProperty(obj,'yesEnum',{
+          enumerable : true
+        })
+        Object.defineProperty(obj,Symbol.for('yesEnum'),{
+          enumerable : true
+        })
+        //因为noEnum设置了不可枚举的描述，所以使用遍历方法取不到
+        //输出信息 ['yesEnum']
+        console.log('可枚举列表',Object.keys(obj));
+        console.log(`Symbol.for('yesEnum')是否可以枚举`,obj.propertyIsEnumerable(Symbol.for('yesEnum')));
+      }
+
+      //测试赋值和取值
+      function testModified(){
+        const obj = {};
+        const localObj = {};
+        const key = 'modified'
+        Object.defineProperty(obj,key,{
+          get(){
+            return localObj[key];
+          },
+          set(value){
+            localObj[key] = value;
+          }
+        })
+        //未赋值前
+        console.log(`未赋值前${key}`,obj[key]);
+        obj[key] = new Array(key);
+        console.log(`赋值后${key}`,obj[key]);
+
+        //实例原型上设置属性不可修改
+        function myclass(){}
+        myclass.prototype.x = 1;
+        Object.defineProperty(myclass.prototype,'y',{
+          writable : false,
+          value : 1
+        })
+
+        const mycalssInt = new myclass();
+        //修改实例x的值
+        mycalssInt.x = 2;
+        console.log('mycalssInt.x',mycalssInt.x);
+        //原型的值不会被改变
+        console.log('myclass.prototype.x',myclass.prototype.x);
+        myclass.prototype.x = 3;
+        //实例化后原型值的改变也不会反应到实例
+        console.log('mycalssInt.x',mycalssInt.x);
+
+        //修改y的值
+        try{
+          mycalssInt.y = 2;
+        }
+        catch(err){
+          console.log('mycalssInt.y赋值失败')
+        }
+        console.log('mycalssInt.y',mycalssInt.y);
+        console.log('myclass.prototype.y',myclass.prototype.y);
+      }
+
+      
+      function strReactive(){
+        const obj = {};
+        //获取所有定义了id和name,并且相同的input,把值作为Key
+        const inputArr = document.getElementsByTagName('input');
+        Array.from(inputArr).forEach((input)=>{
+          let key = input.getAttribute('name');
+          let id = input.getAttribute('id');
+          if(!id || !key || key !== id){
+            return;
+          }
+          Object.defineProperty(obj,key,{
+            set(value){
+              input.value = value;
+              let p = document.querySelector(`p[data-name="${key}"]`);
+              if(p){
+                p.innerText = value;
+              }
+            }
+          })
+
+          input.oninput = function(e){
+            obj[key] = e.target.value;
+          }
+        });
+      }
+
+      function arrReactive(){
+        // 定义观察者
+        function Observer(data){
+          this.data = data;
+          if(typeof this.walk == 'function'){
+            this.walk(data);
+          }
+        }
+        // 获取观察者原型
+        let p = Observer.prototype;
+        //获取数组实例原型
+        let arrayProto = Array.prototype;
+        //根据arrayProto创建新对象
+        let arrayMethods = Object.create(arrayProto);
+
+        //需要变化监听的方法
+        [
+          'push',
+          'pop',
+          'shift',
+          'unshift',
+          'splice',
+          'sort',
+          'reverse'
+        ].forEach((item)=>{
+          Object.defineProperty(arrayMethods,item,{
+            value : function mutator(){
+              console.log('arr 被访问');
+              let original = arrayProto[item];
+              let args = Array.from(arguments);
+              original.apply(this,args);
+              renderList(this);
+            }
+          })
+        })
+
+        p.walk = function(obj){
+          let value;
+          for(let key in obj){
+            if(obj.hasOwnProperty(key)){
+              value = obj[key];
+              if(typeof value === 'object'){
+                let augment = value.__proto__ ? protoAugment : copyAugment  
+                augment(value, arrayMethods, key)
+                observeArray(value)
+              }
+              this.convert(key,value);
+            }
+          }
+        }
+
+        p.convert = function(key, value){
+          const data = this.data;
+          Object.defineProperty(this.data, key, {
+            enumerable: true,
+            configurable: true,
+            get: function(){
+              console.log(key + '被访问');
+              renderList(value);
+              return value;
+            },
+            set: function(newVal){
+              //只有整个值被改变才会触发，如果是数组里的值改变，不会触发
+              console.log(key + '被修改，新' + key + '=' + newVal);
+              if(newVal === value) return ;
+              value = newVal;
+            }
+          })
+        }; 
+        var data = {
+          user: {
+              // name: 'zhangsan',
+            age: function(){console.log(1)}
+          },
+          apg: [{a: 1},2,3]
+        }
+        
+        function observeArray (items) {
+          for (var i = 0, l = items.length; i < l; i++) {
+            observe(items[i])
+          }
+        }
+        
+        //数据重复Observer
+        function observe(value){
+          if(typeof(value) != 'object' ) return;
+          var ob = new Observer(value)
+          return ob;
+        }
+        
+        //辅助方法
+        function def (obj, key, val) {
+          Object.defineProperty(obj, key, {
+            value: val,
+            enumerable: true,
+            writable: true,
+            configurable: true
+          })
+        }
+        
+        // 兼容不支持__proto__的方法
+        //重新赋值Array的__proto__属性
+        function protoAugment (target,src) {
+          target.__proto__ = src
+        }
+        //不支持__proto__的直接修改相关属性方法
+        function copyAugment (target, src, keys) {
+          for (var i = 0, l = keys.length; i < l; i++) {
+            var key = keys[i]
+            def(target, key, src[key])
+          }
+        }
+        
+        
+        var app = new Observer(data);
+        data.apg.push(4);
+        data.apg.push(5);
+        data.apg[1] = '66';
+        // data.apg.push(2);
+      }
+
+      function renderList(arr){
+        if(!Array.isArray(arr)){
+          return;
+        }
+        const list = document.getElementById('list-ul');
+        //每次渲染都清空
+        list.innerHTML = '';
+        arr.forEach((item)=>{
+          let li = document.createElement('li');
+          li.innerText = JSON.stringify(item);
+          list.appendChild(li);
+        })
+        
+      }
+
+      function pageInit(){
+        testConfigurable();
+        testEnumerable();
+        testModified();
+        strReactive();
+        arrReactive();
+      }
+      window.onload = function(){
+        pageInit();
+      }
+  </script>
+</body>
+</html>

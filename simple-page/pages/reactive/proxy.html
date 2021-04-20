@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>proxy</title>
+</head>
+<body>
+  <!-- <script type="text/javascript" src="./bowser.js"></script> -->
+  <script type="module">
+    //测试赋值和改值
+    function testModified(){
+      var obj = new Proxy({},{
+        //target.目标对象
+        //propkey需要访问的key
+        //proxy对象
+        get(target,propKey,receiver){
+          console.log(`getting ${propKey}`);
+          console.log(target,receiver);
+          return Reflect.get(target,propKey,receiver);
+        },
+        set(target,proKey,value,receiver){
+          return Reflect.set(target,proKey,value,receiver);
+        }
+      })
+      
+      obj.count = 1;
+      obj.count ++;
+      obj.arr = [];
+      obj.arr.push(1);
+      //如果使用赋值，
+      obj.arr[0] = 2;
+    }
+
+    //测试api
+    function testApi(){
+      const obj = new Proxy({},{
+        get(target,propKey,receiver){
+          console.log('get');
+          return Reflect.get(target,propKey,receiver);
+        },
+        set(target,propKey,value,receiver){
+          console.log('set');
+          return Reflect.set(target,proKey,value,receiver);
+        },
+        apply(target, thisBinding, args){
+          console.log('apply',thisBinding,args);
+        },
+        //拦截作为构造函数调用
+        //并不知道如何触发
+        construct(target, args){
+          console.log('construct',target,args);
+          return new target(...args);
+        }
+      })
+
+      const copyObj = new Proxy.apply({name:'xixihaha'});
+    }
+
+    function initPage(){
+      testModified();
+      testApi();
+    }
+
+    window.onload = function(){
+      initPage();
+    }
+  </script>
+</body>
+</html>
