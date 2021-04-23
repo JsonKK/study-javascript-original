@@ -1,3 +1,6 @@
+import moment from 'moment';
+import './utils/base-value';
+
 {
   //变量使用any类型
   var noSure : any = 10;
@@ -14,12 +17,12 @@
 
 {
   //定义any 函数
-  function tell() : any{
+  const tell = function() : any{
     console.log('tell');
   }
 
   //定义void 函数
-  function me() : void{
+  const me = function() : void{
     console.log('void')
   }
 
@@ -137,8 +140,12 @@
 
 {
   // 推断类型
-  window.onmousedown = function(mouseEvent){
-    console.log(mouseEvent.button);
+  const window:any = this;
+  //如果在浏览器环境，并且有onmousedown属性才执行
+  if(window && window.hasOwnProperty('onmousedown')){
+    window.onmousedown = function(mouseEvent){
+      console.log(mouseEvent.button);
+    }
   }
 }
 
@@ -159,7 +166,7 @@
   interface MouseEvent extends Event { x: number; y: number }
   interface KeyEvent extends Event { keyCode: number }
 
-  function listenEvent(eventType: EventType, handler: (n: Event) => void) {
+  const listenEvent = function(eventType: EventType, handler: (n: Event) => void) {
       /* ... */
   }
   listenEvent(EventType.Mouse, (e: MouseEvent) => console.log(e.x + ',' + e.y));
@@ -173,4 +180,14 @@
   let status = Status.Ready;
   //不同的枚举类型是不兼容的
   // status = Color.Green; 
+}
+
+{
+  //内置了类型校验
+  //如果传递字符串会报错，所以把字符强制转为为整数
+
+  console.log(Math.pow(10,parseInt('2')))
+}
+
+{
 }

@@ -9,7 +9,7 @@ const port = 3000;
 
 Promise.resolve().then(()=>{
   // 引入类型
-  // require('./build/anyvalue');
+  require('./build/anyvalue');
   // 引入迭代器
   // require('./build/interfaces');
   //引入类
@@ -21,7 +21,7 @@ Promise.resolve().then(()=>{
   //模块
   // require('./build/module');
   //命名空间
-  require('./build/name-space');
+  // require('./build/name-space');
 })
 
 //监听服务
