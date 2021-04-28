@@ -1,5 +1,5 @@
 import moment from 'moment';
-import './utils/base-value';
+import '../utils/base-value';
 
 {
   //变量使用any类型
@@ -187,6 +187,10 @@ import './utils/base-value';
   //如果传递字符串会报错，所以把字符强制转为为整数
 
   console.log(Math.pow(10,parseInt('2')))
+}
+
+{
+  console.log('personName',personName);
 }
 
 {

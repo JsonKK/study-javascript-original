@@ -9,19 +9,21 @@ const port = 3000;
 
 Promise.resolve().then(()=>{
   // 引入类型
-  require('./build/anyvalue');
+  // require('./build/views/anyvalue');
   // 引入迭代器
-  // require('./build/interfaces');
+  // require('./build/views/interfaces');
   //引入类
-  // require('./build/class');
+  // require('./build/views/class');
   //运入函数
-  // require('./build/function');
+  // require('./build/views/function');
   //泛型
-  // require('./build/genericity');
+  // require('./build/views/genericity');
   //模块
-  // require('./build/module');
+  // require('./build/views/module');
   //命名空间
-  // require('./build/name-space');
+  // require('./build/views/name-space');
+  //断言
+  require('./build/views/asserts');
 })
 
 //监听服务
