@@ -109,7 +109,7 @@
   // 定义只读属性
   class Octopus{
     readonly name : string;
-    oldname : string;
+    oldname : string = '';
     constructor(theName : string){
       this.name = theName;
     }
@@ -126,7 +126,7 @@
   //类的存取器
   //定义一个类方法，如果密码通过校验，则同意修改账户
   class JudgeAccount {
-    private isPass : boolean;
+    private isPass : boolean = false;
     //如果没有设置默认值，就被外部获取会返回undefined
     private _fullName : string = '暂时还没有名字';
     // 获取值时返回
@@ -224,8 +224,8 @@
 {
   //类型和迭代器结合使用
   class Point {
-    x: number;
-    y: number;
+    x: number = 0;
+    y: number = 0;
   }
 
   interface Point3d extends Point {

@@ -26,8 +26,10 @@ printName();
 
 let u: undefined = undefined;
 let n: null = null;
+let any: any = undefined;
 //与void区别，undefined和null是所有类型的子类型。也就是说undefined类型的变量，可以赋值给Number类型变量
-let num: number = u;
+//严格模式下，undefined和null不能赋值给number;只有any能赋值给num
+let num: number = any;
 
 /**
 * 定义数组类型
@@ -112,7 +114,7 @@ let num: number = u;
   console.log(`a:${a};b:${b}`);
 
   let defaults = { food: "spicy", price: "$$", ambiance: "noisy" ,f(){return 'function'}};
-  let search = { food: "rich", ...defaults };
+  let search = Object.assign({ food: "rich" },{ ...defaults});
   //在对象结构中，food被覆盖
   console.log(search);
   console.log(defaults.f());
@@ -132,7 +134,7 @@ let num: number = u;
 
 {
   let defaults = { food: "spicy", price: "$$", ambiance: "noisy" };
-  let search = { food: "rich", ...defaults };
+  let search = Object.assign({ food: "rich" },{ ...defaults});
   //合并后defaults数据被改变了
   console.log(defaults,search);
 }

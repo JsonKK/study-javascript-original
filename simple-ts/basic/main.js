@@ -15,7 +15,7 @@ Promise.resolve().then(()=>{
   //引入类
   // require('./build/views/class');
   //运入函数
-  // require('./build/views/function');
+  require('./build/views/function');
   //泛型
   // require('./build/views/genericity');
   //模块
@@ -23,7 +23,7 @@ Promise.resolve().then(()=>{
   //命名空间
   // require('./build/views/name-space');
   //断言
-  require('./build/views/asserts');
+  // require('./build/views/asserts');
 })
 
 //监听服务

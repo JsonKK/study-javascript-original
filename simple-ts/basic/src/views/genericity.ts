@@ -38,19 +38,19 @@
     (args : t) : t
   }
   //接口定义了参数，所以必须要传参数类型
-  let myIdentity : GenericityIdentityFn<number> = identity;
+  // let myIdentity : GenericityIdentityFn<number> = identity;
 }
 
 {
   //泛类型
-  class Genrinum<t>{
-    zeroValue : t;
-    add : (x:t,y:t) => t
-  }
+  // class Genrinum<t>{
+  //   zeroValue : t;
+  //   add : (x:t,y:t) => t
+  // }
 
-  let myGenrinum = new Genrinum<number>();
-  myGenrinum.zeroValue = 0;
-  myGenrinum.add = (x,y) => x+y;
+  // let myGenrinum = new Genrinum<number>();
+  // myGenrinum.zeroValue = 0;
+  // myGenrinum.add = (x,y) => x+y;
 
 }
 

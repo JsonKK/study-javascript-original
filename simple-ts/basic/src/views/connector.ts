@@ -1,6 +1,6 @@
 {
   //定义传进来的参数，子集类型限制
-  function printLabel(labelledObj : {label:string}){
+  const printLabel = function(labelledObj : {label:string}){
     console.log(labelledObj);
   }
   let myObj = {size:10,label:'size 10 Object'};
@@ -12,7 +12,7 @@
     label : string
   }
 
-  function printLabel2(labelledObj:LabelledValue){
+  const printLabel2 = function (labelledObj:LabelledValue){
     console.log(labelledObj.label)
   }
 

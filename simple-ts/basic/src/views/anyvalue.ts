@@ -99,7 +99,8 @@ import '../utils/base-value';
     //某种程度上来说，void类型像是与any类型相反，它表示没有任何类型。
     //声明一个void变量
     //只能被赋值null 或者 undefined
-    let obj : void = null;
+    let obj : void ;
+    //严格模式下void不能赋值给null
     obj = undefined;
   }
 
@@ -169,7 +170,7 @@ import '../utils/base-value';
   const listenEvent = function(eventType: EventType, handler: (n: Event) => void) {
       /* ... */
   }
-  listenEvent(EventType.Mouse, (e: MouseEvent) => console.log(e.x + ',' + e.y));
+  listenEvent(EventType.Mouse, (e: MouseEvent|Event) => console.log((e as MouseEvent).x + ',' + (e as MouseEvent).y));
   listenEvent(EventType.Mouse, (e: Event) => console.log((<MouseEvent>e).x + ',' + (<MouseEvent>e).y));
 }
 

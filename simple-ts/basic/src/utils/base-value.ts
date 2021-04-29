@@ -9,10 +9,13 @@ globalThis['add'] = (a,b)=>{
 
 class myAnimal implements animal{
   name : string;
-  sex : number;
+  sex : number = 0;
   constructor(name,sex?:number){
     this.name = name;
-    this.sex = sex;
+    if(typeof sex == 'number'){
+      this.sex = sex;
+    }
+    
   }
   sayHi(){
     let sexStr = '';
