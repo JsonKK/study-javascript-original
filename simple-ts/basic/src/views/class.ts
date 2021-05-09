@@ -44,6 +44,33 @@
 }
 
 {
+  //get set使用
+  class Animal{
+    private nickname : string = '';
+    constructor(name:string){
+      this.name = name;
+    }
+
+    getName(){
+      return this.nickname;
+    }
+    //对setname做拦截
+    set name(value){
+      if(value.length > 6){
+        this.nickname = '默认昵称'
+      }
+      else{
+        this.nickname = value;
+      }
+    }
+  }
+
+  const animal = new Animal('snobi');
+  animal.name = 'fsdlkjklejr';
+  console.log('昵称',animal.getName());
+}
+
+{
   //私有属性
   class Animal {
     private name :string;
@@ -171,9 +198,14 @@
 
   console.log(grid1.calculateDistanceFromOrigin({x: 10, y: 10}));
   console.log(grid2.calculateDistanceFromOrigin({x: 10, y: 10}));
+  //静态属性不能通过实例化来获取
+  // console.log('静态属性',grid1.origin);
+  //“使用 static 修饰符修饰的方法称为静态方法，它们不需要实例化，而是直接通过类来调用
+  console.log('静态属性',Grid.origin);
 }
 
 {
+  //抽象类
   abstract class Department {
 
       constructor(public name: string) {
@@ -182,8 +214,8 @@
       printName(): void {
           console.log('抽象类printName方法返回信息','Department name: ' + this.name);
       }
-
-      abstract printMeeting(): void; // 必须在派生类中实现
+      // 抽象类的方法必须在继承类中实现
+      abstract printMeeting(): void;
   }
 
   class AccountingDepartment extends Department {
