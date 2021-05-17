@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>样式测试</title>
+  <style>
+    body{
+      background-color: #f2f2f2;
+    }
+    div{
+      margin: 10px;
+    }
+    h1{
+      color: gray;
+    }
+    .textshadow h1{
+      color: transparent;
+      text-shadow: 0 0 .3em gray;
+    }
+    .border-box{
+      /* hsla 第一个色相 第二个饱和度 第三个亮度 第四个透明度 */
+      border: 10px solid hsla(120,100%,50%,0.2);
+      background: white;
+      /* background-clip 
+      三个属性 
+      border-box:包含边框；
+      padding-box:不包含边框; 
+      content-box:只包含内容区域（不包含pading）;  */
+      background-clip: content-box;
+      min-height: 30px;
+      padding: 10px;
+    }
+    .background-positon{
+      width: 200px;
+      height: 200px;
+      background: url(../../assets/img/case/bo.png) no-repeat #58a;
+      background-position: right 20px bottom 10px;
+    }
+    .background-origin{
+      width: 200px;
+      height: 200px;
+      box-sizing: border-box;
+      padding: 20px;
+      background: url(../../assets/img/case/bo.png) no-repeat #58a;
+      background-position: right 20px bottom 10px;
+      /* 加了origin属性后，background-position */
+      background-origin: content-box;
+      background-clip: content-box;
+    }
+    /* 使用一个容器实现内圆角 */
+    /* box-shaow扩张值不能小于(根号2-1)*圆角度数 向上取整 */
+    .inside-border{
+      background: tan; 
+      border-radius: .8em; 
+      padding: 1em;
+      box-shadow: 0 0 0 .4em #655; 
+      outline: .5em solid #655;
+    }
+    .linear-gradient{
+      width: 200px;
+      height: 200px;
+      /* 如果渐变的颜色值小于等于前面的数值，就会变成纯色 */
+      background: linear-gradient(#fb3 50%,#58a 0);
+      /* 加上背景尺寸，就可以构造出重复的条纹效果 */
+      background-size: 100% 30px;
+    }
+    .linear-gradient-three{
+      width: 200px;
+      height: 200px;
+      /* 这样子设置三个颜色会产生渐变效果 */
+      /* background: linear-gradient(#fb3 30%,#58a 0,yellowgreen 66%); */
+      background: linear-gradient(#fb3 30%,#58a 0,#58a 66%,yellowgreen 66%);
+      background-size: 100% 30px;
+    }
+    .linear-gradient-deg{
+      width: 200px;
+      height: 200px;
+      background: repeating-linear-gradient(45deg,
+#fb3, #fb3 15px, #58a 0, #58a 30px);
+      background-size: 30px 30px;
+    }
+    .linear-gradient-grid{
+      width: 202px;
+      height: 202px;
+      background-size: 20px 20px;
+      background-image: 
+        linear-gradient(white 1px ,transparent 0),
+        linear-gradient(90deg,white 1px,transparent 0);
+    }
+    .linear-gradient-grid2{
+      width: 202px;
+      height: 202px;
+      background-image: 
+        linear-gradient(white 2px,transparent 0),
+        linear-gradient(90deg,white 2px,transparent 0),
+        linear-gradient(hsla(0,0%,100%,.3) 1px,transparent 0),
+        linear-gradient(90deg,hsla(0,0%,100%,.3) 1px,transparent 0);
+      background-size: 40px 40px,40px 40px,
+        10px 10px,10px 10px;
+    }
+    .repeating-conic-gradient{
+      width: 200px;
+      height: 200px;
+      background: repeating-conic-gradient(#bbb 0,#bbb 25%,#eee 0, #eee 50%);
+      background-size: 40px 40px;
+    }
+    .pretent-background-color{
+      width: 200px;
+      height: 200px;
+      background: linear-gradient(90deg,#fb3 15%,#655 0,#665 40%,#ab4 0,#ab4 65%,hsl(20,40%,90%) 0);
+      background-size: 80px 100%;
+    }
+    .pretent-background-color2{
+      width: 200px;
+      height: 200px;
+      /* 背景固定底色 */
+      background: hsl(20,40%,90%);
+      background-image: 
+        linear-gradient(90deg,#fb3 10px,transparent 0),
+        linear-gradient(90deg,#ab4 20px,transparent 0),
+        linear-gradient(90deg,#655 20px,transparent 0);
+      background-size: 80px 100%,60px 100%,40px 100%;
+    }
+    .something-meaningful{
+      background: url(../../assets/img/demo/pineapple.jpg);
+      background-size: cover;
+      width: 200px;
+      padding: 1em;
+      box-sizing: border-box;
+    }
+    .something-meaningful > div{
+      background: white;
+      padding: 1em;
+    }
+    .something-meaningful2{
+      width: 200px;
+      padding: 1em;
+      /* 为什么这边要用1.5em呢 */
+      border: 1.5em solid transparent;
+      box-sizing: border-box;
+      background: linear-gradient(white,white),
+      url(../../assets/img/demo/pineapple.jpg);
+      background-size: cover;
+      background-clip: padding-box,border-box;
+      /* 背景图败方的参考区域 */
+      background-origin: border-box;
+    }
+    /* 设置边框自定义样式 */
+    .something-meaningful3{
+      width: 200px;
+      padding: 1em;
+      border: 1em solid transparent;
+      background: linear-gradient(white,white) padding-box,
+        repeating-linear-gradient(45deg,
+        red 0,
+        red 12.5%,
+        transparent 0,
+        transparent 25%,
+        #58a 0,
+        #58a 37.5%,
+        transparent 0,
+        transparent 50%);
+    }
+    @keyframes ants { to { background-position: 100% } }
+    .something-meaningful4{
+      width: 200px;
+      padding: 1em;
+      border: 1px solid transparent; 
+      background:
+              linear-gradient(white, white) padding-box,
+              repeating-linear-gradient(-45deg,
+                black 0, black 25%, white 0, white 50%
+              ) 0 / .6em .6em;
+      animation: ants 5s linear infinite;
+    }
+  </style>
+</head>
+<body>
+  <!-- <form action="/">
+    <input class="input" type="text" name="name"/>
+    <button type="submit">提交</button>
+  </form>
+  <button id="testListen">测试监听</button> -->
+
+    <div class="textshadow">
+      <!-- 字体阴影 -->
+      <h1>测试一下text-shadow效果</h1>
+    </div>
+    <div class="border-box">测试边框透明</div>
+    <div class="background-positon">背景图定位</div>
+    <div class="background-origin">背景区域</div>
+    <div class="inside-border">我是一个内圆角</div>
+    <div class="linear-gradient"></div>
+    <div class="linear-gradient-three"></div>
+    <div class="linear-gradient-deg"></div>
+    <div class="linear-gradient-grid"></div>
+    <div class="linear-gradient-grid2"></div>
+    <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" fill-opacity=".25" >
+      <rect x="50" width="50" height="50" />
+      <rect y="50" width="50" height="50" /> 
+      <rect x="100" y="50" width="50" height="50" />
+      <rect y="100" x="50" width="50" height="50" /> 
+      <rect x="150" width="50" height="50" />
+      <rect x="150" y="100" width="50" height="50" />
+      <rect y="150" width="50" height="50" /> 
+      <rect y="150" x="100" width="50" height="50" /> 
+    </svg>
+    <div class="repeating-conic-gradient"></div>
+    <!-- 伪随机 -->
+    <div class="pretent-background-color"></div>
+    <div class="pretent-background-color2"></div>
+    <!-- 使用背景实现边框效果 -->
+    <div class="something-meaningful">
+      <div>
+        I have a nice stone art border, don't I look pretty?
+      </div>
+    </div>
+    <!-- 使用一个容器实现 -->
+    <div class="something-meaningful2">
+      I have a nice stone art border, don't I look pretty?
+    </div>
+    <div class="something-meaningful3">
+      I have a nice stone art border, don't I look pretty?
+    </div>
+    <div class="something-meaningful4">
+      I have a nice stone art border, don't I look pretty?
+    </div>
+  <script>
+  </script>
+</body>
+</html>
