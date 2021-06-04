@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>shape 形状</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    div{
+      font-size: 30px;
+    }
+
+    .main-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: #f4f4f4;
+    }
+
+    .main-content>div {
+      margin: 10px auto;
+      text-align: center;
+    }
+
+    /* 固定尺寸得正椭圆 */
+    .cylindroid {
+      width: 200px;
+      height: 150px;
+      background: yellowgreen;
+      border-radius: 100px / 75px;
+    }
+
+    /* 动态椭圆 */
+    .change-cylindroid {
+      width: 200px;
+      height: 150px;
+      background-color: antiquewhite;
+      border-radius: 50% / 50%;
+    }
+
+    /* 平行四边形 */
+    .rhomboid {
+      width: 200px;
+      height: 100px;
+      transform: skewX(-10deg);
+      background: yellowgreen url(../../assets/img/demo/pineapple.jpg);
+      background-size: cover;
+    }
+
+    /* 内容会被反方向拉回 */
+    .rhomboid-info {
+      width: 100%;
+      height: 100%;
+      transform: skewX(10deg);
+    }
+
+    .pretend-rhomboid {
+      width: 200px;
+      height: 100px;
+      position: relative;
+    }
+
+    .pretend-rhomboid::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      /* 图片会被拉伸  只能使用纯色*/
+      background: yellowgreen;
+      transform: skew(-45deg);
+      z-index: -1;
+    }
+
+    .eight-side-shape {
+      width: 200px;
+      height: 200px;
+      transform: rotate(45deg);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .eight-side-shape::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: yellowgreen url(../../assets/img/demo/pineapple.jpg);
+      background-size: cover;
+      transform: rotate(-45deg);
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+
+    }
+
+    .clip-path {
+      width: 200px;
+      height: 200px;
+      background-color: antiquewhite;
+      /* 
+        内容区域直接变小了
+        inset 设置矩形位置 
+        第一个参数 相对于上间距多少
+        第二个参数 相对于右间距多少
+        第三个参数 相对于下间距多少
+        第四个参数 相对于左间距多少
+      */
+      /* clip-path: inset(10px -10px 20px 1px); */
+      /* 
+        circle
+        第一个参数 圆的半径，不接受负数
+        第二个参数 圆距离x轴的距离
+        第三个参数 圆距离y轴的距离
+      */
+      /* clip-path: circle(20px at 0px 0px); */
+      /* 
+        ellipse 椭圆
+        第一个参数 x轴的半径
+        第二个参数 y轴的半径
+        第三个参数 椭圆距离x轴的距离
+        第四个参数 椭圆距离y轴的距离
+       */
+      /* clip-path: ellipse(20px 27px at 20px 27px); */
+      /* 
+        polygon 位置
+        按顺序定义坐标点的位置
+       */
+      clip-path: polygon(50% 2.4%, 34.5% 33.8%, 0% 38.8%, 25% 63.1%, 19.1% 97.6%, 50% 81.3%, 80.9% 97.6%, 75% 63.1%, 100% 38.8%, 65.5% 33.8%);
+      /* 
+        path 表示路径，结合svg
+        */
+    }
+
+    .clip-path-info {
+      width: 100%;
+      height: 100%;
+      background-image: linear-gradient(yellowgreen, blue);
+    }
+    .clip-path2{
+      width: 200px;
+      height: 200px;
+      background:url(../../assets/img/demo/pineapple.jpg) no-repeat;
+      background-size: cover;
+      clip-path: polygon(50% 0,100% 50%,50% 100%,0 50%);
+      transition: .3s clip-path;
+    }
+    .clip-path2:hover{
+      clip-path: polygon(0 0,100% 0,100% 100%,0 100%);
+    }
+    .shape-outside{
+      width: 400px;
+      height: 200px;
+      overflow-y: auto;
+      font-size: 16px !important;
+    }
+    .shape-outside > img{
+      width: 50px;
+      /* 
+        circle
+        图片的中心为圆的半径
+        如果是百分比就是宽度的百分比
+       */
+      /* shape-outside: circle(25px); */
+      /* 
+        polygon 设置各个顶点，绘制成一个图形区域
+       */
+      shape-outside: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+      float: left;
+      margin: 20px;
+    }
+    .linear-cut-angle{
+      width: 300px;
+      height: 200px;
+      overflow: hidden;
+      color: #fff;
+      font-size: 16px;
+      /* 弊端是内容不会被裁剪 */
+      background: linear-gradient(-45deg,transparent 25px,#58a 0);
+    }
+    /* 使用渐变属性实现箭头背景色，有四个切角 */
+    .linear-cut-angle-twice{
+      width: 200px;
+      text-align: center;
+      height: 30px;
+      line-height: 30px;
+      font-size: 16px;
+      color: #fff;
+      background:
+        linear-gradient(45deg,  transparent 10px, #58a 0) top left, 
+        linear-gradient(-135deg, transparent 10px, #58a 0) top right,
+        linear-gradient(-45deg, transparent 10px, #58a 0) bottom right,
+        linear-gradient(135deg, transparent 10px, #58a 0) bottom left;
+      background-repeat: no-repeat;
+      background-size: 50% 50%;
+    }
+    .linear-cut-angle-circle{
+      width: 200px;
+      text-align: center;
+      height: 30px;
+      line-height: 30px;
+      font-size: 16px;
+      color: #fff;
+      background:
+        radial-gradient(circle at top left,
+                transparent 10px, #58a 0) top left,
+        radial-gradient(circle at top right,
+                transparent 10px, #58a 0) top right,
+        radial-gradient(circle at bottom right,
+                transparent 10px, #58a 0) bottom right,
+        radial-gradient(circle at bottom left,
+                transparent 10px, #58a 0) bottom left;
+      background-size: 50% 50%; background-repeat: no-repeat;
+    }
+    .empty-inside-svg{
+      width: 200px;
+      height: 100px;
+      border: 15px solid transparent; 
+      border-image: 1 url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="3" height="3" fill="%2358a"><polygon points="0,1 1,0 2,0 3,1 3,2 2,3 1,3 0,2"/></svg>');
+      background-color: antiquewhite;
+      background-clip: content-box;
+      overflow-y: auto;
+      font-size: 16px;
+    }
+    .nav-box > nav > a{
+      position: relative; 
+      display: inline-block; 
+      padding: .3em 1em 0;
+    }
+    .nav-box > nav > a::after{
+      content: '';
+      position: absolute;
+      top: 0; right: 0; bottom: 0; left: 0;
+      background: #ccc;
+      background-image: linear-gradient(
+                              hsla(0,0%,100%,.2),
+      hsla(0,0%,100%,0)); 
+      border: 1px solid rgba(0,0,0,.9);
+      border-bottom: none;
+      border-radius: .5em .5em 0 0;
+      box-shadow: 0 .15em white inset;
+      transform: perspective(.5em) rotateX(5deg); transform-origin: bottom;
+    }
+    .transform-pie{
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: yellowgreen;
+      background-image: linear-gradient(to right,transparent 50%,#655 0);
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .transform-pie::before{
+      content: '';
+      display: block;
+      width: 50%;
+      height: 100%;
+      background-color: inherit;
+      position: absolute;
+      right: 0;
+      top: 0;
+      /* 
+      除号左边是x轴半径，除号右边是y轴半径 
+      右边除号只有一个值的时候，相当于所有值都是相等的
+      等价于 border-radius: 0 100% 100% 0/50% 50% 50% 50%;
+      */
+      border-radius: 0 100% 100% 0/50%;
+      /* 改变图形的原点 */
+      transform-origin: left;
+      transform: rotate(72deg);
+      animation: movePieRotate 3s linear 1;
+    }
+    .transform-pie-info{
+      position: relative;
+      z-index: 2;
+    }
+    @keyframes movePieRotate{
+      0%{
+        transform: rotate(0deg);
+      }
+      25% {
+        transform: rotate(72deg);
+      }
+      75% {
+        transform: rotate(0);
+      }
+      100% {
+        transform: rotate(72deg);
+      }
+    }
+    @keyframes addPieColor{
+      50%{
+        background-color: #655;
+      }
+    }
+    .test-border-radius{
+      width: 200px;
+      height: 200px;
+      border-radius: 50px / 10px;
+      background: yellowgreen;
+      font-size: 16px;
+      padding: 10px;
+    }
+    .svg-circle{
+      transform: rotate(-90deg);
+      background: yellowgreen;
+      border-radius: 50%;
+    }
+    circle{
+      fill: yellowgreen;
+      stroke: #655;
+      /* 外圆宽度 */
+      stroke-width: 180;
+      /* 
+      虚线
+      stroke-dasharray : 10;
+      表示虚线长10 间距10
+      stroke-dasharray : 20 10;
+      表示虚线长20 间距10
+      stroke-dasharray : 20 10 5;
+      表示虚线长20 间距10，虚线长10 间距5，虚线长5 间距20。以此一直循环。 
+      */
+      /* 
+      改装后的结构第一个参数为角度数 ： 需要的角度*(第二个数值/365) 
+      第二个参数位外圆直径减去圆的直径 * 2π
+      */
+      stroke-dasharray: 139 565;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="main-content">
+    <div class="cylindroid"></div>
+    <div class="change-cylindroid"></div>
+    <!-- 平行四边形 -->
+    <div class="rhomboid">
+      <!-- 嵌套一层，保证内容不变形 -->
+      <div class="rhomboid-info">
+        click me
+      </div>
+    </div>
+    <!-- 使用伪类实现平行四边形 -->
+    <!-- 背景色会被其他层覆盖 -->
+    <div class="pretend-rhomboid">click me</div>
+    <!-- 八角形 -->
+    <div class="eight-side-shape"></div>
+    <!-- clip-path参数 -->
+    <div class="clip-path">
+      <div class="clip-path-info"></div>
+    </div>
+    <div class="clip-path2"></div>
+    <div class="shape-outside">
+      <img src="/assets/img/demo/round-balloon.png" alt="" />
+      We had agreed, my companion and I, that I should call for him at his house, after dinner, not later than eleven o’clock. This athletic young Frenchman belongs to a small set of Parisian sportsmen, who have taken up “ballooning” as a pastime. After having exhausted all the sensations that are to be found in ordinary sports, even those of “automobiling” at a breakneck speed, the members of the “Aéro Club” now seek in the air, where they indulge in all kinds of daring feats, the nerve-racking excitement that they have ceased to find on earth.
+    </div>
+    <!-- 使用渐变背景实现切角 -->
+    <div class="linear-cut-angle">
+      We had agreed, my companion and I, that I should call for him at his house, after dinner, not later than eleven o’clock. This athletic young Frenchman belongs to a small set of Parisian sportsmen, who have taken up “ballooning” as a pastime. After having exhausted all the sensations that are to be found in ordinary sports, even those of “automobiling” at a breakneck speed, the members of the “Aéro Club” now seek in the air, where they indulge in all kinds of daring feats, the nerve-racking excitement that they have ceased to find on earth.
+    </div>
+    <!-- 使用渐变实现多个切角图形 -->
+    <div class="linear-cut-angle-twice">徽章S</div>
+    <!-- 弧形切角 -->
+    <div class="linear-cut-angle-circle">等级S</div>
+    <!-- 使用svg实现内镂空 -->
+    <div class="empty-inside-svg">
+      We had agreed, my companion and I, that I should call for him at his house, after dinner, not later than eleven o’clock.
+    </div>
+
+    <div class="nav-box">
+      <nav>
+        <a href="#">HOME</a>
+        <a href="#">PROJECTS</a>
+        <a href="#">ABOUT</a>
+      </nav>
+    </div>
+    <!-- 简化版饼图 -->
+    <div class="transform-pie">
+      <div class="transform-pie-info">60%</div>
+    </div>
+    <!-- 测试border-radius -->
+    <!-- <div class="test-border-radius">
+      This is a box with rounded corners.
+    </div> -->
+    <!-- svg实现饼图 -->
+    <svg class="svg-circle" width="200" height="200" >
+      <!-- r是半径 cx是圆心x轴的位置 xy是圆心的y轴位置 -->
+      <circle r="90" cx="100" cy="100" ></circle>
+    </svg>
+
+    <!-- 遗留问题，多个色块的饼图如何实现 -->
+  </div>
+</body>
+
+</html>

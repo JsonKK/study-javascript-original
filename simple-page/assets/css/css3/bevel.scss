@@ -1,0 +1,55 @@
+
+@import '../common/base.scss';
+$backgroundColor : #58a;
+@mixin baseInfo($top:0,$width:400px,$height:250px){
+  @if $top>0{
+    margin-top : $top;
+  }
+  width: $width;
+  height: $height;
+  background: $backgroundColor;
+}
+/* 切角45度 */
+.box-1{
+  @include baseInfo();
+  
+  background: 
+    linear-gradient(to left bottom,transparent 50%,rgba(0,0,0,0.4) 0) no-repeat 100% 0 / 2em 2em,
+    /* 使用透明渐变，留出右上角缺口 */
+    /* 如果都取值为2，则会出现大小不一致的情况 */
+    linear-gradient(-135deg,transparent 1.41em,$backgroundColor 0);
+}
+/* 30度切角 */
+.box-2{
+  @include baseInfo(10px);
+  background: 
+    linear-gradient(to left bottom,transparent 50%,rgba(0,0,0,.4) 0) no-repeat 100% 0 / 3em 1.73em,
+    linear-gradient(-150deg,transparent 1.5em,$backgroundColor 0);
+}
+// 如果参数没有默认值，在调用方法时候又没有传该参数的值，执行会报错
+@mixin normalBevel($className:'.box-3',$size:1.5em,$angle:30deg,$backgroundColor:#58a) {
+  $height : $size / sin($angle);
+  $width : $size / cos($angle);
+  #{$className}::before{
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: linear-gradient(to left bottom, transparent 50%,rgba(0,0,0,.2) 0 , rgba(0,0,0,.4)) 100% 0 no-repeat;
+
+    width: $width;
+    height: $height;
+    transform: translateY($width - $height) rotate(2*$angle - 90deg);
+    transform-origin: bottom right;
+    border-bottom-left-radius:inherit;
+    box-shadow: -.2em .2em .3em -.1em rgba(0,0,0,.15);
+  }
+  #{$className}{
+    @include baseInfo(10px);
+    background: linear-gradient($angle - 180deg,transparent $size,$backgroundColor 0);
+    position: relative;
+    border-radius: .5em;
+  }
+} 
+@include normalBevel('.box-3',1.5em,30deg,#ccc)
+
