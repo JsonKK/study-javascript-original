@@ -8,3 +8,4 @@ package-lock.json
 .idea
 .code-workspace
 regexper-static-master/yarn.lock
+._*

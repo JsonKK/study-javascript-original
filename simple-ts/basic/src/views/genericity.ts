@@ -22,13 +22,14 @@
 {
   // 把泛型定义到接口里
   interface GenericityIdentityFn {
+    //包含一个泛型的方法，参数为t,返回值为t
     <t>(args : t) : t;
   }
 
   function identity_two<t>(args:t):t {
     return args;
   }
-
+  
   let myIdentity : GenericityIdentityFn = identity_two;
 }
 
@@ -37,20 +38,37 @@
   interface GenericityIdentityFn<t>{
     (args : t) : t
   }
+
+  function identity<t>(args:t):t{
+    return args;
+  }
+
   //接口定义了参数，所以必须要传参数类型
-  // let myIdentity : GenericityIdentityFn<number> = identity;
+  let myIdentity : GenericityIdentityFn<number> = identity;
 }
 
 {
   //泛类型
-  // class Genrinum<t>{
-  //   zeroValue : t;
-  //   add : (x:t,y:t) => t
-  // }
+  class Genrinum<t>{
+    zeroValue : t;
 
-  // let myGenrinum = new Genrinum<number>();
+    constructor(value:t){
+      this.zeroValue = value;
+    }
+
+    // add(x:t,y:t):t{
+    //   return x || y
+    // }
+
+    // add(x:t,y:t):t{
+    //   return x || y
+    // }
+    add: ((x: t, y: t) => t) | undefined;
+  }
+
+  let myGenrinum = new Genrinum<number>(33);
   // myGenrinum.zeroValue = 0;
-  // myGenrinum.add = (x,y) => x+y;
+  myGenrinum.add = (x,y) => x+y;
 
 }
 
@@ -69,4 +87,25 @@
   //定义对象必须要有length属性
   loggingIdentity({length:1,value:2})
   loggingIdentity('3443');
+}
+
+
+{
+  //定义数组泛型
+  //如此定义后，传入进来的参数只能是任意类型数组，其他类型会报错
+  // 可以写为
+  // function loggingIdentity<t>(arg: Array<t>):Array<t>{}
+  function loggingIdentity<t>(arg: t[]):t[]{
+    console.log(arg.length);
+    return arg;
+  }
+
+  loggingIdentity(['123']);
+}
+
+{
+  // 方法继承接口
+  interface lengthwise {
+    length: number
+  }
 }

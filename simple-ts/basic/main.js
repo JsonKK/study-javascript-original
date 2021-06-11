@@ -10,6 +10,7 @@ const port = 3000;
 Promise.resolve().then(()=>{
   // 引入类型
   // require('./build/views/anyvalue');
+  // require('./build/views/datatype');
   // 引入迭代器
   // require('./build/views/interfaces');
   //引入类
@@ -17,7 +18,7 @@ Promise.resolve().then(()=>{
   //运入函数
   // require('./build/views/function');
   //泛型
-  // require('./build/views/genericity');
+  require('./build/views/genericity');
   //模块
   // require('./build/views/module');
   //命名空间
@@ -25,7 +26,7 @@ Promise.resolve().then(()=>{
   //断言
   // require('./build/views/asserts');
   //元组
-  require('./build/views/tuple');
+  // require('./build/views/tuple');
 })
 
 //监听服务

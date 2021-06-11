@@ -1,0 +1,93 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+hr{
+  margin: 10px auto;
+}
+.text-justify{
+  width: 140px;
+  // 段落文本两端对齐
+  text-align: justify;
+  // none 表示不需要连字符
+  // auto 自动生成连字符
+  hyphens: auto;
+}
+.inline-box{
+  dt,dd{
+    display: inline;
+  }
+  dd{
+    font-weight: bold;
+  }
+  // dd:after{
+  //   content: "\A";
+  //   // 保留空格和换行符
+  //   white-space: pre;
+  // }
+  dd + dt:before{
+    content: "\A";
+    white-space: pre;
+  }
+  dd + dd::before{
+    content: "，";
+    //解决逗号会有一小点间距
+    margin-left: -.25em;
+    font-weight: normal;
+  }
+}
+
+pre{
+  width: fit-content;
+  width:-webkit-fit-content;
+  width:-moz-fit-content;
+  padding: .5em;
+  line-height: 1.5;
+  background: beige;
+  background-image: linear-gradient(rgba(0,0,0,.2) 50%,transparent 0);
+  background-size: auto 3em;
+  background-origin: content-box;
+  font-size: 30px;
+  // 修改tab缩进的字符长度
+  tab-size: 2;
+}
+
+.pre-box{
+  width: 50%;
+  height: 200px;
+  overflow: auto;
+  position: relative;
+}
+.pre-line-num{
+  position: absolute;
+  left: 10px;
+  top: .5em;
+  font-size: 30px;
+  line-height: 1.5;
+  color: #0c09b5;
+}
+.amp {
+  font-family: Baskerville, "Goudy Old Style",
+  Garamond, Palatino, serif; font-style: italic;
+  }
+.light-text{
+  width: 200px;
+  background: hsl(210, 13%, 60%);
+  color: hsl(210, 13%, 30%);
+  text-shadow: 0 1px 1px hsla(0, 0%, 100%, .8);
+}
+.dark-text{
+  background: hsl(210, 13%, 40%);
+  color: hsl(210, 13%, 75%);
+  width: 200px;
+  text-shadow: 0 -1px 1px black;
+}
+.empty-text{
+  width: 200px;
+  background: deeppink;
+  color: white;
+  text-shadow: 1px 1px black,
+    -1px -1px black,
+    1px -1px black,
+    -1px 1px black;
+}

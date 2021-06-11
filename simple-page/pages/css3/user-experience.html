@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>用户体验</title>
+  <link rel="stylesheet" href="/assets/css/css3/user-experience.css">
+</head>
+<body>
+  <div class="main" id="main">
+    <button disabled>Button</button>
+    <hr>
+    <em class="expand-area">+</em>
+    <hr>
+    <div class="flex-row">
+      <input type="checkbox" id="awesome" /> <label for="awesome">Awesome!</label>
+    </div>
+    <div class="flex-row">
+      <input type="checkbox" id="likely" disabled /> <label for="likely">Likely!</label>
+    </div>
+    <div class="flex-row">
+      <input type="checkbox" id="checkbox-btn" /><label for="checkbox-btn">checkboxBtn</label>
+    </div>
+    <hr>
+    <button id="show-dialog">show dialog</button>
+  </div>
+  <dialog class="hide">
+    O HAI, I'm a dialog. Click on me to dismiss.
+  </dialog>
+  <script type="text/javascript">
+    window.onload = function(){
+      const showDialogBtn = document.getElementById('show-dialog');
+      const dialogDom = document.getElementsByTagName('dialog');
+      const mainDom = document.getElementById('main');
+
+      if(dialogDom && dialogDom[0]){
+        //监听显示遮罩按钮事件
+        showDialogBtn.addEventListener('click',()=>{
+          console.log('showDialogBtn')
+          mainDom.classList.add('de-emphasized');
+          dialogDom[0].classList.remove('hide');
+        })
+
+        dialogDom[0].addEventListener('click',()=>{
+          mainDom.classList.remove('de-emphasized');
+          dialogDom[0].classList.add('hide');
+        })
+      }
+      
+    }
+  </script>
+</body>
+</html>

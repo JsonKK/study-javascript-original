@@ -1,4 +1,17 @@
 @charset "UTF-8";
+* {
+  margin: 0;
+  padding: 0; }
+
+hr {
+  margin: 10px auto; }
+
+.main {
+  padding: 20px; }
+
+.hide {
+  display: none !important; }
+
 /* 切角45度 */
 .box-1 {
   width: 400px;

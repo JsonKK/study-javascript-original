@@ -1,0 +1,131 @@
+@import '../common/base.scss';
+
+.main{
+  transition:  all .3s;
+}
+
+:disabled,
+[disabled] {
+  cursor: not-allowed;
+}
+
+// 使用border扩展点击区域
+.expand-area {
+  display: block;
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  border-radius: 50%;
+  background-color: #58f;
+  font-style: normal;
+  color: #fff;
+  line-height: 50px;
+  border: 10px solid transparent;
+  background-clip: content-box;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, .3) inset,
+    0 .1em .2em -.05em rgba(0, 0, 0, .5);
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+input[type="checkbox"]+label::before {
+  content: '\a0';
+  display: inline-block;
+  vertical-align: middle;
+  width: .8em;
+  height: .8em;
+  margin-right: .2em;
+  border-radius: .2em;
+  background: silver;
+  text-indent: .15em;
+  line-height: .65;
+}
+
+input[type="checkbox"]:checked+label::before {
+  content: '\2713';
+  background: yellowgreen;
+}
+
+input[type="checkbox"]:focus+label::before {
+  box-shadow: 0 0 .1em .1em #58a;
+}
+
+input[type="checkbox"]:disabled + label::before{
+  background: gray;
+  box-shadow: none;
+  color: #555;
+}
+
+// 隐藏原来的复选框
+input[type="checkbox"] {
+  position: absolute;
+  clip: rect(0, 0, 0, 0);
+  user-select: none;
+}
+
+label {
+  user-select: none;
+}
+
+#checkbox-btn{
+  position: absolute;
+  clip: rect(0,0,0,0);
+
+}
+#checkbox-btn + label{
+  display: inline-block;
+  padding: .3em .5em;
+  background: #ccc;
+  background-image: linear-gradient(#ddd,#bbb);
+  border: 1px solid rgba($color: #000000, $alpha: .2);
+  border-radius: .3em;
+  box-shadow: 0 1px white inset;
+  text-align: center;
+  text-shadow: 0 1px 1px white;
+  transition: box-shadow .3s;
+  &::before{
+    display: none;
+  }
+}
+#checkbox-btn:checked + label,
+#checkbox-btn:active + label{
+  box-shadow: .05em .1em .2em rgba($color: #000000, $alpha: .6) inset;
+  border-color: rgba($color: #000000, $alpha: .3);
+  background: #bbb;
+}
+
+.de-emphasized{
+  filter: blur(5px);
+}
+dialog{
+  width: 500px;
+  max-height: 800px;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 2px 3px 3px #888;
+  display: block;
+  position: relative;
+  z-index: 2;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  background:rgba(0,0,0,0.1);
+  // box-shadow: 0 0 0 50vmax rgba(0,0,0,.8);
+
+  // &::before{
+  //   content: '';
+  //   position: fixed; top: 0;
+  //   right: 0;
+  //   bottom: 0;
+  //   left: 0;
+  //   z-index: 1;
+  //   background: rgba(0,0,0,.8);
+    
+  // }
+}
+dialog::backdrop{
+  background-color: rgba(0, 0, 0, .5);
+}

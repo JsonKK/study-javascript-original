@@ -62,3 +62,18 @@
   height: $h;
   clip-path: polygon($w/2 0, $w $h, 0 $h);
 }
+
+*{
+  margin: 0;
+  padding: 0;
+}
+hr{
+  margin: 10px auto;
+}
+.main{
+  padding: 20px;
+}
+
+.hide{
+  display: none !important;
+}

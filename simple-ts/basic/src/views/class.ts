@@ -24,23 +24,22 @@
 
 {
   // 类的继承
-  class Animal {
-    //定义方法接收一个参数为数值型 默认值为0
-    move(distanceX : number = 0){
-      return `distance x is ${distanceX}`;
+  abstract class Animal {
+    name:string;
+    constructor(name:string){
+      this.name = name;
+    }
+    abstract sayHello():void;
+  }
+
+  class Dog extends Animal{
+    sayHello(){
+      console.log(`${this.name}叫汪汪汪`);
     }
   }
 
-  class Dog extends Animal {
-    backMove(distanceX:number = 0){
-      return super.move(distanceX);
-    }
-  }
-
-  let dog = new Dog();
-  let animal = new Animal();
-  console.log('从继承类输出内容：',dog.backMove(999));
-  console.log('从原始类中输出内容：',animal.move(888));
+  const dog = new Dog('小花');
+  dog.sayHello();
 }
 
 {
@@ -185,6 +184,7 @@
   class Grid {
     static origin = {x: 0, y: 0};
     calculateDistanceFromOrigin(point: {x: number; y: number;}) {
+      // origin属性只能通过父类的名称访问，不能通过this访问
         let xDist = (point.x - Grid.origin.x);
         let yDist = (point.y - Grid.origin.y);
         return Math.sqrt(xDist * xDist + yDist * yDist) / this.scale;
@@ -208,14 +208,14 @@
   //抽象类
   abstract class Department {
 
-      constructor(public name: string) {
-      }
+    constructor(public name: string) {
+    }
 
-      printName(): void {
-          console.log('抽象类printName方法返回信息','Department name: ' + this.name);
-      }
-      // 抽象类的方法必须在继承类中实现
-      abstract printMeeting(): void;
+    printName(): void {
+        console.log('抽象类printName方法返回信息','Department name: ' + this.name);
+    }
+    // 抽象类的方法必须在继承类中实现
+    abstract printMeeting(): void;
   }
 
   class AccountingDepartment extends Department {
