@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>before伪类</title>
+  <style>
+    .ribbon::before{
+      content: '在文字前面的一句话';
+      border-style: dotted;
+    }
+  </style>
+</head>
+<body>
+  <div class="row">
+    <span class="ribbon" id="ribbon">在文字前面加上一句话</span>
+  </div>
+  <script>
+    window.onload = function(){
+      document.getElementById('ribbon').addEventListener('click',(e)=>{
+        console.log(e.target.innerText);
+      })
+    }
+  </script>
+</body>
+</html>

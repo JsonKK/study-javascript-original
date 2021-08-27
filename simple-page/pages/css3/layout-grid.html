@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>网格布局</title>
+  <style type="text/css">
+    *{
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-size: 16px;
+    }
+
+    .hide{
+      display: none;
+    }
+
+    .highlight{
+      color: red;
+    }
+
+    .hint-text {
+      padding: .25em 1em;
+    }
+
+    ol li{
+      list-style-position: inside;
+    }
+    .grid-box{
+      display: grid;
+      grid-template-columns: 100px auto minmax(50px,150px);
+      grid-template-rows: 100px 80px 200px;
+    }
+    .grid-box .grid-item{
+      color: #f5f5f5;
+    }
+    .grid-item:nth-child(odd){
+      background-color: darkmagenta;
+    }
+    .grid-item:nth-child(even){
+      background-color: pink;
+    }
+    .grid-box .grid-item:nth-child(5){
+      height: 50px;
+    }
+    .grid-box-two{
+      display: grid;
+      grid-template-columns: repeat(2,100px);
+      grid-auto-flow: row dense;
+    }
+    .grid-box-two .grid-item{
+      color: #f5f5f5;
+    }
+    .grid-box-two .grid-item:nth-child(1){
+      height: 40px;
+    }
+    .grid-box-two .grid-item:nth-child(2){
+      height: 50px;
+    }
+    .grid-box-two .grid-item:nth-child(3){
+      height: 60px;
+    }
+    .grid-box-two .grid-item:nth-child(4){
+      height: 70px;
+    }
+    .grid-box-two .grid-item:nth-child(5){
+      height: 80px;
+    }
+    .grid-box-two .grid-item:nth-child(6){
+      height: 90px;
+    }
+  </style>
+</head>
+<body>
+  <div class="hint-text">
+    <h5>grid-template-columns 属性</h5>
+    <ol>
+      <li>默认值为none,如果某列没有设置则网格不起作用</li>
+      <li>第一列设置为固定值100px则优先级最高,容器宽度不够时候不会被压缩</li>
+      <li>第二列设置为auto,优先级最低，如果宽度有剩余则自动铺满，多个auto平均分配</li>
+      <li>第三列设置为区间值minmax(),优先级次高级，宽度默认为max,如果宽度不够max时候会自动压缩直到宽度为min时候，宽度不再压缩</li>
+    </ol>
+    <h5>grid-template-rows 属性</h5>
+    <ol>
+      <li>设置属性与列属性相同</li>
+      <li>子元素的height属性优先级高于grid-template-rows属性，第5项设置了高度小于第二行的高度</li>
+      <li>行高是统一的，不会因为第二项高度小于行高，第三行的第二项就往上顶</li>
+    </ol>
+  </div>
+  <section class="module">
+    <div class="grid-box">
+      <div class="grid-item">1</div>
+      <div class="grid-item">2</div>
+      <div class="grid-item">3</div>
+      <div class="grid-item">4</div>
+      <div class="grid-item">5</div>
+      <div class="grid-item">6</div>
+      <div class="grid-item">7</div>
+      <div class="grid-item">8</div>
+      <div class="grid-item">9</div>
+    </div>
+  </section>
+  <div class="hint-text">
+    <h5>尝试使用row dense</h5>
+  </div>
+  <section class="module">
+    <div class="grid-box-two">
+      <div class="grid-item">1</div>
+      <div class="grid-item">2</div>
+      <div class="grid-item">3</div>
+      <div class="grid-item">4</div>
+      <div class="grid-item">5</div>
+      <div class="grid-item">6</div>
+    </div>
+  </section>
+</body>
+</html>
