@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>函数截流</title>
+</head>
+<body>
+  <script type="text/javascript">
+    //默认第一次不执行
+    //默认最后一次也不执行
+    const throttle = (fn,wait=100,options={})=>{
+      let timeout,context,args,result;
+      let previos = 0;
+      const later = function(){
+        previos = options.leading == false ? 0 : (new Date()).valueOf();
+        timeout = null;
+        result = fn.apply(context,args);
+        if(!timeout) context = args = null;
+      }
+      
+      const throlled = function(){
+        const now = (new Date()).valueOf();
+        if(!previos && options.leading === false) previos = now;
+        const remain = wait - (now -previos);
+        context = this;
+        args = arguments;
+        if(remain < 0 || remain > wait){
+          if(timeout){
+            clearTimeout(timeout)
+            timeout = null;
+          }
+          previos = now;
+          fn.apply(context,args);
+          if(!timeout) context = args = null;
+        }
+        else if(!timeout && options.trailing !== false){
+          timeout = setTimeout(later,remain);
+        }
+      }
+
+      throlled.cancel = function(){
+        clearTimeout(timeout);
+        previous = 0;
+        timeout = null;
+      }
+
+      return throlled;
+
+    }
+    //疑问，为什么有cancel方法，这个方法在什么场景中使用
+    window.onload = function(){
+      let timer = new Date().valueOf();
+      const localThrottle = throttle(()=>{
+        const cutTime = new Date().valueOf() - timer;
+        console.log(cutTime);
+      },1000);
+      setInterval(()=>{
+        localThrottle();
+        localThrottle.cancel();
+      },150)
+      
+      
+    }
+  </script>
+</body>
+</html>
