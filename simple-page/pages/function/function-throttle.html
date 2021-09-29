@@ -22,13 +22,13 @@
       
       const throlled = function(){
         const now = (new Date()).valueOf();
-        if(!previos && options.leading === false) previos = now;
-        const remain = wait - (now -previos);
+        if(!previos || options.leading === false) previos = now;
+        const remain = wait - (now - previos);
         context = this;
         args = arguments;
         if(remain < 0 || remain > wait){
           if(timeout){
-            clearTimeout(timeout)
+            clearTimeout(timeout);
             timeout = null;
           }
           previos = now;
