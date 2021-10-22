@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>fetch</title>
+  <style>
+    ul,
+    li{
+      list-style: none;
+    }
+    .pic-list{
+      display: flex;
+      row-gap: 10px;
+      column-gap: 10px;
+    }
+    .pic-list li{
+      width: 100px;
+    }
+    .pic-list li>img{
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <ul id="pic-list" class="pic-list"></ul>
+  <script type="text/javascript">
+    window.onload = function(){
+      fetch('https://test-gw-k8s-web.taqu.cn/message/v2/FamilyActivity/getFamilyActivityRank?type=2&page=1')
+        .then((response)=>{
+          console.log(response)
+          return response.json()
+        })
+        .then(json => console.log(json))
+        .catch(err => console.log(err))
+      
+
+      //使用fetch预加载图片不可行，每次请求都是新的，不会有缓存
+      const imgLazyLoad = (src)=>{
+        fetch(src)
+        .then((response) => {
+          if(response.ok){
+            const img = new Image();
+            img.src = src;
+            const li = document.createElement('li');
+            const list = document.querySelector('#pic-list');
+            li.appendChild(img);
+            list.appendChild(li);
+          }
+        })
+        .catch(err => console.error(err))
+      }
+      
+      imgLazyLoad('https://forumimg01.jiaoliuqu.com/taqu_ios_0_3888178940_1626058274900.jpg')
+      imgLazyLoad('https://forumimg01.jiaoliuqu.com/taqu_ios_0_3888178940_1626058274900.jpg')
+    }
+  </script>
+</body>
+</html>
