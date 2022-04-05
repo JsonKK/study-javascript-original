@@ -1,27 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>before伪类</title>
   <style>
-    .ribbon::before{
+    .ribbon::before {
       content: '在文字前面的一句话';
       border-style: dotted;
     }
+
+    .float-row {}
+
+    .float-row>div:nth-child(odd) {
+      width: 100px;
+      height: 100px;
+      background-color: antiquewhite;
+      float: left;
+    }
+
+    .float-row>div:nth-child(even) {
+      width: 100px;
+      height: 100px;
+      background-color: pink;
+      float: right;
+    }
+
+    .float-row::after {
+      content: '';
+      height: 0;
+      line-height: 0;
+      display: block;
+      visibility: hidden;
+      clear: both;
+    }
+
+    .inside-border {
+      background: tan;
+      border-radius: .8em;
+      padding: 1em;
+      box-shadow: 0 0 0 .4em #655;
+      outline: .5em solid #655;
+    }
   </style>
 </head>
+
 <body>
+
+  <div class="float-row">
+    <div class="box1">第一个</div>
+    <div class="box2">第二个</div>
+    <div class="box3">第三个</div>
+  </div>
   <div class="row">
     <span class="ribbon" id="ribbon">在文字前面加上一句话</span>
   </div>
+  <div class="row">
+    <div class="inside-border"></div>
+  </div>
   <script>
-    window.onload = function(){
-      document.getElementById('ribbon').addEventListener('click',(e)=>{
+    window.onload = function () {
+      document.getElementById('ribbon').addEventListener('click', (e) => {
         console.log(e.target.innerText);
       })
     }
   </script>
 </body>
+
 </html>
