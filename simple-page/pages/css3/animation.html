@@ -23,10 +23,38 @@
         transform: translateY(0);
       }
     }
+    @keyframes move {
+      from{
+        transform: translate(250px,100px);
+        opacity: 0;
+      }
+      to{
+        transform: translate(0,0);
+        opacity: 1;
+      }
+    }
+    .fire-box{
+      background: url('/assets/img/demo/bg-toubu.png');
+      width: 750px;
+      height: 412px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .fire-content{
+      width: 355px;
+      height: 369px;
+      background: url('/assets/img/demo/bg-huoyan.png');
+      animation: move 2s ease-in-out 1 alternate;
+      
+    }
   </style>
 </head>
 <body>
-  <div class="demo"></div>
-  <a href="./hack.html">跳转hack.html</a>
+  <!-- <div class="demo"></div>
+  <a href="./hack.html">跳转hack.html</a> -->
+  <div class="fire-box">
+    <div class="fire-content"></div>
+  </div>
 </body>
 </html>

@@ -1,0 +1,20 @@
+▶ Parsing command line ...
+
+▶ Initializing Docker Compose ...
+
+▶ Setting up error handling ...
+
+▶ Checking for latest commit ... 
+skipped
+
+▶ Checking minimum requirements ...
+Found Docker version 20.10.13
+Found Docker Compose version 2.3.3
+Unable to find image 'busybox:latest' locally
+latest: Pulling from library/busybox
+aa5434a6d997: Pulling fs layer
+aa5434a6d997: Download complete
+aa5434a6d997: Pull complete
+Digest: sha256:caa382c432891547782ce7140fb3b7304613d3b0438834dce1cad68896ab110a
+Status: Downloaded newer image for busybox:latest
+FAIL: The CPU your machine is running on does not support the SSE 4.2 instruction set, which is required for one of the services Sentry uses (Clickhouse). See https://git.io/JvLDt for more info.

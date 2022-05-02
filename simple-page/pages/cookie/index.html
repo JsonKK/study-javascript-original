@@ -58,7 +58,9 @@
         //或者把时间转为世界时间 date.toUTCString()都是可以的
         let outTime = date.toGMTString();
         for(let key in obj){
-          document.cookie = `${key}=${escape(obj[key])};expires=${outTime};path=/;`;
+          let setKey = `${key}=${escape(obj[key])};expires=${outTime};path=/;`;
+          document.cookie = setKey;
+          console.log(setKey);
         }
       },
       //删除cookie
@@ -77,7 +79,7 @@
     window.onload = function(){
       //相同的key后一个会覆盖前一个
       localMethod.setCookie({test1:'test1'});
-      localMethod.setCookie({test1:'test2'});
+      localMethod.setCookie({test2:'test2'});
       localMethod.delCookie('test1');
       console.log(localMethod.getCookie());
     }
