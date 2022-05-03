@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>regexp</title>
+</head>
+<body>
+  <script>
+    const debugExec = ()=>{
+      const text = 'mom and dad and baby';
+      const pattern = /mom( and dad( and baby)?)?/gi;
+      const matchs = pattern.exec(text);
+      const {input,index} = matchs;
+      console.log({matchs,input,index});
+    }
+
+    const debugRegexpMethods = ()=>{
+      const text = 'this has been a short summer';
+      const pattern = /(.)hort/g;
+      if(pattern.test(text)){
+        const { input, leftContext, rightContext, lastMatch, lastParen, multiline} = RegExp;
+        console.log({
+          //返回原始字符串 简写：$_
+          input, 
+          //返回匹配到字符之前的字符串 简写：&`
+          leftContext, 
+          //返回匹配到字符之后的字符串 简写：$'
+          rightContext, 
+          //返回最后一次与整个正则匹配到的字符串 简写：$&
+          lastMatch, 
+          //返回最近一次的匹配捕获组，即括号内的内容 简写：$+
+          lastParen, 
+          multiline
+        });
+      }
+    }
+
+    window.onload = function(){
+      debugExec();
+      debugRegexpMethods();
+    }
+  </script>
+</body>
+</html>
