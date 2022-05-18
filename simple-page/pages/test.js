@@ -25,5 +25,10 @@ const obj = {
   }
 }
 
-const diposeObj = getValue(obj,'a.b.c.d.e');
-console.log(diposeObj);
+//自定义错误类型
+const CustomError = function(message){
+  this.name = 'CustomError';
+  this.message = message;
+}
+CustomError.prototype = new Error();
+throw new CustomError('自定义错误类型')
