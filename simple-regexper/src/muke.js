@@ -6,7 +6,7 @@ import utils from '../utils/index.js';
   //匹配http 中间任意字符，加上.jpg结尾的字符
   //$1代表分组1匹配到的内容
   let regex = /http:(\/\/.+\.jpg)/g;
-  let str = 'http://avatar01.jiaoliuqu.com//taqu_android_post_01557455129599.jpg http://avatar01.jiaoliuqu.com//taqu_android_post_01557455129599.png';
+  let str = 'http://图片1.jpg http://图片2.png';
   console.log(str.replace(regex,'$1'));
 }
 

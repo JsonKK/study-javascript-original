@@ -23,13 +23,3 @@ workbox.routing.registerRoute(
 //   new RegExp('.*\.(?:js|css)'),
 //   workbox.strategies.cacheFirst()
 // );
-
-workbox.routing.registerRoute(
-  new RegExp('^https:\/\/avatar01\.jiaoliuqu\.com\/.*$'),
-  workbox.strategies.staleWhileRevalidate()
-);
-
-workbox.routing.registerRoute(
-  new RegExp('^https:\/\/avatar01\.jiaoliuqu\.com\/.*$'),
-  workbox.strategies.cacheFirst()
-);
